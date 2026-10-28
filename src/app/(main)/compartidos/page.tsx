@@ -52,32 +52,14 @@ export default async function CompartidosPage() {
 
   return (
     <div className="p-4 max-w-lg mx-auto space-y-6 pb-28 bg-fz-bg min-h-screen">
-      <div className="flex items-start justify-between gap-3 pt-2">
-        <div>
-          <h1 className="font-display font-extrabold text-2xl text-fz-text uppercase tracking-wide">
-            Compartidos
-          </h1>
-          <p className="text-sm text-fz-text-tertiary mt-0.5">
-            Quién te debe qué de los gastos que pagaste vos.
-          </p>
-        </div>
-        <Link
-          href="/grupos"
-          className="shrink-0 text-xs font-medium text-fz-accent-text bg-fz-accent rounded-full px-3 py-2 min-h-[40px] inline-flex items-center"
-        >
-          Grupos
-        </Link>
-      </div>
-
-      <Link
-        href="/grupos"
-        className="block bg-fz-surface border border-fz-border rounded-2xl px-4 py-3"
-      >
-        <p className="text-sm font-semibold text-fz-text">Familiares, amigos y más</p>
-        <p className="text-xs text-fz-text-tertiary mt-0.5">
-          Armá grupos y usalos al cargar un gasto o cuotas compartidas →
+      <div className="pt-2">
+        <h1 className="font-display font-extrabold text-2xl text-fz-text uppercase tracking-wide">
+          Compartidos
+        </h1>
+        <p className="text-sm text-fz-text-tertiary mt-0.5">
+          Quién te debe qué de los gastos que pagaste vos.
         </p>
-      </Link>
+      </div>
 
       {pending.length === 0 && paidList.length === 0 ? (
         <div className="bg-fz-surface border border-fz-border rounded-2xl p-8 text-center space-y-3">

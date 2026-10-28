@@ -7,7 +7,10 @@ export default function MainLayout({
 }) {
   return (
     <>
-      <main className="pb-28">{children}</main>
+      {/* Padding extra: barra 64px + botón + que sobresale + safe area */}
+      <main className="pb-[calc(5.5rem+env(safe-area-inset-bottom))]">
+        {children}
+      </main>
       <BottomNav />
     </>
   );

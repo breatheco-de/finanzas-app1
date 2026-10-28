@@ -285,31 +285,23 @@ export default async function MovimientosPage({
   }
 
   const pillClass = (active: boolean) =>
-    `text-xs font-medium rounded-full px-3 py-1.5 transition-colors shrink-0 ${
+    `inline-flex items-center min-h-[44px] text-[14px] font-medium rounded-full px-4 py-2.5 transition-colors shrink-0 ${
       active ? "bg-fz-accent text-fz-accent-text" : "bg-fz-surface-high text-fz-text-secondary"
     }`;
 
   return (
-    <div className="p-4 max-w-lg mx-auto space-y-4 pb-24 bg-fz-bg min-h-screen -mt-[1px]">
+    <div className="px-4 pt-3 max-w-lg mx-auto space-y-4 bg-fz-bg min-h-[100dvh]">
       {/* Header */}
-      <div className="flex items-center justify-between pt-2">
-        <h1 className="font-display font-extrabold text-[28px] leading-none text-fz-text uppercase tracking-wide">
+      <div className="flex items-center justify-between gap-2">
+        <h1 className="font-display font-extrabold text-[26px] leading-none text-fz-text uppercase tracking-wide">
           Movimientos
         </h1>
-        <div className="flex gap-2">
-          <Link
-            href="/gastos/nuevo"
-            className="text-xs font-medium text-fz-text-secondary bg-fz-surface-high hover:opacity-80 rounded-full px-3 py-1.5 transition-opacity"
-          >
-            + Gasto
-          </Link>
-          <Link
-            href="/ingresos/nuevo"
-            className="text-xs font-medium text-fz-accent-text bg-fz-accent hover:opacity-90 rounded-full px-3 py-1.5 transition-opacity"
-          >
-            + Ingreso
-          </Link>
-        </div>
+        <Link
+          href="/gastos/nuevo"
+          className="inline-flex items-center min-h-[44px] text-[14px] font-semibold text-fz-accent-text bg-fz-accent rounded-full px-4 active:opacity-90"
+        >
+          + Gasto
+        </Link>
       </div>
 
       {/* Filtro de período (TAREA 8a) */}

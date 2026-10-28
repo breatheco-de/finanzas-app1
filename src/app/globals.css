@@ -76,10 +76,22 @@
   --font-mono: var(--font-system);
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   background: var(--fz-bg);
   color: var(--fz-text);
   font-family: var(--font-system);
+  /* Mobile shell: sin scroll horizontal, tap más rápido, safe areas */
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 /* Todo uso de la utilidad font-mono (valores monetarios en toda la app)
@@ -91,6 +103,32 @@ body {
 
 .safe-area-pb {
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Contenedor estándar de pantallas en celular (max ancho + padding + nav) */
+.mobile-page {
+  width: 100%;
+  max-width: 32rem; /* max-w-lg */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem 1rem calc(5.5rem + env(safe-area-inset-bottom));
+  min-height: 100dvh;
+  background: var(--fz-bg);
+}
+
+/* Inputs ≥16px: evita zoom automático de iOS Safari al enfocar.
+   No forzamos 16px en botones/links (rompen labels chicos de la nav). */
+input,
+select,
+textarea {
+  font-size: 16px;
+  min-height: 48px;
+  border-radius: 12px;
+}
+
+button,
+a {
+  touch-action: manipulation;
 }
 
 ::-webkit-scrollbar {

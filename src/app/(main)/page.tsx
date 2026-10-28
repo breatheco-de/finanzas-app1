@@ -6,7 +6,7 @@ import EyeToggle from "@/components/EyeToggle";
 import { Money } from "@/components/Money";
 import { formatCurrency, formatARS, formatUSD } from "@/lib/format";
 import { getLeafAccounts } from "@/lib/accounts";
-import { AlertTriangle, CreditCard, Wallet, Home as HomeIcon, Target, Receipt, Settings } from "lucide-react";
+import { AlertTriangle, CreditCard, Wallet, Receipt, Settings, Plus } from "lucide-react";
 import InicioResumen from "./_components/InicioResumen";
 import { fetchCategoryTotalsByCurrency, fetchMonthlyComparativa } from "@/lib/queries/movimientosSummary";
 import { fetchInvestmentsSummary } from "@/lib/queries/investmentsSummary";
@@ -247,12 +247,12 @@ export default async function DashboardPage() {
     hour < 12 ? "Buenos días" : hour < 19 ? "Buenas tardes" : "Buenas noches";
 
   return (
-    <div className="p-4 max-w-lg mx-auto space-y-6 pb-24 bg-fz-bg min-h-screen -mt-[1px]">
+    <div className="px-4 pt-3 max-w-lg mx-auto space-y-5 bg-fz-bg min-h-[100dvh]">
       {/* Header */}
-      <div className="flex items-center justify-between pt-2">
+      <div className="flex items-center justify-between">
         <div>
-          <p className="text-[13px] font-medium text-fz-text-tertiary">{greeting}</p>
-          <h1 className="font-display font-extrabold text-[30px] leading-none text-fz-text uppercase tracking-wide mt-0.5">
+          <p className="text-sm font-medium text-fz-text-tertiary">{greeting}</p>
+          <h1 className="font-display font-extrabold text-[28px] leading-none text-fz-text uppercase tracking-wide mt-1">
             Finanzas
           </h1>
         </div>
@@ -260,22 +260,38 @@ export default async function DashboardPage() {
           <EyeToggle />
           <Link
             href="/configuracion"
-            className="w-11 h-11 rounded-2xl bg-fz-surface border border-fz-border flex items-center justify-center text-fz-text-secondary"
+            className="w-12 h-12 rounded-2xl bg-fz-surface border border-fz-border flex items-center justify-center text-fz-text-secondary"
             aria-label="Configuración"
           >
-            <Settings size={18} />
+            <Settings size={20} />
           </Link>
         </div>
       </div>
 
-      {/* Saldo total consolidado — hero card principal (TAREA 4, mismo
-          tratamiento que el prototipo: c.surfaceHigh, el número más grande de
-          toda la pantalla). */}
+      {/* Acciones al alcance del pulgar — lo más usado primero */}
+      <section className="grid grid-cols-2 gap-3">
+        <Link
+          href="/gastos/nuevo"
+          className="flex min-h-[72px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-fz-accent text-fz-accent-text active:opacity-90"
+        >
+          <Plus size={26} strokeWidth={2.5} />
+          <span className="text-[15px] font-semibold">Nuevo gasto</span>
+        </Link>
+        <Link
+          href="/ingresos/nuevo"
+          className="flex min-h-[72px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-fz-surface border border-fz-border text-fz-text active:bg-fz-surface-high"
+        >
+          <Wallet size={24} className="text-fz-accent" />
+          <span className="text-[15px] font-semibold">Nuevo ingreso</span>
+        </Link>
+      </section>
+
+      {/* Saldo total consolidado */}
       <section className="bg-fz-surface-high rounded-[22px] p-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-fz-text-tertiary">
-          Saldo total consolidado
+          Saldo total
         </p>
-        <p className="font-display font-extrabold text-[42px] leading-tight text-fz-text mt-1">
+        <p className="font-display font-extrabold text-[36px] leading-tight text-fz-text mt-1 break-all">
           <Money>{formatARS(arsBalance)}</Money>
         </p>
         {usdBalance > 0 && (
@@ -538,31 +554,17 @@ export default async function DashboardPage() {
         )}
       </section>
 
-      {/* Accesos rápidos */}
+      {/* Atajo a secciones secundarias */}
       <section>
-        <h2 className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide mb-2">
-          Accesos
-        </h2>
-        <div className="grid grid-cols-3 gap-2">
-          <Link href="/cuotas" className="bg-fz-surface border border-fz-border rounded-2xl px-3 py-4 text-center hover:bg-fz-surface-high transition-colors">
-            <span className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-fz-accent-soft">
-              <CreditCard size={18} className="text-fz-accent" />
-            </span>
-            <p className="text-xs font-semibold text-fz-text">Cuotas</p>
-          </Link>
-          <Link href="/bienes" className="bg-fz-surface border border-fz-border rounded-2xl px-3 py-4 text-center hover:bg-fz-surface-high transition-colors">
-            <span className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-fz-accent-soft">
-              <HomeIcon size={18} className="text-fz-accent" />
-            </span>
-            <p className="text-xs font-semibold text-fz-text">Bienes</p>
-          </Link>
-          <Link href="/objetivos" className="bg-fz-surface border border-fz-border rounded-2xl px-3 py-4 text-center hover:bg-fz-surface-high transition-colors">
-            <span className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-fz-accent-soft">
-              <Target size={18} className="text-fz-accent" />
-            </span>
-            <p className="text-xs font-semibold text-fz-text">Metas</p>
-          </Link>
-        </div>
+        <Link
+          href="/mas"
+          className="flex items-center justify-between bg-fz-surface border border-fz-border rounded-2xl px-4 min-h-[56px] active:bg-fz-surface-high"
+        >
+          <span className="text-[15px] font-medium text-fz-text">
+            Cuotas, metas, inversiones…
+          </span>
+          <span className="text-[15px] font-semibold text-fz-accent">Más →</span>
+        </Link>
       </section>
 
       {/* Últimos gastos */}
