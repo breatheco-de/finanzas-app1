@@ -1,12 +1,13 @@
 # Railway — Next.js (Nixpacks)
 # https://docs.railway.com/guides/nodejs
 #
-# Cache de npm FUERA de node_modules: con el mount de BuildKit,
-# `npm ci` intenta rmdir node_modules/.cache y falla con EBUSY (errno -16).
+# NO poner `npm ci` acá: Nixpacks ya lo corre en la fase install.
+# Un segundo `npm ci` en build choca con el cache mount → EBUSY en
+# node_modules/.cache (errno -16).
 
 [build]
 builder = "NIXPACKS"
-buildCommand = "npm ci --cache /tmp/npm-cache --prefer-offline && npm run build"
+buildCommand = "npm run build"
 
 [deploy]
 startCommand = "npm run start"

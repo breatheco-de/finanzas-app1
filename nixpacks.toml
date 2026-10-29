@@ -1,3 +1,12 @@
-# Evita el mount de cache que choca con npm ci (EBUSY en node_modules/.cache).
+# Cache de npm fuera de node_modules (evita EBUSY con mounts de BuildKit).
 [variables]
 NPM_CONFIG_CACHE = "/tmp/npm-cache"
+
+[phases.install]
+cmds = ["npm ci --cache /tmp/npm-cache"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm run start"
