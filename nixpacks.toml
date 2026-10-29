@@ -1,0 +1,3 @@
+# Evita el mount de cache que choca con npm ci (EBUSY en node_modules/.cache).
+[variables]
+NPM_CONFIG_CACHE = "/tmp/npm-cache"
