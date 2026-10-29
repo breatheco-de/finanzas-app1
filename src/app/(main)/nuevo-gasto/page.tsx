@@ -1,16 +1,13 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import ExpenseForm from "@/components/ExpenseForm";
 import { fetchShareGroupsWithMembers } from "@/lib/queries/shareGroups";
 import type { Account, Category } from "@/types";
 
 // Ruta optimizada para el Action Button de iPhone (iOS Shortcuts).
 export default async function NuevoGastoDirectoPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const [{ data: accounts }, { data: categories }, shareGroups] = await Promise.all([
     supabase.from("accounts").select("*").order("name"),

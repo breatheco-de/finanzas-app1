@@ -1,5 +1,5 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Wallet, Receipt, SlidersHorizontal } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
@@ -74,11 +74,8 @@ export default async function MovimientosPage({
     montoMax?: string;
   }>;
 }) {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const {
     mes,

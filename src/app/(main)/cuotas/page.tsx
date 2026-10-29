@@ -1,5 +1,5 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
 import { getLeafAccounts, accountDisplayName } from "@/lib/accounts";
@@ -59,11 +59,8 @@ type GroupData = {
 };
 
 export default async function CuotasPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const [{ data }, { data: accountsData }, { data: earmarksRaw }] = await Promise.all([
     supabase

@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { requestPasswordReset } from "@/lib/auth-actions";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [devLink, setDevLink] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -15,16 +16,13 @@ export default function ForgotPasswordPage() {
     setError(null);
     setLoading(true);
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
-    });
-
+    const result = await requestPasswordReset(email);
     setLoading(false);
-    if (error) {
-      setError(error.message);
+    if (!result.ok) {
+      setError(result.error);
       return;
     }
+    setDevLink(result.resetUrl ?? null);
     setSent(true);
   }
 
@@ -37,8 +35,18 @@ export default function ForgotPasswordPage() {
           </h1>
           <p className="text-[15px] text-fz-text-secondary leading-relaxed">
             Si <span className="font-semibold text-fz-text">{email}</span> tiene una
-            cuenta, te enviamos un link para restablecer tu contraseña.
+            cuenta, generamos un link de recuperación.
           </p>
+          {devLink && (
+            <p className="text-left text-[13px] break-all bg-fz-surface-high rounded-xl p-3 text-fz-text">
+              <span className="block text-fz-text-tertiary mb-1">
+                Modo sin email (dev / AUTH_RESET_LOG_LINKS):
+              </span>
+              <Link href={devLink} className="text-fz-accent font-medium underline">
+                Abrir link de reset
+              </Link>
+            </p>
+          )}
           <Link href="/login" className="fz-btn-ghost w-full inline-flex">
             Volver al login
           </Link>
@@ -55,7 +63,8 @@ export default function ForgotPasswordPage() {
             Recuperar contraseña
           </h1>
           <p className="text-[15px] text-fz-text-secondary mt-2 leading-snug">
-            Te enviamos un link para elegir una nueva.
+            Ingresá tu email. Por ahora el link se muestra acá en desarrollo (sin
+            servicio de email de pago).
           </p>
         </div>
 
@@ -78,20 +87,17 @@ export default function ForgotPasswordPage() {
           </div>
 
           {error && (
-            <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-2xl px-3 py-2">
+            <p className="text-[14px] text-fz-negative bg-fz-negative-soft rounded-2xl px-3 py-2.5">
               {error}
             </p>
           )}
 
           <button type="submit" disabled={loading} className="fz-btn-primary w-full">
-            {loading ? "Enviando..." : "Enviar link"}
+            {loading ? "Enviando…" : "Continuar"}
           </button>
         </form>
 
-        <Link
-          href="/login"
-          className="block w-full text-center min-h-[44px] leading-[44px] text-[15px] font-medium text-fz-text-secondary"
-        >
+        <Link href="/login" className="fz-btn-ghost w-full inline-flex">
           Volver al login
         </Link>
       </div>

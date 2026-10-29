@@ -1,15 +1,12 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency } from "@/lib/format";
 import type { Currency } from "@/types";
 
 export default async function GastosPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const { data: expenses, error: expensesError } = await supabase
     .from("expenses")
@@ -46,7 +43,7 @@ export default async function GastosPage() {
         </div>
       ) : (
         <div className="bg-fz-surface rounded-2xl shadow-[var(--fz-shadow)] overflow-hidden">
-          {expenses.map((expense, i) => {
+          {expenses.map((expense: any, i: any) => {
             const cat = expense.categories as unknown as { name: string; icon: string | null } | null;
             const acc = (expense as unknown as { account?: { name: string } | null }).account ?? null;
             const label = expense.merchant || expense.description || cat?.name || "Gasto";

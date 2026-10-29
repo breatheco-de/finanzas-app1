@@ -1,4 +1,5 @@
 "use server";
+import { getAppUser } from "@/lib/session";
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
@@ -157,11 +158,9 @@ async function createExpense(
 }
 
 export async function seedDemoData(): Promise<{ ok: true; summary: string } | { error: string }> {
+  const user = await getAppUser();
+  if (!user) return { error: "No autenticado" };
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado. Entrá con Google primero." };
 
   const userId = user.id;
   const logs: string[] = [];
@@ -183,7 +182,9 @@ export async function seedDemoData(): Promise<{ ok: true; summary: string } | { 
       ["Educación", "📚"],
     ] as const;
     const { data: existingCats } = await supabase.from("categories").select("id, name");
-    const catByName = new Map((existingCats ?? []).map((c) => [c.name, c.id]));
+    const catByName = new Map<string, string>(
+      ((existingCats ?? []) as { id: string; name: string }[]).map((c) => [c.name, c.id])
+    );
     for (const [name, icon] of catDefs) {
       if (catByName.has(name)) continue;
       const { data, error } = await supabase
@@ -192,13 +193,13 @@ export async function seedDemoData(): Promise<{ ok: true; summary: string } | { 
         .select("id")
         .single();
       if (error) throw error;
-      catByName.set(name, data.id);
+      catByName.set(name, (data as { id: string }).id);
     }
     logs.push(`categorías ${catByName.size}`);
 
     // Cuentas
     const { data: existingAccounts } = await supabase.from("accounts").select("*");
-    const hasSeed = (existingAccounts ?? []).some(
+    const hasSeed = ((existingAccounts ?? []) as { name: string }[]).some(
       (a) => a.name === "BBVA" || a.name === "Cocos Capital"
     );
 
@@ -314,17 +315,17 @@ export async function seedDemoData(): Promise<{ ok: true; summary: string } | { 
       accounts.find((p) => p.id === a.parent_id)?.name ?? null;
 
     const pesosBBVA =
-      accounts.find((a) => a.name === "Pesos" && a.currency === "ARS" && parentName(a) === "BBVA") ??
-      accounts.find((a) => a.name === "Pesos" && a.currency === "ARS");
-    const usdBBVA = accounts.find((a) => a.name === "Dólares" && a.currency === "USD");
-    const visa = accounts.find((a) => a.name === "Visa" && a.type === "credito");
-    const mastercard = accounts.find((a) => a.name === "Mastercard" && a.type === "credito");
-    const galiciaCA = accounts.find((a) => a.name === "Caja de ahorro");
-    const cocosFondos = accounts.find((a) => a.name === "Fondos");
-    const cocosCedears = accounts.find((a) => a.name === "CEDEARs");
+      accounts.find((a: any) => a.name === "Pesos" && a.currency === "ARS" && parentName(a) === "BBVA") ??
+      accounts.find((a: any) => a.name === "Pesos" && a.currency === "ARS");
+    const usdBBVA = accounts.find((a: any) => a.name === "Dólares" && a.currency === "USD");
+    const visa = accounts.find((a: any) => a.name === "Visa" && a.type === "credito");
+    const mastercard = accounts.find((a: any) => a.name === "Mastercard" && a.type === "credito");
+    const galiciaCA = accounts.find((a: any) => a.name === "Caja de ahorro");
+    const cocosFondos = accounts.find((a: any) => a.name === "Fondos");
+    const cocosCedears = accounts.find((a: any) => a.name === "CEDEARs");
     const mpPesos =
-      accounts.find((a) => a.name === "Pesos" && parentName(a) === "Mercado Pago") ?? pesosBBVA;
-    const cash = accounts.find((a) => a.name === "Efectivo") ?? pesosBBVA;
+      accounts.find((a: any) => a.name === "Pesos" && parentName(a) === "Mercado Pago") ?? pesosBBVA;
+    const cash = accounts.find((a: any) => a.name === "Efectivo") ?? pesosBBVA;
     const covering = cocosFondos ?? pesosBBVA;
 
     if (!pesosBBVA || !visa) {

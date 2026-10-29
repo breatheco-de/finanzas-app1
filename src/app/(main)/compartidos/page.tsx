@@ -1,5 +1,5 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Users } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
@@ -24,11 +24,8 @@ type ParticipantRow = {
 };
 
 export default async function CompartidosPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const [{ data: participantsData }, { data: accountsData }] = await Promise.all([
     supabase

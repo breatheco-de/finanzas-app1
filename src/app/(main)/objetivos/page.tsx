@@ -1,5 +1,5 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Home, Target } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
@@ -10,9 +10,8 @@ import DeleteGoalButton from "./_components/DeleteGoalButton";
 import type { Asset, SavingsGoal, SavingsContribution, Account, Currency } from "@/types";
 
 export default async function ObjetivosPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const [
     { data: assetsData },

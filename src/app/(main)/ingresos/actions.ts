@@ -1,4 +1,5 @@
 "use server";
+import { getAppUser } from "@/lib/session";
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
@@ -18,11 +19,9 @@ interface CreateIncomeInput {
 export async function createIncome(
   input: CreateIncomeInput
 ): Promise<{ id: string } | { error: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   // RPC atómica: inserta el ingreso y, si tiene cuenta destino, acredita su
   // balance en la misma transacción (Sesión J.1.13, TAREA 1 — la plata de un
@@ -52,11 +51,9 @@ export async function confirmDistribution(
   incomeId: string,
   lines: DistributionLine[]
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("confirm_income_distribution", {
     p_income_id: incomeId,
@@ -75,11 +72,9 @@ export async function updateEmergencyFund(
   fundId: string,
   additionalAmount: number
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { data: fund, error: fetchError } = await supabase
     .from("funds")
@@ -120,11 +115,9 @@ export async function confirmDistributionWithContributions(
   emergencyAmount: number,
   emergencyFundId: string | null
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("confirm_distribution_with_contributions", {
     p_income_id: incomeId,
@@ -159,11 +152,9 @@ export async function updateIncome(
   incomeId: string,
   data: UpdateIncomeInput
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   // Campos financieros (amount/currency) llegan bloqueados desde la UI cuando
   // el ingreso ya fue distribuido — el RPC necesita valores concretos para los
@@ -209,11 +200,9 @@ export async function updateIncome(
 export async function deleteIncome(
   incomeId: string
 ): Promise<{ error?: string; wasDistributed?: boolean }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   // RPC atómica: si no fue distribuido, revierte el crédito de account_id
   // (consecuencia directa del fix de TAREA 1 — Sesión J.1.13); si fue
@@ -234,11 +223,9 @@ export async function setEmergencyFundAmount(
   fundId: string,
   newAmount: number
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase
     .from("funds")

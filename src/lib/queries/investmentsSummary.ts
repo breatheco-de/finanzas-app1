@@ -1,4 +1,4 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { DataClient } from "@/lib/db/data-client";
 import { autoSyncFciHoldings } from "@/lib/fciAutoSync";
 import { buildPortfolioSeries, type HoldingSnapshot } from "@/lib/finance/portfolioSeries";
 import type { PricePoint } from "@/lib/finance/holdingReturn";
@@ -27,7 +27,7 @@ export interface InvestmentsSummary {
 // El cálculo de retorno por posición (returnByHolding/TNA estimada) NO se
 // extrae acá porque es exclusivo de la lista detallada de /inversiones.
 export async function fetchInvestmentsSummary(
-  supabase: SupabaseClient,
+  supabase: DataClient,
   windowStart: Date,
   now: Date
 ): Promise<InvestmentsSummary> {

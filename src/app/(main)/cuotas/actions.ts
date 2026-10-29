@@ -1,4 +1,5 @@
 "use server";
+import { getAppUser } from "@/lib/session";
 
 import { createClient } from "@/lib/supabase/server";
 
@@ -6,9 +7,9 @@ export async function payInstallment(
   installmentId: string,
   accountId: string | null
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("pay_installment", {
     p_installment_id: installmentId,
@@ -23,9 +24,9 @@ export async function payInstallmentsBatch(
   installmentIds: string[],
   accountId: string | null
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("pay_installments_batch", {
     p_installment_ids: installmentIds,
@@ -41,9 +42,9 @@ export async function payInstallmentsWithConversion(
   sourceAccountId: string,
   mepRate: number | null
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("pay_installments_with_conversion", {
     p_installment_ids: installmentIds,
@@ -59,9 +60,9 @@ export async function confirmEarmarkFunding(
   earmarkId: string,
   fundingAccountId: string
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("confirm_earmark_funding", {
     p_earmark_id: earmarkId,

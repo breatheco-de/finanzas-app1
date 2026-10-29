@@ -3,8 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
-import { convertAccountToParent, createChildAccount } from "../../actions";
+import {
+  convertAccountToParent,
+  createChildAccount,
+  insertAccount,
+  createAccountWithChildrenRpc,
+} from "../../actions";
 import { formatCurrency } from "@/lib/format";
 import { INSTITUTIONS, INSTITUTION_GROUPS, CREDIT_CARDS, type Institution } from "@/lib/institutions";
 import type { AccountType, Currency } from "@/types";
@@ -316,12 +320,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
     setError(null);
     setLoading(true);
 
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setError("Sesión expirada. Recargá la página."); setLoading(false); return; }
-
-    const { error } = await supabase.from("accounts").insert({
-      user_id: user.id,
+    const { error } = await insertAccount({
       name: name.trim(),
       type,
       currency,
@@ -333,7 +332,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
     });
 
     setLoading(false);
-    if (error) { setError(error.message); return; }
+    if (error) { setError(error); return; }
     router.push("/cuentas");
   }
 
@@ -343,23 +342,17 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
     setError(null);
     setLoading(true);
 
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setError("Sesión expirada. Recargá la página."); setLoading(false); return; }
-
     const hasSubs = bankSubPesos || bankSubDolares || bankCards.size > 0;
 
     if (!hasSubs) {
-      // Sin sub-selección: banco simple (hoja), un solo insert
-      const { error } = await supabase.from("accounts").insert({
-        user_id: user.id,
+      const { error } = await insertAccount({
         name: name.trim(),
         type,
         currency,
         balance: 0,
       });
       setLoading(false);
-      if (error) { setError(error.message); return; }
+      if (error) { setError(error); return; }
       router.push("/cuentas");
       return;
     }
@@ -372,13 +365,13 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
       if (card) children.push({ name: card.name, type: "credito", currency: "ARS", balance: 0, earns_yield: false });
     }
 
-    const { error } = await supabase.rpc("create_account_with_children", {
-      p_parent: { name: name.trim(), type, currency, balance: 0, earns_yield: false },
-      p_children: children,
-    });
+    const { error } = await createAccountWithChildrenRpc(
+      { name: name.trim(), type, currency, balance: 0, earns_yield: false },
+      children
+    );
 
     setLoading(false);
-    if (error) { setError(error.message); return; }
+    if (error) { setError(error); return; }
     router.push("/cuentas");
   }
 
@@ -389,25 +382,20 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
     if (validBolsillos.length === 0) { setError("Agregá al menos un bolsillo"); return; }
 
     setLoading(true);
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setError("Sesión expirada. Recargá la página."); setLoading(false); return; }
 
-    // RPC atómica: padre + todos los hijos en una sola transacción.
-    // Rollback total si cualquier insert falla.
-    const { error } = await supabase.rpc("create_account_with_children", {
-      p_parent: { name: containerName.trim(), type, currency, balance: 0, earns_yield: false },
-      p_children: validBolsillos.map((b) => ({
+    const { error } = await createAccountWithChildrenRpc(
+      { name: containerName.trim(), type, currency, balance: 0, earns_yield: false },
+      validBolsillos.map((b) => ({
         name: b.label.trim(),
         type,
         currency: b.currency,
         balance: parseFloat(b.balance) || 0,
         earns_yield: b.earns_yield,
-      })),
-    });
+      }))
+    );
 
     setLoading(false);
-    if (error) { setError(error.message); return; }
+    if (error) { setError(error); return; }
     router.push("/cuentas");
   }
 

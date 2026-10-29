@@ -1,12 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { signOut } from "next-auth/react";
 
 interface Props {
-  /** "link" = texto chico gris (Inicio, sin cambios). "block" = botón rojo
-   * centrado, mismo tratamiento que el prototipo de Claude Design en
-   * Configuración (Sesión J.1.16). */
+  /** "link" = texto chico gris (Inicio). "block" = botón rojo en Configuración. */
   variant?: "link" | "block";
 }
 
@@ -14,8 +12,7 @@ export default function LogoutButton({ variant = "link" }: Props) {
   const router = useRouter();
 
   async function handleLogout() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    await signOut({ redirect: false });
     router.push("/login");
     router.refresh();
   }

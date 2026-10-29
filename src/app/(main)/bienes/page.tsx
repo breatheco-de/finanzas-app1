@@ -1,5 +1,5 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Home } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
@@ -31,11 +31,8 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export default async function BienesPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const { data } = await supabase
     .from("assets")

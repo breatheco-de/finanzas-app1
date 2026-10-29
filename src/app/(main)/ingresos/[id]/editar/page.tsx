@@ -1,5 +1,6 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import EditIncomeForm from "./_components/EditIncomeForm";
 import type { Account, Income } from "@/types";
@@ -10,11 +11,8 @@ export default async function EditarIngresoPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const [{ data: incomeData }, { data: accountsData }] = await Promise.all([
     supabase.from("incomes").select("*").eq("id", id).eq("user_id", user.id).single(),

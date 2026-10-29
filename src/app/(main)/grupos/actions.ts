@@ -1,4 +1,5 @@
 "use server";
+import { getAppUser } from "@/lib/session";
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
@@ -8,11 +9,9 @@ export async function createShareGroup(input: {
   icon: string | null;
   members: string[];
 }): Promise<{ id: string } | { error: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const name = input.name.trim();
   if (!name) return { error: "Poné un nombre al grupo" };
@@ -59,11 +58,9 @@ export async function updateShareGroup(input: {
   icon: string | null;
   members: string[];
 }): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const name = input.name.trim();
   if (!name) return { error: "Poné un nombre al grupo" };
@@ -101,11 +98,9 @@ export async function updateShareGroup(input: {
 export async function deleteShareGroup(
   groupId: string
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase
     .from("share_groups")
@@ -124,11 +119,9 @@ export async function deleteShareGroup(
 export async function seedDefaultShareGroups(): Promise<
   { ok: true; count: number } | { error: string }
 > {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { data: existing, error: listErr } = await supabase
     .from("share_groups")

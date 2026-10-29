@@ -1,14 +1,14 @@
-import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import ResetPasswordForm from "./_components/ResetPasswordForm";
 
-export default async function ResetPasswordPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) redirect("/forgot-password");
+export default async function ResetPasswordPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ token?: string }>;
+}) {
+  const { token } = await searchParams;
+  if (!token) redirect("/forgot-password");
 
   return (
     <div className="min-h-[100dvh] flex items-center justify-center bg-fz-bg px-5">
@@ -21,7 +21,10 @@ export default async function ResetPasswordPage() {
             Elegí una contraseña nueva para tu cuenta.
           </p>
         </div>
-        <ResetPasswordForm />
+        <ResetPasswordForm token={token} />
+        <Link href="/login" className="fz-btn-ghost w-full inline-flex">
+          Volver al login
+        </Link>
       </div>
     </div>
   );

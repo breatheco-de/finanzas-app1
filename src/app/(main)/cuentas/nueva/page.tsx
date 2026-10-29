@@ -1,5 +1,5 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import NuevaCuentaForm from "./_components/NuevaCuentaForm";
 import type { AccountType } from "@/types";
 
@@ -8,11 +8,8 @@ export default async function NuevaCuentaPage({
 }: {
   searchParams: Promise<{ parent?: string }>;
 }) {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const { parent: parentId } = await searchParams;
 

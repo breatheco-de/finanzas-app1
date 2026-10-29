@@ -1,5 +1,5 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Wallet } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
@@ -7,11 +7,8 @@ import PageHeader from "@/components/PageHeader";
 import type { Income } from "@/types";
 
 export default async function IngresosPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const { data: incomesData } = await supabase
     .from("incomes")

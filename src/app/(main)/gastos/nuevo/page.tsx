@@ -1,5 +1,5 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import ExpenseForm from "@/components/ExpenseForm";
 import { fetchShareGroupsWithMembers } from "@/lib/queries/shareGroups";
@@ -7,11 +7,8 @@ import type { Account, Category } from "@/types";
 import { ChevronLeft } from "lucide-react";
 
 export default async function NuevoGastoPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const [{ data: accounts }, { data: categories }, { data: merchantRows }, shareGroups] =
     await Promise.all([
@@ -27,7 +24,7 @@ export default async function NuevoGastoPage() {
 
   const merchants = [
     ...new Set(
-      (merchantRows ?? []).map((r) => r.merchant).filter(Boolean) as string[]
+      (merchantRows ?? []).map((r: any) => r.merchant).filter(Boolean) as string[]
     ),
   ];
 

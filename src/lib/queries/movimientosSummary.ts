@@ -1,4 +1,4 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { DataClient } from "@/lib/db/data-client";
 import type { Currency } from "@/types";
 
 export interface CategorySlice {
@@ -54,7 +54,7 @@ export function aggregateCategoryTotals(
 // diferencia de /movimientos, que agrega sobre `filteredExpenses` ya en
 // memoria para reflejar categoría/monto elegidos, TAREA 6 Sesión J.1.15).
 export async function fetchCategoryTotalsByCurrency(
-  supabase: SupabaseClient,
+  supabase: DataClient,
   desde: string,
   hasta: string
 ): Promise<Partial<Record<Currency, CategorySlice[]>>> {
@@ -82,7 +82,7 @@ export async function fetchCategoryTotalsByCurrency(
 
 // 6 meses calendario terminando en el mes actual real, solo ARS (regla dura:
 // nunca sumar monedas distintas en un mismo total).
-export async function fetchMonthlyComparativa(supabase: SupabaseClient): Promise<MonthBar[]> {
+export async function fetchMonthlyComparativa(supabase: DataClient): Promise<MonthBar[]> {
   const nowReal = new Date();
   const sixStart = fmtDate(new Date(nowReal.getFullYear(), nowReal.getMonth() - 5, 1));
   const sixEnd = fmtDate(new Date(nowReal.getFullYear(), nowReal.getMonth() + 1, 0));

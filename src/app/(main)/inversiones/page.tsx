@@ -1,6 +1,6 @@
+import { requireUser } from "@/lib/session";
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { TrendingUp } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
@@ -48,11 +48,8 @@ export default async function InversionesPage({
   const { periodo: periodoParam } = await searchParams;
   const periodo: "mes" | "anio" = periodoParam === "anio" ? "anio" : "mes";
 
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   // TAREA 3: cuentas vinculadas a un holding (accounts.holding_id) — distinto de
   // holdings.account_id (el "dueño"/broker, solo informativo). Un holding

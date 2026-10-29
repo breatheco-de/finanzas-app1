@@ -1,4 +1,5 @@
 "use server";
+import { getAppUser } from "@/lib/session";
 
 import { createClient } from "@/lib/supabase/server";
 
@@ -12,11 +13,9 @@ export async function confirmParticipantPayment(
   participantId: string,
   accountId: string
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("confirm_participant_payment", {
     p_participant_id: participantId,

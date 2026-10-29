@@ -1,15 +1,12 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import HoldingForm from "./_components/HoldingForm";
 import { fetchCedearQuotes } from "@/lib/cedearCatalog";
 
 export default async function NuevaInversionPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const [{ data: accounts }, cedearQuotes] = await Promise.all([
     supabase.from("accounts").select("id, name, parent_id").order("name"),

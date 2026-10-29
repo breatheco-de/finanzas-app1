@@ -1,4 +1,5 @@
 "use server";
+import { getAppUser } from "@/lib/session";
 
 import { createClient } from "@/lib/supabase/server";
 import type { Currency, PaymentMethod } from "@/types";
@@ -77,9 +78,9 @@ export interface CreateExpenseInput {
 export async function createExpense(
   input: CreateExpenseInput
 ): Promise<{ id: string } | { error: string }> {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const isCredito = input.paymentMethod === "credito";
   const cuotas = isCredito ? Math.max(1, input.installmentsTotal) : 1;
@@ -170,9 +171,9 @@ export async function createExpense(
 export async function deleteExpense(
   id: string
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("delete_expense_with_balance", {
     p_expense_id: id,
@@ -196,9 +197,9 @@ export async function updateExpense(
   id: string,
   input: UpdateExpenseInput
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const p_updates: Record<string, string | null> = {};
   if (input.amount !== undefined)      p_updates.amount      = input.amount.toString();

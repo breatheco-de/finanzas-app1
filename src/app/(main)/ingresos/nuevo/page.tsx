@@ -1,15 +1,12 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import IncomeForm from "./_components/IncomeForm";
 import type { Account } from "@/types";
 
 export default async function NuevoIngresoPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const { data } = await supabase
     .from("accounts")

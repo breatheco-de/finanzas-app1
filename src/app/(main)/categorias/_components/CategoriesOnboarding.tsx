@@ -3,12 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { createCategoriesBulk } from "@/app/(main)/categorias/actions";
 import { DEFAULT_CATEGORIES } from "@/lib/categories-defaults";
 
 export default function CategoriesOnboarding() {
   const router = useRouter();
-  // Todas seleccionadas por defecto
   const [selected, setSelected] = useState<Set<string>>(
     new Set(DEFAULT_CATEGORIES.map((c) => c.name))
   );
@@ -28,69 +27,52 @@ export default function CategoriesOnboarding() {
     if (selected.size === 0) return;
     setLoading(true);
     setError(null);
-
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setError("Sesión expirada. Recargá la página."); setLoading(false); return; }
-
     const cats = DEFAULT_CATEGORIES.filter((c) => selected.has(c.name));
-
-    const { error } = await supabase.from("categories").insert(
-      cats.map((c) => ({ user_id: user.id, name: c.name, icon: c.icon }))
-    );
-
+    const result = await createCategoriesBulk(cats);
     setLoading(false);
-    if (error) {
-      setError(error.message);
+    if (result.error) {
+      setError(result.error);
       return;
     }
     router.push("/categorias");
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <p className="text-sm text-fz-text-secondary">
-        Elegí las categorías que querés usar. Podés agregar más en cualquier momento.
+        Elegí las categorías iniciales. Después podés agregar más.
       </p>
-
       <div className="grid grid-cols-2 gap-2">
-        {DEFAULT_CATEGORIES.map((cat) => (
+        {DEFAULT_CATEGORIES.map((c) => (
           <button
-            key={cat.name}
-            onClick={() => toggle(cat.name)}
-            className={`flex items-center gap-2 text-left px-3 py-3 rounded-xl border text-sm font-medium transition-colors ${
-              selected.has(cat.name)
-                ? "bg-fz-accent text-fz-accent-text border-gray-900"
-                : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
+            key={c.name}
+            type="button"
+            onClick={() => toggle(c.name)}
+            className={`text-left px-3 py-2 rounded-xl border text-sm ${
+              selected.has(c.name)
+                ? "border-fz-accent bg-fz-accent-soft"
+                : "border-fz-border bg-fz-surface"
             }`}
           >
-            <span className="text-lg">{cat.icon}</span>
-            <span className="leading-tight">{cat.name}</span>
+            <span className="mr-1">{c.icon}</span>
+            {c.name}
           </button>
         ))}
       </div>
-
       {error && (
-        <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
+        <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-xl px-3 py-2">{error}</p>
       )}
-
-      <div className="space-y-3 pt-2">
-        <button
-          onClick={handleCreate}
-          disabled={selected.size === 0 || loading}
-          className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-medium hover:opacity-90 disabled:opacity-40 transition-colors"
-        >
-          {loading
-            ? "Creando..."
-            : `Crear ${selected.size} categoría${selected.size !== 1 ? "s" : ""}`}
-        </button>
-        <Link
-          href="/categorias/nueva"
-          className="block w-full text-center text-sm text-fz-text-secondary hover:text-fz-text transition-colors py-2"
-        >
-          O agregar categoría personalizada →
-        </Link>
-      </div>
+      <button
+        type="button"
+        disabled={loading || selected.size === 0}
+        onClick={handleCreate}
+        className="fz-btn-primary w-full"
+      >
+        {loading ? "Guardando…" : "Crear categorías"}
+      </button>
+      <Link href="/" className="fz-btn-ghost w-full inline-flex justify-center">
+        Saltear
+      </Link>
     </div>
   );
 }

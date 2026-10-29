@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { createHolding } from "@/app/(main)/inversiones/actions";
 import { getLeafAccounts, accountDisplayName } from "@/lib/accounts";
 import { findCedearQuote, type CedearQuote } from "@/lib/cedearCatalog";
 import { formatCurrency } from "@/lib/format";
@@ -115,22 +115,11 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
     }
 
     setLoading(true);
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      setError("Sesión expirada. Recargá la página.");
-      setLoading(false);
-      return;
-    }
-
-    const { error } = await supabase.from("holdings").insert({
-      user_id: user.id,
+    const { error } = await createHolding({
       account_id: accountId || null,
       name: name.trim(),
       ticker: ticker.trim().toUpperCase() || null,
-      asset_type: assetType,
+      asset_type: assetType as import("@/types").AssetType,
       quantity: parsedQty,
       avg_buy_price: parsedPrice,
       currency,
@@ -140,7 +129,7 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
 
     setLoading(false);
     if (error) {
-      setError(error.message);
+      setError(error);
       return;
     }
     router.push("/inversiones");

@@ -1,5 +1,6 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import EditAssetForm from "./_components/EditAssetForm";
 import type { Asset } from "@/types";
@@ -11,11 +12,8 @@ export default async function EditarBienPage({
 }) {
   const { id } = await params;
 
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const { data } = await supabase
     .from("assets")

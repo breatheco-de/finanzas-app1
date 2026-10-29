@@ -1,16 +1,13 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import TransferenciaForm from "./_components/TransferenciaForm";
 import type { Account } from "@/types";
 
 export default async function TransferenciaPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const { data } = await supabase.from("accounts").select("*").order("name");
 

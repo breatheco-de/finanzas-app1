@@ -1,13 +1,12 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import GoalForm from "./_components/GoalForm";
 import type { Account } from "@/types";
 
 export default async function NuevoObjetivoPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const { data: accountsData } = await supabase
     .from("accounts")

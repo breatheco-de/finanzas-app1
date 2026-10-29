@@ -1,6 +1,8 @@
 "use server";
-
+import { getAppUser } from "@/lib/session";
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import type { AssetType, Currency } from "@/types";
 
 // Actualiza holding.current_price y sincroniza accounts.balance de la cuenta vinculada
 // (si tiene holding_id = holdingId). Atómico vía RPC sync_holding_balance (migración 021).
@@ -8,11 +10,9 @@ export async function updateHoldingPrice(
   holdingId: string,
   price: number
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("sync_holding_balance", {
     p_holding_id: holdingId,
@@ -32,11 +32,9 @@ export async function updateHoldingPosition(
   quantity: number,
   avgBuyPrice: number
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("update_holding_position", {
     p_holding_id: holdingId,
@@ -57,11 +55,9 @@ export async function updateHoldingPosition(
 // DELETE simple alcanza, no mueve accounts.balance (lección §35, punto 2: DELETE
 // crudo es aceptable para entidades que nunca tocan balance).
 export async function deleteHolding(holdingId: string): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { data: linkedAccount } = await supabase
     .from("accounts")
@@ -83,5 +79,29 @@ export async function deleteHolding(holdingId: string): Promise<{ error?: string
     .eq("user_id", user.id);
 
   if (error) return { error: error.message };
+  return {};
+}
+
+export async function createHolding(input: {
+  account_id: string | null;
+  name: string;
+  ticker: string | null;
+  asset_type: import("@/types").AssetType;
+  quantity: number;
+  avg_buy_price: number;
+  currency: import("@/types").Currency;
+  current_price: number | null;
+  purchase_date: string;
+}): Promise<{ error?: string }> {
+  const user = await getAppUser();
+  if (!user) return { error: "No autenticado" };
+  const db = await createClient();
+  const { error } = await db.from("holdings").insert({
+    user_id: user.id,
+    ...input,
+  });
+  if (error) return { error: error.message };
+  const { revalidatePath } = await import("next/cache");
+  revalidatePath("/inversiones");
   return {};
 }

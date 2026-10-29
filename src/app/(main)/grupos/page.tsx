@@ -1,15 +1,12 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import GruposClient from "./_components/GruposClient";
 import PageHeader from "@/components/PageHeader";
 import type { ShareGroup, ShareGroupMember, ShareGroupWithMembers } from "@/types";
 
 export default async function GruposPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   let groups: ShareGroupWithMembers[] = [];
   let migrationMissing = false;

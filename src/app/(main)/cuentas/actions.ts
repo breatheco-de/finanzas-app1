@@ -1,4 +1,5 @@
 "use server";
+import { getAppUser } from "@/lib/session";
 
 import { createClient } from "@/lib/supabase/server";
 import type { AccountType, Currency } from "@/types";
@@ -21,11 +22,9 @@ export async function updateAccount(
     due_day?: number | null;
   }
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { data: current } = await supabase
     .from("accounts")
@@ -98,11 +97,9 @@ export async function convertAccountToParent(
   accountId: string,
   bolsilloName: string
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("convert_account_to_parent", {
     p_account_id: accountId,
@@ -119,11 +116,9 @@ export async function createChildAccount(
   parentId: string,
   data: { name: string; currency: Currency; balance: number; earns_yield?: boolean }
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   // Fetch parent to inherit type and verify ownership
   const { data: parent } = await supabase
@@ -156,11 +151,9 @@ export async function createChildAccount(
 export async function deleteAccount(
   accountId: string
 ): Promise<{ error?: string; deps?: DepItem[]; overflowCount?: number }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   // Fetch all user accounts to walk the descendant tree
   const { data: allAccounts } = await supabase
@@ -173,15 +166,15 @@ export async function deleteAccount(
   // BFS to collect all descendant IDs (not including the node itself)
   const childIds: string[] = [];
   const queue = allAccounts
-    .filter((a) => a.parent_id === accountId)
-    .map((a) => a.id);
+    .filter((a: any) => a.parent_id === accountId)
+    .map((a: any) => a.id);
 
   while (queue.length > 0) {
     const current = queue.shift()!;
     childIds.push(current);
     const grandchildren = allAccounts
-      .filter((a) => a.parent_id === current)
-      .map((a) => a.id);
+      .filter((a: any) => a.parent_id === current)
+      .map((a: any) => a.id);
     queue.push(...grandchildren);
   }
 
@@ -318,11 +311,9 @@ export async function deleteAccount(
 export async function forceDeleteAccount(
   accountId: string
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("force_delete_account", {
     p_account_id: accountId,
@@ -341,11 +332,9 @@ export async function linkHoldingToAccount(
   accountId: string,
   holdingId: string
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("link_and_sync_holding", {
     p_account_id: accountId,
@@ -359,11 +348,9 @@ export async function linkHoldingToAccount(
 export async function unlinkHoldingFromAccount(
   accountId: string
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.rpc("unlink_holding_from_account", {
     p_account_id: accountId,
@@ -385,11 +372,9 @@ export async function createAndLinkFciHolding(
   currency: Currency,
   feedDate: string
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   if (isNaN(amount) || amount <= 0) {
     return { error: "El monto debe ser mayor a 0." };
@@ -439,11 +424,9 @@ export async function createTransfer(input: {
   date: string;
   note: string | null;
 }): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   if (input.from_account_id === input.to_account_id) {
     return { error: "La cuenta origen y destino no pueden ser la misma" };
@@ -458,6 +441,30 @@ export async function createTransfer(input: {
     p_note: input.note,
   });
 
+  if (error) return { error: error.message };
+  return {};
+}
+
+export async function insertAccount(row: Record<string, unknown>): Promise<{ error?: string }> {
+  const user = await getAppUser();
+  if (!user) return { error: "No autenticado" };
+  const db = await createClient();
+  const { error } = await db.from("accounts").insert({ ...row, user_id: user.id });
+  if (error) return { error: error.message };
+  return {};
+}
+
+export async function createAccountWithChildrenRpc(
+  p_parent: Record<string, unknown>,
+  p_children: Record<string, unknown>[]
+): Promise<{ error?: string }> {
+  const user = await getAppUser();
+  if (!user) return { error: "No autenticado" };
+  const db = await createClient();
+  const { error } = await db.rpc("create_account_with_children", {
+    p_parent,
+    p_children,
+  });
   if (error) return { error: error.message };
   return {};
 }

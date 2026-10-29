@@ -1,6 +1,6 @@
+import { requireUser } from "@/lib/session";
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import EyeToggle from "@/components/EyeToggle";
 import { Money } from "@/components/Money";
@@ -31,11 +31,8 @@ function closestOccurrence(day: number, today: Date): Date {
 }
 
 export default async function DashboardPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const now = new Date();
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
@@ -236,11 +233,11 @@ export default async function DashboardPage() {
   }
 
   const arsExpenses = (monthExpenses ?? [])
-    .filter((e) => e.currency === "ARS")
-    .reduce((sum, e) => sum + Number(e.amount), 0);
+    .filter((e: any) => e.currency === "ARS")
+    .reduce((sum: any, e: any) => sum + Number(e.amount), 0);
   const usdExpenses = (monthExpenses ?? [])
-    .filter((e) => e.currency === "USD")
-    .reduce((sum, e) => sum + Number(e.amount), 0);
+    .filter((e: any) => e.currency === "USD")
+    .reduce((sum: any, e: any) => sum + Number(e.amount), 0);
 
   const monthName = now.toLocaleDateString("es-AR", { month: "long" });
   const hour = now.getHours();
@@ -405,7 +402,7 @@ export default async function DashboardPage() {
       {/* Recordatorio de sueldo sin distribuir (>7 días pendiente) */}
       {undistributedSueldos && undistributedSueldos.length > 0 && (
         <section className="space-y-2">
-          {undistributedSueldos.map((inc) => (
+          {undistributedSueldos.map((inc: any) => (
             <Link
               key={inc.id}
               href={`/ingresos/distribuir?ingreso_id=${inc.id}`}
@@ -584,7 +581,7 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="bg-fz-surface border border-fz-border rounded-2xl overflow-hidden">
-            {recentExpenses.map((expense, i) => {
+            {recentExpenses.map((expense: any, i: any) => {
               const cat = expense.categories as unknown as {
                 name: string;
                 icon: string | null;

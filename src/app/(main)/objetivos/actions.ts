@@ -1,4 +1,5 @@
 "use server";
+import { getAppUser } from "@/lib/session";
 
 import { createClient } from "@/lib/supabase/server";
 import type { Currency } from "@/types";
@@ -16,9 +17,9 @@ interface CreateGoalInput {
 export async function createGoal(
   input: CreateGoalInput
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase.from("savings_goals").insert({
     user_id: user.id,
@@ -47,9 +48,9 @@ interface AddContributionInput {
 export async function addContribution(
   input: AddContributionInput
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   // 1. Insertar contribution
   const { error: contribError } = await supabase
@@ -94,9 +95,9 @@ export async function addContribution(
 export async function deleteGoal(
   id: string
 ): Promise<{ error?: string }> {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAppUser();
   if (!user) return { error: "No autenticado" };
+  const supabase = await createClient();
 
   const { error } = await supabase
     .from("savings_goals")

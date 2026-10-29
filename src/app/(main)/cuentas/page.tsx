@@ -1,5 +1,5 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeftRight } from "lucide-react";
 import { MenuButton } from "@/components/SideMenu";
@@ -19,11 +19,8 @@ import type { Account } from "@/types";
 import type { AccountNode } from "./_components/CuentasTree";
 
 export default async function CuentasPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const [
     { data: accountsData },

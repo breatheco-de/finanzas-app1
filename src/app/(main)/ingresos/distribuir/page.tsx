@@ -1,3 +1,4 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -19,11 +20,8 @@ export default async function DistribuirPage({
   const { ingreso_id } = await searchParams;
   if (!ingreso_id) redirect("/");
 
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const now = new Date();
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)

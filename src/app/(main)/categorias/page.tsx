@@ -1,14 +1,11 @@
+import { requireUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import CategoriesOnboarding from "./_components/CategoriesOnboarding";
 
 export default async function CategoriasPage() {
+  const user = await requireUser();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   const { data: categories } = await supabase
     .from("categories")
@@ -38,7 +35,7 @@ export default async function CategoriasPage() {
       </div>
 
       <div className="bg-fz-surface rounded-2xl shadow-[var(--fz-shadow)] overflow-hidden">
-        {categories.map((cat, i) => (
+        {categories.map((cat: any, i: any) => (
           <div
             key={cat.id}
             className={`flex items-center gap-3 px-4 py-3 ${

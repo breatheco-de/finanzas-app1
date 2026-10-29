@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { getLeafAccounts } from "@/lib/accounts";
 import { formatInputAmount } from "@/lib/format";
 import AmountInput from "@/components/AmountInput";
 import { createExpense } from "@/app/(main)/gastos/actions";
-import { createClient } from "@/lib/supabase/client";
+import { createCategory } from "@/app/(main)/categorias/actions";
 import type { Account, Category, Currency, PaymentMethod, ShareGroupWithMembers } from "@/types";
 
 const NEW_CATEGORY_ICONS = ["🏷️", "🛒", "🚌", "🏠", "💊", "⛽", "🍕", "💡", "🎬", "📱", "💼", "🎁"];
@@ -66,6 +67,7 @@ export default function ExpenseForm({
   redirectTo = "/gastos",
   shareGroups = [],
 }: Props) {
+  const { data: session } = useSession();
   const router = useRouter();
   const today = new Date().toISOString().split("T")[0];
 
@@ -159,24 +161,19 @@ export default function ExpenseForm({
       return;
     }
     setCreatingCategory(true);
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      setNewCategoryError("Sesión expirada. Recargá la página.");
-      setCreatingCategory(false);
-      return;
-    }
-    const { data, error: insertError } = await supabase
-      .from("categories")
-      .insert({ user_id: user.id, name, icon: newCategoryIcon })
-      .select()
-      .single();
+    const result = await createCategory({ name, icon: newCategoryIcon });
     setCreatingCategory(false);
-    if (insertError || !data) {
-      setNewCategoryError(insertError?.message ?? "No se pudo crear la categoría");
+    if ("error" in result) {
+      setNewCategoryError(result.error);
       return;
     }
-    const newCat = data as Category;
+    const newCat: Category = {
+      id: result.id,
+      name,
+      icon: newCategoryIcon,
+      user_id: session?.user?.id ?? "",
+      parent_id: null,
+    };
     setCategoriesList((prev) => [...prev, newCat].sort((a, b) => a.name.localeCompare(b.name)));
     setCategoryId(newCat.id);
     setShowNewCategory(false);

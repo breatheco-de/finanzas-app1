@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import AuthSessionProvider from "@/components/AuthSessionProvider";
 import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
 
@@ -39,7 +40,9 @@ export default function RootLayout({
   return (
     <html lang="es" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full bg-fz-bg text-fz-text" suppressHydrationWarning>
-        <ThemeProvider>{children}</ThemeProvider>
+        <AuthSessionProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   );
