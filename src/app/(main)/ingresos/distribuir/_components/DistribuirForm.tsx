@@ -88,10 +88,10 @@ function initMetaChecks(targets: SavingsTarget[]): Record<string, MetaCheckState
 }
 
 const INPUT =
-  "w-full border border-gray-200 rounded-xl px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white";
+  "w-full border border-fz-border rounded-xl px-3 py-2 text-sm text-fz-text focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface";
 
 const INPUT_SM =
-  "w-full border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 bg-white";
+  "w-full border border-fz-border rounded-lg px-2 py-1.5 text-sm text-fz-text focus:outline-none focus:ring-1 focus:ring-fz-accent bg-fz-surface";
 
 export default function DistribuirForm({
   incomeId,
@@ -420,10 +420,10 @@ export default function DistribuirForm({
     <div className="space-y-4 pb-8">
 
       {/* Header: Ingresaron + Sin asignar */}
-      <section className="bg-gray-900 text-white rounded-2xl p-4">
+      <section className="bg-fz-accent text-fz-accent-text rounded-2xl p-4">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
+            <p className="text-xs font-semibold text-fz-text-tertiary uppercase tracking-wide mb-1">
               Ingresaron
             </p>
             <p className="text-3xl font-bold tabular-nums">
@@ -431,7 +431,7 @@ export default function DistribuirForm({
             </p>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
+            <p className="text-xs font-semibold text-fz-text-tertiary uppercase tracking-wide mb-1">
               Sin asignar
             </p>
             <p
@@ -440,7 +440,7 @@ export default function DistribuirForm({
                   ? "text-red-400"
                   : sinAsignar === 0
                   ? "text-green-400"
-                  : "text-gray-200"
+                  : "text-fz-text-tertiary"
               }`}
             >
               {formatCurrency(sinAsignar, incomeCurrency)}
@@ -448,7 +448,7 @@ export default function DistribuirForm({
           </div>
         </div>
         {sinAsignar > 0 && (
-          <p className="text-[11px] text-gray-400 mt-2">
+          <p className="text-[11px] text-fz-text-tertiary mt-2">
             Podés confirmar dejando parte sin asignar — queda en tus cuentas de origen.
           </p>
         )}
@@ -460,18 +460,18 @@ export default function DistribuirForm({
       </section>
 
       {/* Obligaciones del mes (no editables) */}
-      <section className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
+      <section className="bg-fz-surface rounded-2xl p-4 shadow-[var(--fz-shadow)] space-y-3">
         <div>
-          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+          <h2 className="text-xs font-semibold text-fz-text-tertiary uppercase tracking-wide">
             Obligaciones del mes
           </h2>
-          <p className="text-[11px] text-gray-400 mt-0.5">
+          <p className="text-[11px] text-fz-text-tertiary mt-0.5">
             Mantenimiento de bienes + cuotas · no editables
           </p>
         </div>
 
         {capa1Items.length === 0 ? (
-          <p className="text-sm text-gray-400">Sin obligaciones registradas este mes</p>
+          <p className="text-sm text-fz-text-tertiary">Sin obligaciones registradas este mes</p>
         ) : (
           <div className="space-y-2">
             {capa1Items.map((item, i) => {
@@ -482,15 +482,15 @@ export default function DistribuirForm({
                   className={`flex justify-between items-start ${isOther ? "opacity-55" : ""}`}
                 >
                   <div className="min-w-0">
-                    <p className="text-sm text-gray-700 truncate">{item.label}</p>
-                    <p className="text-[11px] text-gray-400 capitalize">
+                    <p className="text-sm text-fz-text truncate">{item.label}</p>
+                    <p className="text-[11px] text-fz-text-tertiary capitalize">
                       {item.type === "maintenance" ? "mantenimiento" : "cuota"}
                       {isOther && " · informativo"}
                     </p>
                   </div>
                   <p
                     className={`text-sm font-medium tabular-nums shrink-0 ml-3 ${
-                      isOther ? "text-gray-400" : "text-gray-900"
+                      isOther ? "text-fz-text-tertiary" : "text-fz-text"
                     }`}
                   >
                     {formatCurrency(item.amount, item.currency as Currency)}
@@ -498,9 +498,9 @@ export default function DistribuirForm({
                 </div>
               );
             })}
-            <div className="border-t border-gray-100 pt-2 space-y-1">
+            <div className="border-t border-fz-border pt-2 space-y-1">
               <div className="flex justify-between">
-                <span className="text-xs font-medium text-gray-500">
+                <span className="text-xs font-medium text-fz-text-secondary">
                   Total ({incomeCurrency})
                 </span>
                 <span className="text-sm font-semibold tabular-nums">
@@ -509,10 +509,10 @@ export default function DistribuirForm({
               </div>
               {capa1OtherCurrency > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-[11px] text-gray-400">
+                  <span className="text-[11px] text-fz-text-tertiary">
                     Informativo — cubrir con {otherCurrency}
                   </span>
-                  <span className="text-[11px] text-gray-400 tabular-nums">
+                  <span className="text-[11px] text-fz-text-tertiary tabular-nums">
                     {formatCurrency(capa1OtherCurrency, otherCurrency)}
                   </span>
                 </div>
@@ -523,25 +523,25 @@ export default function DistribuirForm({
       </section>
 
       {/* Metas de ahorro */}
-      <section className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
+      <section className="bg-fz-surface rounded-2xl p-4 shadow-[var(--fz-shadow)] space-y-3">
         <div className="flex items-start justify-between gap-2">
           <div>
-            <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+            <h2 className="text-xs font-semibold text-fz-text-tertiary uppercase tracking-wide">
               Metas de ahorro
             </h2>
-            <p className="text-[11px] text-gray-400 mt-0.5">
+            <p className="text-[11px] text-fz-text-tertiary mt-0.5">
               Sinking funds de bienes + objetivos · destildá si no aportás este mes
             </p>
           </div>
           {sameCurrencyTargets.length > 0 && (
-            <div className="flex rounded-lg border border-gray-200 overflow-hidden text-xs font-medium shrink-0">
+            <div className="flex rounded-lg border border-fz-border overflow-hidden text-xs font-medium shrink-0">
               <button
                 type="button"
                 onClick={() => toggleMetaMode("amount")}
                 className={`px-2.5 py-1 ${
                   metaMode === "amount"
-                    ? "bg-gray-900 text-white"
-                    : "bg-white text-gray-500 hover:bg-gray-50"
+                    ? "bg-fz-accent text-fz-accent-text"
+                    : "bg-fz-surface text-fz-text-secondary hover:bg-fz-bg"
                 }`}
               >
                 $
@@ -551,8 +551,8 @@ export default function DistribuirForm({
                 onClick={() => toggleMetaMode("pct")}
                 className={`px-2.5 py-1 ${
                   metaMode === "pct"
-                    ? "bg-gray-900 text-white"
-                    : "bg-white text-gray-500 hover:bg-gray-50"
+                    ? "bg-fz-accent text-fz-accent-text"
+                    : "bg-fz-surface text-fz-text-secondary hover:bg-fz-bg"
                 }`}
               >
                 %
@@ -563,9 +563,9 @@ export default function DistribuirForm({
 
         {/* T4: same-currency targets — como antes */}
         {sameCurrencyTargets.length === 0 && otherCurrencyTargets.length === 0 ? (
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-fz-text-tertiary">
             Sin metas — creá una en{" "}
-            <a href="/objetivos" className="text-indigo-600 underline">
+            <a href="/objetivos" className="text-fz-accent underline">
               Metas
             </a>
           </p>
@@ -576,7 +576,7 @@ export default function DistribuirForm({
               return (
                 <div
                   key={target.id}
-                  className={`pb-3 border-b border-gray-100 last:border-0 last:pb-0 ${
+                  className={`pb-3 border-b border-fz-border last:border-0 last:pb-0 ${
                     !mc.checked ? "opacity-50" : ""
                   }`}
                 >
@@ -589,26 +589,26 @@ export default function DistribuirForm({
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <p className="text-sm font-medium text-gray-900 truncate">
+                        <p className="text-sm font-medium text-fz-text truncate">
                           {target.name}
                         </p>
                         <span
                           className={`text-[10px] px-1.5 py-0.5 rounded-full ${
                             target.kind === "goal"
-                              ? "bg-indigo-100 text-indigo-700"
-                              : "bg-gray-100 text-gray-500"
+                              ? "bg-fz-accent-soft text-fz-accent"
+                              : "bg-fz-surface-high text-fz-text-secondary"
                           }`}
                         >
                           {target.kind === "goal" ? "Objetivo" : "Bien"}
                         </span>
                       </div>
-                      <div className="mt-1 h-1 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="mt-1 h-1 bg-fz-surface-high rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-indigo-400 rounded-full"
+                          className="h-full bg-fz-accent rounded-full"
                           style={{ width: `${Math.min(100, target.progressPct)}%` }}
                         />
                       </div>
-                      <p className="text-[11px] text-gray-400 mt-0.5">
+                      <p className="text-[11px] text-fz-text-tertiary mt-0.5">
                         {formatCurrency(target.accumulated, target.currency)} de{" "}
                         {formatCurrency(target.targetAmount, target.currency)}{" "}
                         ({Math.round(target.progressPct)}%)
@@ -617,7 +617,7 @@ export default function DistribuirForm({
                     <div className="shrink-0 w-28">
                       {metaMode === "amount" ? (
                         <>
-                          <p className="text-[10px] text-gray-400 mb-1">Monto</p>
+                          <p className="text-[10px] text-fz-text-tertiary mb-1">Monto</p>
                           <input
                             type="number"
                             step="0.01"
@@ -625,7 +625,7 @@ export default function DistribuirForm({
                             value={mc.amount}
                             onChange={(e) => handleMetaAmount(target.id, e.target.value)}
                             disabled={!mc.checked}
-                            className={INPUT_SM + " disabled:bg-gray-50 disabled:text-gray-400"}
+                            className={INPUT_SM + " disabled:bg-fz-bg disabled:text-fz-text-tertiary"}
                           />
                         </>
                       ) : (
@@ -639,13 +639,13 @@ export default function DistribuirForm({
                               value={mc.pct}
                               onChange={(e) => handleMetaPct(target.id, e.target.value)}
                               disabled={!mc.checked}
-                              className={INPUT_SM + " pr-5 disabled:bg-gray-50 disabled:text-gray-400"}
+                              className={INPUT_SM + " pr-5 disabled:bg-fz-bg disabled:text-fz-text-tertiary"}
                             />
-                            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 pointer-events-none">
+                            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-fz-text-tertiary pointer-events-none">
                               %
                             </span>
                           </div>
-                          <p className="text-[11px] text-gray-400 mt-0.5 text-right">
+                          <p className="text-[11px] text-fz-text-tertiary mt-0.5 text-right">
                             = {formatCurrency(parseFloat(mc.amount) || 0, incomeCurrency)}
                           </p>
                         </>
@@ -657,8 +657,8 @@ export default function DistribuirForm({
             })}
 
             {sameCurrencyTargets.length > 0 && (
-              <div className="border-t border-gray-100 pt-2 flex justify-between">
-                <span className="text-xs font-medium text-gray-500">
+              <div className="border-t border-fz-border pt-2 flex justify-between">
+                <span className="text-xs font-medium text-fz-text-secondary">
                   Total metas ({incomeCurrency})
                 </span>
                 <span className="text-sm font-semibold tabular-nums">
@@ -669,12 +669,12 @@ export default function DistribuirForm({
 
             {/* T5: other-currency targets — con conversión MEP */}
             {otherCurrencyTargets.length > 0 && (
-              <div className="pt-3 border-t border-dashed border-gray-200 space-y-3">
+              <div className="pt-3 border-t border-dashed border-fz-border space-y-3">
                 <div>
-                  <p className="text-[11px] text-gray-500 font-medium mb-0.5">
+                  <p className="text-[11px] text-fz-text-secondary font-medium mb-0.5">
                     Metas en {otherCurrency}
                   </p>
-                  <p className="text-[10px] text-gray-400 leading-snug">
+                  <p className="text-[10px] text-fz-text-tertiary leading-snug">
                     Registra tu intención de aporte — la transferencia real la hacés por separado.
                   </p>
                 </div>
@@ -690,7 +690,7 @@ export default function DistribuirForm({
                     placeholder="ej. 1200"
                     value={mepRate}
                     onChange={(e) => setMepRate(e.target.value)}
-                    className="w-24 border border-amber-200 rounded px-2 py-0.5 text-xs text-gray-900 bg-white focus:outline-none focus:ring-1 focus:ring-amber-400 text-right"
+                    className="w-24 border border-amber-200 rounded px-2 py-0.5 text-xs text-fz-text bg-fz-surface focus:outline-none focus:ring-1 focus:ring-amber-400 text-right"
                   />
                 </div>
                 {otherCurrencyTargets.map((target) => {
@@ -706,7 +706,7 @@ export default function DistribuirForm({
                   return (
                     <div
                       key={target.id}
-                      className={`pb-3 border-b border-gray-100 last:border-0 last:pb-0 ${
+                      className={`pb-3 border-b border-fz-border last:border-0 last:pb-0 ${
                         !mc.checked ? "opacity-50" : ""
                       }`}
                     >
@@ -719,20 +719,20 @@ export default function DistribuirForm({
                         />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <p className="text-sm font-medium text-gray-900 truncate">
+                            <p className="text-sm font-medium text-fz-text truncate">
                               {target.name}
                             </p>
                             <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700">
                               {otherCurrency}
                             </span>
                           </div>
-                          <div className="mt-1 h-1 bg-gray-100 rounded-full overflow-hidden">
+                          <div className="mt-1 h-1 bg-fz-surface-high rounded-full overflow-hidden">
                             <div
                               className="h-full bg-amber-400 rounded-full"
                               style={{ width: `${Math.min(100, target.progressPct)}%` }}
                             />
                           </div>
-                          <p className="text-[11px] text-gray-400 mt-0.5">
+                          <p className="text-[11px] text-fz-text-tertiary mt-0.5">
                             {formatCurrency(target.accumulated, target.currency)} de{" "}
                             {formatCurrency(target.targetAmount, target.currency)}{" "}
                             ({Math.round(target.progressPct)}%)
@@ -740,7 +740,7 @@ export default function DistribuirForm({
                         </div>
                         <div className="shrink-0 w-32 space-y-1">
                           {/* T5: toggle moneda de entrada */}
-                          <div className="flex rounded border border-gray-200 overflow-hidden text-[10px] font-medium">
+                          <div className="flex rounded border border-fz-border overflow-hidden text-[10px] font-medium">
                             <button
                               type="button"
                               onClick={() =>
@@ -751,8 +751,8 @@ export default function DistribuirForm({
                               }
                               className={`flex-1 py-0.5 ${
                                 inTargetMode
-                                  ? "bg-gray-900 text-white"
-                                  : "bg-white text-gray-500 hover:bg-gray-50"
+                                  ? "bg-fz-accent text-fz-accent-text"
+                                  : "bg-fz-surface text-fz-text-secondary hover:bg-fz-bg"
                               }`}
                             >
                               {otherCurrency}
@@ -767,8 +767,8 @@ export default function DistribuirForm({
                               }
                               className={`flex-1 py-0.5 ${
                                 !inTargetMode
-                                  ? "bg-gray-900 text-white"
-                                  : "bg-white text-gray-500 hover:bg-gray-50"
+                                  ? "bg-fz-accent text-fz-accent-text"
+                                  : "bg-fz-surface text-fz-text-secondary hover:bg-fz-bg"
                               }`}
                             >
                               {incomeCurrency}
@@ -782,7 +782,7 @@ export default function DistribuirForm({
                               value={mc.amount}
                               onChange={(e) => handleMetaAmount(target.id, e.target.value)}
                               disabled={!mc.checked}
-                              className={INPUT_SM + " disabled:bg-gray-50 disabled:text-gray-400"}
+                              className={INPUT_SM + " disabled:bg-fz-bg disabled:text-fz-text-tertiary"}
                             />
                           ) : (
                             <>
@@ -794,14 +794,14 @@ export default function DistribuirForm({
                                 value={mc.incomeInput}
                                 onChange={(e) => handleOtherIncomeInput(target.id, e.target.value)}
                                 disabled={!mc.checked}
-                                className={INPUT_SM + " disabled:bg-gray-50 disabled:text-gray-400"}
+                                className={INPUT_SM + " disabled:bg-fz-bg disabled:text-fz-text-tertiary"}
                               />
                               {derivedTargetAmt !== null ? (
                                 <p className="text-[10px] text-amber-700 text-right">
                                   ≈ {formatCurrency(derivedTargetAmt, target.currency as Currency)}
                                 </p>
                               ) : rateVal === 0 && mc.incomeInput && parseFloat(mc.incomeInput) > 0 ? (
-                                <p className="text-[10px] text-red-500 text-right">
+                                <p className="text-[10px] text-fz-negative text-right">
                                   Ingresá tipo MEP
                                 </p>
                               ) : null}
@@ -859,14 +859,14 @@ export default function DistribuirForm({
                     <button
                       type="button"
                       onClick={() => { setEditingBalance(false); setBalanceInput(localCurrentAmount.toString()); }}
-                      className="text-[11px] text-gray-400"
+                      className="text-[11px] text-fz-text-tertiary"
                     >
                       Cancelar
                     </button>
                   </div>
                 ) : (
                   <>
-                    <span className="text-gray-700 tabular-nums">
+                    <span className="text-fz-text tabular-nums">
                       {formatCurrency(localCurrentAmount, "ARS")}
                     </span>
                     <button
@@ -879,7 +879,7 @@ export default function DistribuirForm({
                   </>
                 )}
               </div>
-              <span className="text-gray-500">
+              <span className="text-fz-text-secondary">
                 {effectiveTarget > 0
                   ? `Meta: ${formatCurrency(effectiveTarget, "ARS")}`
                   : "Meta: sin datos de gastos"}
@@ -903,11 +903,11 @@ export default function DistribuirForm({
           {/* Aporte con toggle $/% (T5a) */}
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="text-xs font-medium text-gray-600">
+              <label className="text-xs font-medium text-fz-text-secondary">
                 Aporte este mes{" "}
-                <span className="text-gray-400 font-normal">(opcional)</span>
+                <span className="text-fz-text-tertiary font-normal">(opcional)</span>
                 {emergencyFund.suggestedContribution > 0 && emergencyMode === "amount" && (
-                  <span className="text-gray-400 font-normal ml-1">
+                  <span className="text-fz-text-tertiary font-normal ml-1">
                     · sugerido: {formatCurrency(emergencyFund.suggestedContribution, "ARS")}/mes
                   </span>
                 )}
@@ -918,8 +918,8 @@ export default function DistribuirForm({
                   onClick={() => toggleEmergencyMode("amount")}
                   className={`px-2.5 py-1 ${
                     emergencyMode === "amount"
-                      ? "bg-amber-600 text-white"
-                      : "bg-white text-amber-600 hover:bg-amber-50"
+                      ? "bg-amber-600 text-fz-accent-text"
+                      : "bg-fz-surface text-amber-600 hover:bg-amber-50"
                   }`}
                 >
                   $
@@ -929,8 +929,8 @@ export default function DistribuirForm({
                   onClick={() => toggleEmergencyMode("pct")}
                   className={`px-2.5 py-1 ${
                     emergencyMode === "pct"
-                      ? "bg-amber-600 text-white"
-                      : "bg-white text-amber-600 hover:bg-amber-50"
+                      ? "bg-amber-600 text-fz-accent-text"
+                      : "bg-fz-surface text-amber-600 hover:bg-amber-50"
                   }`}
                 >
                   %
@@ -956,7 +956,7 @@ export default function DistribuirForm({
                     onChange={(e) => handleEmergencyPctChange(e.target.value)}
                     className={INPUT + " pr-7"}
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 pointer-events-none">
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-fz-text-tertiary pointer-events-none">
                     %
                   </span>
                 </div>
@@ -976,13 +976,13 @@ export default function DistribuirForm({
       )}
 
       {/* Distribución del remanente — 50/30/20 + categorías custom (T6) */}
-      <section className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
+      <section className="bg-fz-surface rounded-2xl p-4 shadow-[var(--fz-shadow)] space-y-4">
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+            <h2 className="text-xs font-semibold text-fz-text-tertiary uppercase tracking-wide">
               Distribución del remanente
             </h2>
-            <p className="text-[11px] text-gray-400 mt-0.5">
+            <p className="text-[11px] text-fz-text-tertiary mt-0.5">
               50/30/20 sobre {formatCurrency(rem, incomeCurrency)} disponible · §2.5
             </p>
           </div>
@@ -991,20 +991,20 @@ export default function DistribuirForm({
               <button
                 type="button"
                 onClick={resetSuggested}
-                className="text-[11px] text-indigo-600 font-medium"
+                className="text-[11px] text-fz-accent font-medium"
               >
                 Restablecer
               </button>
             )}
             {/* Toggle $ / % */}
-            <div className="flex rounded-lg border border-gray-200 overflow-hidden text-xs font-medium">
+            <div className="flex rounded-lg border border-fz-border overflow-hidden text-xs font-medium">
               <button
                 type="button"
                 onClick={() => toggleLayer4Mode("amount")}
                 className={`px-2.5 py-1 ${
                   layer4Mode === "amount"
-                    ? "bg-gray-900 text-white"
-                    : "bg-white text-gray-500 hover:bg-gray-50"
+                    ? "bg-fz-accent text-fz-accent-text"
+                    : "bg-fz-surface text-fz-text-secondary hover:bg-fz-bg"
                 }`}
               >
                 $
@@ -1014,8 +1014,8 @@ export default function DistribuirForm({
                 onClick={() => toggleLayer4Mode("pct")}
                 className={`px-2.5 py-1 ${
                   layer4Mode === "pct"
-                    ? "bg-gray-900 text-white"
-                    : "bg-white text-gray-500 hover:bg-gray-50"
+                    ? "bg-fz-accent text-fz-accent-text"
+                    : "bg-fz-surface text-fz-text-secondary hover:bg-fz-bg"
                 }`}
               >
                 %
@@ -1037,12 +1037,12 @@ export default function DistribuirForm({
             return (
               <div
                 key={line.key}
-                className="space-y-2 pb-3 border-b border-gray-100 last:border-0 last:pb-0"
+                className="space-y-2 pb-3 border-b border-fz-border last:border-0 last:pb-0"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-700">{line.label}</p>
-                    <p className="text-[11px] text-gray-400">
+                    <p className="text-sm font-medium text-fz-text">{line.label}</p>
+                    <p className="text-[11px] text-fz-text-tertiary">
                       {layer4Mode === "pct"
                         ? `= ${formatCurrency(derivedAmount, incomeCurrency)}`
                         : `${derivedPct}% del disponible`}
@@ -1058,7 +1058,7 @@ export default function DistribuirForm({
                   <div>
                     {layer4Mode === "amount" ? (
                       <>
-                        <p className="text-[10px] text-gray-400 mb-1">
+                        <p className="text-[10px] text-fz-text-tertiary mb-1">
                           Monto ({incomeCurrency})
                         </p>
                         {incomeCurrency === "ARS" ? (
@@ -1078,14 +1078,14 @@ export default function DistribuirForm({
                           />
                         )}
                         {line.amount && incomeCurrency === "ARS" && parseFloat(line.amount) > 0 && (
-                          <p className="text-[11px] text-gray-400 mt-0.5 text-right">
+                          <p className="text-[11px] text-fz-text-tertiary mt-0.5 text-right">
                             {formatInputAmount(line.amount, "ARS")}
                           </p>
                         )}
                       </>
                     ) : (
                       <>
-                        <p className="text-[10px] text-gray-400 mb-1">Porcentaje</p>
+                        <p className="text-[10px] text-fz-text-tertiary mb-1">Porcentaje</p>
                         <div className="relative">
                           <input
                             type="number"
@@ -1096,7 +1096,7 @@ export default function DistribuirForm({
                             onChange={(e) => handlePct4(line.key, e.target.value)}
                             className={INPUT + " pr-7"}
                           />
-                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 pointer-events-none">
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-fz-text-tertiary pointer-events-none">
                             %
                           </span>
                         </div>
@@ -1104,7 +1104,7 @@ export default function DistribuirForm({
                     )}
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-400 mb-1">Cuenta destino</p>
+                    <p className="text-[10px] text-fz-text-tertiary mb-1">Cuenta destino</p>
                     <select
                       value={line.accountId}
                       onChange={(e) => handleAccount4(line.key, e.target.value)}
@@ -1127,7 +1127,7 @@ export default function DistribuirForm({
           {customLines.map((line) => (
             <div
               key={line.key}
-              className="space-y-2 pb-3 border-b border-gray-100"
+              className="space-y-2 pb-3 border-b border-fz-border"
             >
               <div className="flex items-center gap-2">
                 <input
@@ -1135,19 +1135,19 @@ export default function DistribuirForm({
                   placeholder="Nombre de la categoría"
                   value={line.label}
                   onChange={(e) => updateCustomLine(line.key, "label", e.target.value)}
-                  className="flex-1 border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 bg-white"
+                  className="flex-1 border border-fz-border rounded-lg px-2 py-1.5 text-sm text-fz-text focus:outline-none focus:ring-1 focus:ring-fz-accent bg-fz-surface"
                 />
                 <button
                   type="button"
                   onClick={() => removeCustomLine(line.key)}
-                  className="text-gray-300 hover:text-red-400 text-sm shrink-0 px-1"
+                  className="text-fz-text-tertiary hover:text-red-400 text-sm shrink-0 px-1"
                 >
                   ✕
                 </button>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <p className="text-[10px] text-gray-400 mb-1">Monto ({incomeCurrency})</p>
+                  <p className="text-[10px] text-fz-text-tertiary mb-1">Monto ({incomeCurrency})</p>
                   {incomeCurrency === "ARS" ? (
                     <AmountInput
                       value={line.amount}
@@ -1166,7 +1166,7 @@ export default function DistribuirForm({
                   )}
                 </div>
                 <div>
-                  <p className="text-[10px] text-gray-400 mb-1">Cuenta destino</p>
+                  <p className="text-[10px] text-fz-text-tertiary mb-1">Cuenta destino</p>
                   <select
                     value={line.accountId}
                     onChange={(e) => updateCustomLine(line.key, "accountId", e.target.value)}
@@ -1188,28 +1188,28 @@ export default function DistribuirForm({
           <button
             type="button"
             onClick={addCustomLine}
-            className="text-xs text-indigo-600 font-medium"
+            className="text-xs text-fz-accent font-medium"
           >
             + Agregar categoría
           </button>
         </div>
 
-        <div className="border-t border-gray-200 pt-3 space-y-1">
+        <div className="border-t border-fz-border pt-3 space-y-1">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Asignado en esta sección</span>
+            <span className="text-fz-text-secondary">Asignado en esta sección</span>
             <span className="font-semibold tabular-nums">
               {formatCurrency(totalLayer4 + totalCustom, incomeCurrency)}
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Disponible restante</span>
+            <span className="text-fz-text-secondary">Disponible restante</span>
             <span
               className={`font-semibold tabular-nums ${
                 rem - totalLayer4 - totalCustom < 0
-                  ? "text-red-600"
+                  ? "text-fz-negative"
                   : rem - totalLayer4 - totalCustom === 0
-                  ? "text-green-600"
-                  : "text-gray-700"
+                  ? "text-fz-accent"
+                  : "text-fz-text"
               }`}
             >
               {formatCurrency(rem - totalLayer4 - totalCustom, incomeCurrency)}
@@ -1219,21 +1219,21 @@ export default function DistribuirForm({
       </section>
 
       {/* Justificación teórica — colapsable */}
-      <section className="border border-gray-200 rounded-2xl overflow-hidden">
+      <section className="border border-fz-border rounded-2xl overflow-hidden">
         <button
           type="button"
           onClick={() => setShowTheory((v) => !v)}
-          className="w-full flex items-center justify-between px-4 py-3.5 text-left bg-white"
+          className="w-full flex items-center justify-between px-4 py-3.5 text-left bg-fz-surface"
         >
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-sm font-medium text-fz-text">
             ¿Por qué esta distribución?
           </span>
-          <span className="text-gray-400 text-xs ml-2">{showTheory ? "▲" : "▼"}</span>
+          <span className="text-fz-text-tertiary text-xs ml-2">{showTheory ? "▲" : "▼"}</span>
         </button>
         {showTheory && (
-          <div className="px-4 pb-4 pt-1 bg-gray-50 space-y-3 text-[12px] text-gray-600 leading-relaxed border-t border-gray-200">
+          <div className="px-4 pb-4 pt-1 bg-fz-bg space-y-3 text-[12px] text-fz-text-secondary leading-relaxed border-t border-fz-border">
             <div>
-              <p className="font-semibold text-gray-700 mb-1.5">Orden de prioridad</p>
+              <p className="font-semibold text-fz-text mb-1.5">Orden de prioridad</p>
               <ol className="list-decimal list-inside space-y-1.5">
                 <li>
                   <span className="font-medium">Obligaciones</span> — mantenimiento de
@@ -1258,7 +1258,7 @@ export default function DistribuirForm({
               </ol>
             </div>
             <div>
-              <p className="font-semibold text-gray-700 mb-1">Fuentes</p>
+              <p className="font-semibold text-fz-text mb-1">Fuentes</p>
               <p>
                 Sinking Fund (§1.2): NPTEL Ingeniería Económica · 50/30/20 (§2.5):
                 consenso finanzas personales · Emergencia (§0): 3–6 meses · Argentina
@@ -1281,7 +1281,7 @@ export default function DistribuirForm({
       </section>
 
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 rounded-xl px-3 py-2">{error}</p>
+        <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-xl px-3 py-2">{error}</p>
       )}
 
       <div className="space-y-2">
@@ -1289,7 +1289,7 @@ export default function DistribuirForm({
           type="button"
           onClick={handleConfirm}
           disabled={saving || skipping || sinAsignar < 0}
-          className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-semibold disabled:opacity-40 transition-opacity"
+          className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-semibold disabled:opacity-40 transition-opacity"
         >
           {saving
             ? "Confirmando…"
@@ -1301,7 +1301,7 @@ export default function DistribuirForm({
           type="button"
           onClick={handleSkip}
           disabled={saving || skipping}
-          className="w-full border border-gray-200 rounded-xl py-3 text-sm text-gray-500 font-medium disabled:opacity-40 transition-opacity"
+          className="w-full border border-fz-border rounded-xl py-3 text-sm text-fz-text-secondary font-medium disabled:opacity-40 transition-opacity"
         >
           {skipping ? "Saltando…" : "Saltear por ahora →"}
         </button>

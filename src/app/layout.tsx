@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
 
@@ -13,6 +13,22 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Finanzas",
   description: "App de finanzas personales",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Finanzas",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f0f6f4" },
+    { media: "(prefers-color-scheme: dark)", color: "#171c24" },
+  ],
 };
 
 export default function RootLayout({

@@ -31,14 +31,14 @@ export default function DeleteAssetButton({ assetId, assetName }: Props) {
             }
           }}
           disabled={deleting}
-          className="text-[11px] text-red-600 font-medium disabled:opacity-40"
+          className="text-[11px] text-fz-negative font-medium disabled:opacity-40"
         >
           {deleting ? "Eliminando…" : "Confirmar"}
         </button>
         <button
           type="button"
           onClick={() => setConfirming(false)}
-          className="text-[11px] text-gray-400"
+          className="text-[11px] text-fz-text-tertiary"
         >
           Cancelar
         </button>
@@ -50,7 +50,7 @@ export default function DeleteAssetButton({ assetId, assetName }: Props) {
     <button
       type="button"
       onClick={() => setConfirming(true)}
-      className="text-[11px] text-gray-400 hover:text-red-500"
+      className="text-[11px] text-fz-text-tertiary hover:text-fz-negative"
     >
       Eliminar
     </button>

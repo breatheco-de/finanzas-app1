@@ -4,9 +4,10 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import EyeToggle from "@/components/EyeToggle";
 import { Money } from "@/components/Money";
+import { MenuButton } from "@/components/SideMenu";
 import { formatCurrency, formatARS, formatUSD } from "@/lib/format";
 import { getLeafAccounts } from "@/lib/accounts";
-import { AlertTriangle, CreditCard, Wallet, Home as HomeIcon, Target, Receipt, Settings } from "lucide-react";
+import { AlertTriangle, CreditCard, Wallet, Receipt, Settings, Plus } from "lucide-react";
 import InicioResumen from "./_components/InicioResumen";
 import { fetchCategoryTotalsByCurrency, fetchMonthlyComparativa } from "@/lib/queries/movimientosSummary";
 import { fetchInvestmentsSummary } from "@/lib/queries/investmentsSummary";
@@ -242,22 +243,28 @@ export default async function DashboardPage() {
     .reduce((sum, e) => sum + Number(e.amount), 0);
 
   const monthName = now.toLocaleDateString("es-AR", { month: "long" });
+  const hour = now.getHours();
+  const greeting =
+    hour < 12 ? "Buenos días" : hour < 19 ? "Buenas tardes" : "Buenas noches";
 
   return (
-    <div className="p-4 max-w-lg mx-auto space-y-6 pb-24 bg-fz-bg min-h-screen -mt-[1px]">
+    <div className="fz-page space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between pt-2">
-        <div>
-          <h1 className="font-display font-extrabold text-[30px] leading-none text-fz-text uppercase tracking-wide">
-            Finanzas
-          </h1>
-          <p className="text-[13px] text-fz-text-tertiary mt-1">{user.email}</p>
+      <div className="flex items-center justify-between gap-3 pt-1">
+        <div className="flex items-center gap-3 min-w-0">
+          <MenuButton />
+          <div className="min-w-0">
+            <p className="text-[13px] font-medium text-fz-text-tertiary">{greeting}</p>
+            <h1 className="font-display font-bold text-[24px] leading-tight tracking-tight text-fz-text mt-0.5 truncate">
+              Finanzas
+            </h1>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <EyeToggle />
           <Link
             href="/configuracion"
-            className="w-9 h-9 rounded-xl bg-fz-surface border border-fz-border flex items-center justify-center text-fz-text-secondary"
+            className="w-11 h-11 rounded-[14px] bg-fz-surface border border-fz-border flex items-center justify-center text-fz-text-secondary shadow-[var(--fz-shadow)]"
             aria-label="Configuración"
           >
             <Settings size={18} />
@@ -265,40 +272,49 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Saldo total consolidado — hero card principal (TAREA 4, mismo
-          tratamiento que el prototipo: c.surfaceHigh, el número más grande de
-          toda la pantalla). */}
-      <section className="bg-fz-surface-high rounded-[22px] p-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-fz-text-tertiary">
-          Saldo total consolidado
-        </p>
-        <p className="font-display font-extrabold text-[42px] leading-tight text-fz-text mt-1">
+      {/* Saldo total — hero primero (más vendible) */}
+      <section className="fz-card-hero">
+        <p className="fz-section-label">Saldo total</p>
+        <p className="font-display font-bold text-[40px] leading-[1.05] tracking-tight text-fz-text mt-2 break-all">
           <Money>{formatARS(arsBalance)}</Money>
         </p>
         {usdBalance > 0 && (
-          <p className="text-sm font-semibold text-fz-text-secondary font-mono mt-1">
+          <p className="text-sm font-semibold text-fz-text-secondary font-mono mt-2">
             + <Money>{formatUSD(usdBalance)}</Money> en dólares
           </p>
         )}
       </section>
 
-      {/* TAREA 4 (Sesión J.1.17): resumen con gráfico — tabs Gastos/
-          Comparativa/Inversiones, mismo concepto que la sección "Resumen"
-          del prototipo de Claude Design. */}
-      <InicioResumen
-        categoryDataByCurrency={categoryDataByCurrency}
-        monthlyComparativa={monthlyComparativa}
-        hasInvestments={investmentHoldings.length > 0}
-        inversionesSlot={
-          <>
-            <Suspense fallback={null}>
-              <FciPortfolioSummary holdings={investmentHoldings} />
-            </Suspense>
-            <InversionesChart points={portfolioLinePoints} />
-          </>
-        }
-      />
+      {/* Acciones al alcance del pulgar */}
+      <section className="grid grid-cols-2 gap-3">
+        <Link
+          href="/gastos/nuevo"
+          className="flex min-h-[68px] flex-col items-center justify-center gap-1.5 rounded-[18px] bg-fz-accent text-fz-accent-text shadow-[var(--fz-shadow)] active:opacity-90 transition-opacity"
+        >
+          <Plus size={24} strokeWidth={2.5} />
+          <span className="text-[14px] font-semibold">Nuevo gasto</span>
+        </Link>
+        <Link
+          href="/ingresos/nuevo"
+          className="flex min-h-[68px] flex-col items-center justify-center gap-1.5 rounded-[18px] fz-card-flat text-fz-text active:bg-fz-surface-high transition-colors"
+        >
+          <Wallet size={22} className="text-fz-accent" />
+          <span className="text-[14px] font-semibold">Nuevo ingreso</span>
+        </Link>
+      </section>
 
+      {(creditCardsMissingConfig.length > 0 ||
+        paymentSummaries.length > 0 ||
+        reminders.length > 0 ||
+        (undistributedSueldos && undistributedSueldos.length > 0) ||
+        pendingByCurrency.size > 0) && (
+        <details className="fz-card overflow-hidden group">
+          <summary className="flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-2 px-4 text-[15px] font-semibold tracking-tight text-fz-text [&::-webkit-details-marker]:hidden">
+            Pendientes
+            <span className="text-sm font-medium text-fz-accent group-open:hidden">Ver →</span>
+            <span className="text-sm font-medium text-fz-text-tertiary hidden group-open:inline">Ocultar</span>
+          </summary>
+          <div className="space-y-2 border-t border-fz-border p-3">
       {/* Tarjetas sin cierre/vencimiento configurado — aviso persistente, no es
           un banner de fecha próxima (Sesión J.1.12, TAREA 5b). */}
       {creditCardsMissingConfig.length > 0 && (
@@ -443,6 +459,10 @@ export default async function DashboardPage() {
         </section>
       )}
 
+          </div>
+        </details>
+      )}
+
       {/* Gastos del mes */}
       <section>
         <h2 className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide mb-2">
@@ -482,17 +502,9 @@ export default async function DashboardPage() {
           <h2 className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide">
             Saldos
           </h2>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/ingresos/nuevo"
-              className="text-xs font-medium bg-fz-accent text-fz-accent-text px-2.5 py-1 rounded-lg"
-            >
-              + Ingreso
-            </Link>
-            <Link href="/ingresos" className="text-xs text-fz-text-secondary hover:text-fz-text">
-              Ver ingresos →
-            </Link>
-          </div>
+          <Link href="/cuentas" className="text-[13px] font-semibold text-fz-accent min-h-[32px] inline-flex items-center">
+            Ver cuentas →
+          </Link>
         </div>
 
         {leafAccounts.length === 0 ? (
@@ -504,18 +516,19 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="bg-fz-surface border border-fz-border rounded-2xl overflow-hidden">
-            {leafAccounts.map((account, i) => (
-              <div
+            {leafAccounts.slice(0, 6).map((account, i) => (
+              <Link
                 key={account.id}
-                className={`flex items-center justify-between px-4 py-3 ${
+                href={`/cuentas?editar=${account.id}`}
+                className={`flex items-center justify-between px-4 min-h-[52px] active:bg-fz-surface-high ${
                   i > 0 ? "border-t border-fz-border" : ""
                 }`}
               >
-                <p className="text-sm font-medium text-fz-text">{account.name}</p>
-                <p className="text-sm text-fz-text-secondary tabular-nums font-mono">
+                <p className="text-[15px] font-medium text-fz-text">{account.name}</p>
+                <p className="text-[15px] text-fz-text-secondary tabular-nums font-mono">
                   <Money>{formatCurrency(Number(account.balance), account.currency)}</Money>
                 </p>
-              </div>
+              </Link>
             ))}
             <div className="flex items-center justify-between px-4 py-3 border-t border-fz-border bg-fz-surface-high">
               <p className="text-xs font-medium text-fz-text-secondary">Total ARS</p>
@@ -535,22 +548,17 @@ export default async function DashboardPage() {
         )}
       </section>
 
-      {/* Accesos rápidos */}
+      {/* Atajo a secciones secundarias */}
       <section>
-        <div className="grid grid-cols-3 gap-2">
-          <Link href="/cuotas" className="bg-fz-surface border border-fz-border rounded-xl px-3 py-3.5 text-center hover:bg-fz-surface-high transition-colors">
-            <CreditCard size={20} className="mx-auto mb-1.5 text-fz-text-secondary" />
-            <p className="text-xs font-medium text-fz-text">Cuotas</p>
-          </Link>
-          <Link href="/bienes" className="bg-fz-surface border border-fz-border rounded-xl px-3 py-3.5 text-center hover:bg-fz-surface-high transition-colors">
-            <HomeIcon size={20} className="mx-auto mb-1.5 text-fz-text-secondary" />
-            <p className="text-xs font-medium text-fz-text">Bienes</p>
-          </Link>
-          <Link href="/objetivos" className="bg-fz-surface border border-fz-border rounded-xl px-3 py-3.5 text-center hover:bg-fz-surface-high transition-colors">
-            <Target size={20} className="mx-auto mb-1.5 text-fz-text-secondary" />
-            <p className="text-xs font-medium text-fz-text">Metas</p>
-          </Link>
-        </div>
+        <Link
+          href="/mas"
+          className="flex items-center justify-between bg-fz-surface border border-fz-border rounded-2xl px-4 min-h-[56px] active:bg-fz-surface-high"
+        >
+          <span className="text-[15px] font-medium text-fz-text">
+            Cuotas, metas, inversiones…
+          </span>
+          <span className="text-[15px] font-semibold text-fz-accent">Más →</span>
+        </Link>
       </section>
 
       {/* Últimos gastos */}
@@ -593,9 +601,10 @@ export default async function DashboardPage() {
                 month: "short",
               });
               return (
-                <div
+                <Link
+                  href={`/gastos/${expense.id}/editar`}
                   key={expense.id}
-                  className={`flex items-center justify-between px-4 py-3 ${
+                  className={`flex items-center justify-between px-4 min-h-[56px] active:bg-fz-surface-high ${
                     i > 0 ? "border-t border-fz-border" : ""
                   }`}
                 >
@@ -615,12 +624,26 @@ export default async function DashboardPage() {
                   <p className="text-sm font-semibold text-fz-text tabular-nums font-mono ml-3 shrink-0">
                     <Money>{formatCurrency(Number(expense.amount), expense.currency)}</Money>
                   </p>
-                </div>
+                </Link>
               );
             })}
           </div>
         )}
       </section>
+      <InicioResumen
+        categoryDataByCurrency={categoryDataByCurrency}
+        monthlyComparativa={monthlyComparativa}
+        hasInvestments={investmentHoldings.length > 0}
+        inversionesSlot={
+          <>
+            <Suspense fallback={null}>
+              <FciPortfolioSummary holdings={investmentHoldings} />
+            </Suspense>
+            <InversionesChart points={portfolioLinePoints} />
+          </>
+        }
+      />
+
     </div>
   );
 }

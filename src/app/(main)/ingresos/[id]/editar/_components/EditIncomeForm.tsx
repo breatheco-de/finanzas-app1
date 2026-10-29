@@ -13,7 +13,7 @@ interface Props {
 }
 
 const INPUT =
-  "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white";
+  "w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface";
 
 export default function EditIncomeForm({ income, accounts }: Props) {
   const router = useRouter();
@@ -81,13 +81,13 @@ export default function EditIncomeForm({ income, accounts }: Props) {
 
       {/* Monto + Moneda */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Monto</label>
+        <label className="block text-sm font-medium text-fz-text mb-1">Monto</label>
         {isDistributed ? (
-          <div className="bg-gray-50 rounded-lg px-3 py-2">
-            <p className="text-sm font-semibold text-gray-900">
+          <div className="bg-fz-bg rounded-lg px-3 py-2">
+            <p className="text-sm font-semibold text-fz-text">
               {formatCurrency(Number(income.amount), income.currency)}
             </p>
-            <p className="text-[11px] text-gray-400 mt-0.5">
+            <p className="text-[11px] text-fz-text-tertiary mt-0.5">
               El monto y la moneda no son editables: el ingreso ya fue distribuido
             </p>
           </div>
@@ -119,7 +119,7 @@ export default function EditIncomeForm({ income, accounts }: Props) {
 
       {/* Tipo */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+        <label className="block text-sm font-medium text-fz-text mb-1">Tipo</label>
         <select value={type} onChange={(e) => setType(e.target.value as IncomeType)} className={INPUT}>
           <option value="sueldo">Sueldo</option>
           <option value="freelance">Freelance</option>
@@ -129,8 +129,8 @@ export default function EditIncomeForm({ income, accounts }: Props) {
 
       {/* Cuenta */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Cuenta destino <span className="text-gray-400 font-normal">(opcional)</span>
+        <label className="block text-sm font-medium text-fz-text mb-1">
+          Cuenta destino <span className="text-fz-text-tertiary font-normal">(opcional)</span>
         </label>
         <select value={accountId} onChange={(e) => setAccountId(e.target.value)} className={INPUT}>
           <option value="">Sin cuenta específica</option>
@@ -144,7 +144,7 @@ export default function EditIncomeForm({ income, accounts }: Props) {
 
       {/* Fecha */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+        <label className="block text-sm font-medium text-fz-text mb-1">Fecha</label>
         <input
           type="date"
           required
@@ -156,8 +156,8 @@ export default function EditIncomeForm({ income, accounts }: Props) {
 
       {/* Nota */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Nota <span className="text-gray-400 font-normal">(opcional)</span>
+        <label className="block text-sm font-medium text-fz-text mb-1">
+          Nota <span className="text-fz-text-tertiary font-normal">(opcional)</span>
         </label>
         <input
           type="text"
@@ -169,13 +169,13 @@ export default function EditIncomeForm({ income, accounts }: Props) {
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+        <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
       )}
 
       <button
         type="submit"
         disabled={saving}
-        className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-medium disabled:opacity-40 transition-opacity"
+        className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-medium disabled:opacity-40 transition-opacity"
       >
         {saving ? "Guardando…" : "Guardar cambios"}
       </button>
@@ -185,7 +185,7 @@ export default function EditIncomeForm({ income, accounts }: Props) {
         <button
           type="button"
           onClick={() => router.push(`/ingresos/distribuir?ingreso_id=${income.id}`)}
-          className="w-full border border-indigo-200 text-indigo-600 rounded-xl py-3 text-sm font-medium hover:bg-indigo-50 transition-colors"
+          className="w-full border border-fz-border text-fz-accent rounded-xl py-3 text-sm font-medium hover:bg-fz-accent-soft transition-colors"
         >
           Distribuir ahora →
         </button>
@@ -197,7 +197,7 @@ export default function EditIncomeForm({ income, accounts }: Props) {
           <button
             type="button"
             onClick={() => setConfirmDelete(true)}
-            className="w-full py-2.5 rounded-xl border border-red-200 text-red-600 text-sm hover:bg-red-50 transition-colors"
+            className="w-full py-2.5 rounded-xl border border-red-200 text-fz-negative text-sm hover:bg-fz-negative-soft transition-colors"
           >
             Eliminar ingreso
           </button>
@@ -208,7 +208,7 @@ export default function EditIncomeForm({ income, accounts }: Props) {
                 ⚠ Este ingreso ya fue distribuido. Los saldos de las cuentas NO se revertirán.
               </p>
             )}
-            <p className="text-sm text-center text-gray-600">
+            <p className="text-sm text-center text-fz-text-secondary">
               {isDistributed
                 ? "¿Eliminar el registro del ingreso?"
                 : "¿Confirmar eliminación?"}
@@ -217,7 +217,7 @@ export default function EditIncomeForm({ income, accounts }: Props) {
               <button
                 type="button"
                 onClick={() => setConfirmDelete(false)}
-                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-600"
+                className="flex-1 py-2.5 rounded-xl border border-fz-border text-sm text-fz-text-secondary"
               >
                 Cancelar
               </button>
@@ -225,7 +225,7 @@ export default function EditIncomeForm({ income, accounts }: Props) {
                 type="button"
                 onClick={handleDelete}
                 disabled={deleting}
-                className="flex-1 py-2.5 rounded-xl bg-red-600 text-white text-sm font-medium disabled:opacity-40"
+                className="flex-1 py-2.5 rounded-xl bg-red-600 text-fz-accent-text text-sm font-medium disabled:opacity-40"
               >
                 {deleting ? "…" : "Sí, eliminar"}
               </button>

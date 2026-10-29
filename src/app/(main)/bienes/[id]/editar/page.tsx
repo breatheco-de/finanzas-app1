@@ -31,10 +31,10 @@ export default async function EditarBienPage({
   return (
     <div className="p-4 max-w-lg mx-auto">
       <div className="flex items-center gap-3 pt-2 mb-6">
-        <Link href="/bienes" className="text-sm text-gray-400 hover:text-gray-900">
+        <Link href="/bienes" className="text-sm text-fz-text-tertiary hover:text-fz-text">
           ← Bienes
         </Link>
-        <h1 className="text-xl font-semibold text-gray-900">Editar bien</h1>
+        <h1 className="text-xl font-semibold text-fz-text">Editar bien</h1>
       </div>
       <EditAssetForm asset={asset} />
     </div>

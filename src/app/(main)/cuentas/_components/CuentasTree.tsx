@@ -96,7 +96,7 @@ function DiscriminatedBalance({
 }) {
   if (earmarksTotal === 0) {
     return (
-      <p className="text-sm text-gray-600 tabular-nums">
+      <p className="text-sm text-fz-text-secondary tabular-nums">
         {formatCurrency(balance, currency)}
       </p>
     );
@@ -104,7 +104,7 @@ function DiscriminatedBalance({
   const libre = balance - earmarksTotal;
   return (
     <div className="text-right space-y-0.5">
-      <p className="text-xs text-gray-400 tabular-nums">
+      <p className="text-xs text-fz-text-tertiary tabular-nums">
         Total: {formatCurrency(balance, currency)}
       </p>
       {earmarksCuotas > 0 && (
@@ -117,7 +117,7 @@ function DiscriminatedBalance({
           Metas: −{formatCurrency(earmarksMetas, currency)}
         </p>
       )}
-      <p className="text-sm font-semibold text-gray-900 tabular-nums">
+      <p className="text-sm font-semibold text-fz-text tabular-nums">
         Libre: {formatCurrency(libre, currency)}
       </p>
     </div>
@@ -161,7 +161,7 @@ function AddChildInline({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="text-[11px] text-gray-500 hover:text-indigo-600 border border-dashed border-gray-200 rounded-lg px-2.5 py-1 transition-colors w-full text-center mt-2"
+        className="text-[11px] text-fz-text-secondary hover:text-fz-accent border border-dashed border-fz-border rounded-lg px-2.5 py-1 transition-colors w-full text-center mt-2"
       >
         + Agregar subdivisión
       </button>
@@ -169,9 +169,9 @@ function AddChildInline({
   }
 
   return (
-    <div className="mt-2 p-3 border border-indigo-100 bg-indigo-50 rounded-xl space-y-2">
+    <div className="mt-2 p-3 border border-fz-border bg-fz-accent-soft rounded-xl space-y-2">
       {!hasChildren && parentBalance > 0 && (
-        <p className="text-[10px] text-indigo-700 leading-snug">
+        <p className="text-[10px] text-fz-accent leading-snug">
           ⚠ Tu saldo de {formatCurrency(parentBalance, parentCurrency)} se moverá
           a este bolsillo. Los gastos y reservas existentes también se reasignarán.
         </p>
@@ -182,7 +182,7 @@ function AddChildInline({
         value={childName}
         onChange={(e) => setChildName(e.target.value)}
         placeholder="Nombre del bolsillo"
-        className="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white"
+        className="w-full border border-fz-border rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-fz-accent bg-fz-surface"
       />
       <div className="flex items-center gap-1.5">
         {(["ARS", "USD"] as Currency[]).map((c) => (
@@ -192,8 +192,8 @@ function AddChildInline({
             onClick={() => setCurrency(c)}
             className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
               currency === c
-                ? "bg-indigo-600 text-white border-indigo-600"
-                : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                ? "bg-fz-accent text-fz-accent-text border-fz-accent"
+                : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
             }`}
           >
             {c}
@@ -207,7 +207,7 @@ function AddChildInline({
           value={balance}
           onChange={(e) => setBalance(e.target.value)}
           placeholder="Saldo (opcional)"
-          className="flex-1 border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white"
+          className="flex-1 border border-fz-border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-fz-accent bg-fz-surface"
         />
       </div>
       <div className="flex items-center gap-2">
@@ -235,19 +235,19 @@ function AddChildInline({
               onSuccess();
             }
           }}
-          className="text-[11px] font-medium text-indigo-600 disabled:opacity-40"
+          className="text-[11px] font-medium text-fz-accent disabled:opacity-40"
         >
           {saving ? "Guardando…" : "Confirmar"}
         </button>
         <button
           type="button"
           onClick={reset}
-          className="text-[11px] text-gray-400"
+          className="text-[11px] text-fz-text-tertiary"
         >
           Cancelar
         </button>
       </div>
-      {error && <p className="text-[10px] text-red-600">{error}</p>}
+      {error && <p className="text-[10px] text-fz-negative">{error}</p>}
     </div>
   );
 }
@@ -291,10 +291,10 @@ function TreeNode({
     );
     const indent = depth * 16;
     const headerBg =
-      depth === 0 ? "bg-gray-50" : depth === 1 ? "bg-gray-50/60" : "bg-white";
+      depth === 0 ? "bg-fz-bg" : depth === 1 ? "bg-fz-bg/60" : "bg-fz-surface";
 
     return (
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div className="bg-fz-surface rounded-2xl shadow-[var(--fz-shadow)] overflow-hidden">
         <div
           className={`flex items-start gap-3 px-4 py-3 ${headerBg}`}
           style={{ paddingLeft: `${16 + indent}px` }}
@@ -302,14 +302,14 @@ function TreeNode({
           <button
             type="button"
             onClick={() => onToggle(account.id)}
-            className="mt-0.5 text-gray-400 hover:text-gray-700 shrink-0 transition-colors"
+            className="mt-0.5 text-fz-text-tertiary hover:text-fz-text shrink-0 transition-colors"
             aria-label={isExpanded ? "Colapsar" : "Expandir"}
           >
             <span className="text-xs">{isExpanded ? "▾" : "▸"}</span>
           </button>
           <div className="flex-1 min-w-0">
             <p
-              className={`font-semibold text-gray-900 ${
+              className={`font-semibold text-fz-text ${
                 depth === 0 ? "text-sm" : "text-xs"
               }`}
             >
@@ -337,13 +337,13 @@ function TreeNode({
             {Array.from(consolidatedTotals.entries()).map(([cur, total]) => (
               <p
                 key={cur}
-                className="text-xs font-medium text-gray-600 tabular-nums"
+                className="text-xs font-medium text-fz-text-secondary tabular-nums"
               >
                 {formatCurrency(total, cur as Currency)}
               </p>
             ))}
             {consolidatedTotals.size === 0 && (
-              <p className="text-xs text-gray-400">—</p>
+              <p className="text-xs text-fz-text-tertiary">—</p>
             )}
           </div>
         </div>
@@ -353,7 +353,7 @@ function TreeNode({
             {bolsilloChildren.map((child) => (
               <div
                 key={child.id}
-                className="border-t border-gray-100"
+                className="border-t border-fz-border"
                 style={{ paddingLeft: `${indent}px` }}
               >
                 <TreeNode
@@ -371,13 +371,13 @@ function TreeNode({
 
             {creditChildren.length > 0 && (
               <>
-                <div className="px-4 pt-2 pb-1 border-t border-gray-100">
-                  <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wide">
+                <div className="px-4 pt-2 pb-1 border-t border-fz-border">
+                  <p className="text-[10px] font-medium text-fz-text-tertiary uppercase tracking-wide">
                     Tarjetas de crédito
                   </p>
                 </div>
                 {creditChildren.map((card) => (
-                  <div key={card.id} className="border-t border-gray-100">
+                  <div key={card.id} className="border-t border-fz-border">
                     <TreeNode
                       account={card}
                       depth={depth + 1}
@@ -418,12 +418,12 @@ function TreeNode({
 
   if (isTopLevel) {
     return (
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div className="bg-fz-surface rounded-2xl shadow-[var(--fz-shadow)] overflow-hidden">
         <div className="flex items-start justify-between px-4 py-3">
           <div className="min-w-0">
-            <p className="text-sm font-medium text-gray-900">{account.name}</p>
+            <p className="text-sm font-medium text-fz-text">{account.name}</p>
             {account.type === "credito" && (
-              <span className="text-[10px] text-gray-400">Deuda</span>
+              <span className="text-[10px] text-fz-text-tertiary">Deuda</span>
             )}
             <CuentaActions
               accountId={account.id}
@@ -473,13 +473,13 @@ function TreeNode({
     >
       <div className="min-w-0">
         <p
-          className={`text-gray-700 ${
+          className={`text-fz-text ${
             depth === 1 ? "text-sm" : "text-xs"
           }`}
         >
           {account.name}
           {account.type === "credito" && (
-            <span className="ml-1 text-[10px] text-gray-400">(Deuda)</span>
+            <span className="ml-1 text-[10px] text-fz-text-tertiary">(Deuda)</span>
           )}
         </p>
         <CuentaActions
@@ -584,7 +584,7 @@ export default function CuentasTree({ accounts, fciHoldings }: Props) {
     <div className="space-y-6">
       {grouped.map(({ type, label, items }) => (
         <section key={type}>
-          <h2 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">
+          <h2 className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide mb-2">
             {label}
           </h2>
           <div className="space-y-3">
@@ -607,7 +607,7 @@ export default function CuentasTree({ accounts, fciHoldings }: Props) {
 
       {orphanCreditCards.length > 0 && (
         <section>
-          <h2 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">
+          <h2 className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide mb-2">
             Tarjetas de crédito
           </h2>
           <div className="space-y-3">

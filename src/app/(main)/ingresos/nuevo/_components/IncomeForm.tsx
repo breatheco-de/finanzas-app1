@@ -12,7 +12,7 @@ interface Props {
 }
 
 const INPUT =
-  "w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white";
+  "w-full border border-fz-border rounded-xl px-3 py-2.5 text-sm text-fz-text focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface";
 
 function Field({
   label,
@@ -25,8 +25,8 @@ function Field({
 }) {
   return (
     <div className="space-y-1">
-      <label className="text-xs font-medium text-gray-500">{label}</label>
-      {hint && <p className="text-[11px] text-gray-400 leading-tight">{hint}</p>}
+      <label className="text-xs font-medium text-fz-text-secondary">{label}</label>
+      {hint && <p className="text-[11px] text-fz-text-tertiary leading-tight">{hint}</p>}
       {children}
     </div>
   );
@@ -95,8 +95,8 @@ export default function IncomeForm({ accounts }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 pb-8">
-      <section className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
-        <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+      <section className="bg-fz-surface rounded-2xl p-4 shadow-[var(--fz-shadow)] space-y-4">
+        <h2 className="text-xs font-semibold text-fz-text-tertiary uppercase tracking-wide">
           Ingreso
         </h2>
 
@@ -111,7 +111,7 @@ export default function IncomeForm({ accounts }: Props) {
             <option value="otro">Otro</option>
           </select>
           {type === "sueldo" && (
-            <p className="text-[11px] text-indigo-600 mt-1">
+            <p className="text-[11px] text-fz-accent mt-1">
               Se abrirá la pantalla de distribución para repartir el ingreso
             </p>
           )}
@@ -130,7 +130,7 @@ export default function IncomeForm({ accounts }: Props) {
               className={INPUT}
             />
             {amount && currency === "ARS" && (
-              <p className="text-[11px] text-gray-400 mt-0.5">
+              <p className="text-[11px] text-fz-text-tertiary mt-0.5">
                 {formatInputAmount(amount, "ARS")}
               </p>
             )}
@@ -190,13 +190,13 @@ export default function IncomeForm({ accounts }: Props) {
       </section>
 
       {error && (
-        <p className="text-sm text-red-600 text-center">{error}</p>
+        <p className="text-sm text-fz-negative text-center">{error}</p>
       )}
 
       <button
         type="submit"
         disabled={saving || !amount}
-        className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-semibold disabled:opacity-40 transition-opacity"
+        className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-semibold disabled:opacity-40 transition-opacity"
       >
         {saving
           ? "Guardando…"
@@ -210,7 +210,7 @@ export default function IncomeForm({ accounts }: Props) {
           type="button"
           onClick={handleSoloRegistrar}
           disabled={saving || !amount}
-          className="w-full border border-gray-200 rounded-xl py-3 text-sm text-gray-500 font-medium disabled:opacity-40 transition-opacity"
+          className="w-full border border-fz-border rounded-xl py-3 text-sm text-fz-text-secondary font-medium disabled:opacity-40 transition-opacity"
         >
           Solo registrar
         </button>

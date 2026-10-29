@@ -27,11 +27,11 @@ export default function HoldingPriceEdit({ holdingId, currentPrice, currency }: 
           min="0"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
-          className="w-24 border border-gray-200 rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-gray-900"
+          className="w-24 border border-fz-border rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-fz-accent"
           placeholder="0"
           autoFocus
         />
-        <span className="text-[10px] text-gray-400">{currency}</span>
+        <span className="text-[10px] text-fz-text-tertiary">{currency}</span>
         <button
           type="button"
           disabled={saving}
@@ -52,7 +52,7 @@ export default function HoldingPriceEdit({ holdingId, currentPrice, currency }: 
               router.refresh();
             }
           }}
-          className="text-[11px] font-medium text-gray-900 disabled:opacity-40"
+          className="text-[11px] font-medium text-fz-text disabled:opacity-40"
         >
           {saving ? "…" : "Guardar"}
         </button>
@@ -63,11 +63,11 @@ export default function HoldingPriceEdit({ holdingId, currentPrice, currency }: 
             setError(null);
             setPrice(currentPrice?.toString() ?? "");
           }}
-          className="text-[11px] text-gray-400"
+          className="text-[11px] text-fz-text-tertiary"
         >
           Cancelar
         </button>
-        {error && <p className="text-[10px] text-red-600">{error}</p>}
+        {error && <p className="text-[10px] text-fz-negative">{error}</p>}
       </div>
     );
   }
@@ -76,7 +76,7 @@ export default function HoldingPriceEdit({ holdingId, currentPrice, currency }: 
     <button
       type="button"
       onClick={() => setMode("edit")}
-      className="text-[11px] text-indigo-600 font-medium mt-1 block"
+      className="text-[11px] text-fz-accent font-medium mt-1 block"
     >
       {currentPrice != null ? "Actualizar precio" : "Ingresar precio"}
     </button>

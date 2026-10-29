@@ -75,14 +75,14 @@ export default function AportarModal({
     // z-[60], no z-50: ver comentario en cuotas/_components/BatchPayButton.tsx —
     // BottomNav empata en z-50 y tapa el botón de confirmar por orden de DOM.
     <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 px-4 pb-4">
-      <div className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-5 space-y-4">
+      <div className="w-full max-w-lg bg-fz-surface rounded-2xl shadow-xl p-5 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-semibold text-gray-900">
+          <h2 className="text-base font-semibold text-fz-text">
             Aportar a "{targetName}"
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 text-xl leading-none"
+            className="text-fz-text-tertiary text-xl leading-none"
             aria-label="Cerrar"
           >
             ×
@@ -92,7 +92,7 @@ export default function AportarModal({
         <form onSubmit={handleSubmit} className="space-y-3">
           {/* Monto */}
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">
+            <label className="block text-xs font-medium text-fz-text-secondary mb-1">
               Monto ({targetCurrency})
             </label>
             <input
@@ -101,7 +101,7 @@ export default function AportarModal({
               min="0.01"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm"
               placeholder={suggestedAmount > 0 ? formatCurrency(suggestedAmount, targetCurrency) : "0"}
               required
             />
@@ -109,14 +109,14 @@ export default function AportarModal({
 
           {/* Cuenta de origen */}
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">
+            <label className="block text-xs font-medium text-fz-text-secondary mb-1">
               Cuenta de origen{" "}
-              <span className="text-gray-400 font-normal">(opcional)</span>
+              <span className="text-fz-text-tertiary font-normal">(opcional)</span>
             </label>
             <select
               value={fromAccountId}
               onChange={(e) => setFromAccountId(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm"
             >
               <option value="">Sin cuenta específica</option>
               {accounts.map((a) => (
@@ -129,56 +129,56 @@ export default function AportarModal({
 
           {/* Fecha */}
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">
+            <label className="block text-xs font-medium text-fz-text-secondary mb-1">
               Fecha
             </label>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm"
               required
             />
           </div>
 
           {/* Nota */}
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">
+            <label className="block text-xs font-medium text-fz-text-secondary mb-1">
               Nota{" "}
-              <span className="text-gray-400 font-normal">(opcional)</span>
+              <span className="text-fz-text-tertiary font-normal">(opcional)</span>
             </label>
             <input
               type="text"
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+              className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm"
               placeholder="ej. Parte del sueldo de julio"
               maxLength={200}
             />
           </div>
 
           {destAccountId && (
-            <p className="text-xs text-indigo-600">
+            <p className="text-xs text-fz-accent">
               Se reservará en la cuenta asignada a esta meta.
             </p>
           )}
 
           {error && (
-            <p className="text-xs text-red-600">{error}</p>
+            <p className="text-xs text-fz-negative">{error}</p>
           )}
 
           <div className="flex gap-2 pt-1">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 text-sm text-gray-600 border border-gray-300 rounded-lg py-2"
+              className="flex-1 text-sm text-fz-text-secondary border border-fz-border rounded-lg py-2"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 text-sm font-medium bg-gray-900 text-white rounded-lg py-2 disabled:opacity-50"
+              className="flex-1 text-sm font-medium bg-fz-accent text-fz-accent-text rounded-lg py-2 disabled:opacity-50"
             >
               {saving ? "Guardando…" : "Confirmar aporte"}
             </button>

@@ -55,14 +55,14 @@ export default function GoalForm({ accounts }: Props) {
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Nombre */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Nombre del objetivo
         </label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm"
+          className="w-full border border-fz-border rounded-xl px-3 py-2.5 text-sm"
           placeholder="ej. Viaje a Europa, Mudanza, Renovar cocina"
           maxLength={100}
           required
@@ -71,14 +71,14 @@ export default function GoalForm({ accounts }: Props) {
 
       {/* Monto + moneda */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Monto meta
         </label>
         <div className="flex gap-2">
           <select
             value={currency}
             onChange={(e) => setCurrency(e.target.value as Currency)}
-            className="border border-gray-300 rounded-xl px-3 py-2.5 text-sm bg-white"
+            className="border border-fz-border rounded-xl px-3 py-2.5 text-sm bg-fz-surface"
           >
             <option value="USD">USD</option>
             <option value="ARS">ARS</option>
@@ -89,7 +89,7 @@ export default function GoalForm({ accounts }: Props) {
             min="0.01"
             value={targetAmount}
             onChange={(e) => setTargetAmount(e.target.value)}
-            className="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-sm"
+            className="flex-1 border border-fz-border rounded-xl px-3 py-2.5 text-sm"
             placeholder="3000"
             required
           />
@@ -98,7 +98,7 @@ export default function GoalForm({ accounts }: Props) {
 
       {/* Plazo */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Plazo (meses)
         </label>
         <input
@@ -107,7 +107,7 @@ export default function GoalForm({ accounts }: Props) {
           max="600"
           value={targetMonths}
           onChange={(e) => setTargetMonths(e.target.value)}
-          className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm"
+          className="w-full border border-fz-border rounded-xl px-3 py-2.5 text-sm"
           placeholder="12"
           required
         />
@@ -115,14 +115,14 @@ export default function GoalForm({ accounts }: Props) {
 
       {/* Cuenta donde se guarda */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Cuenta donde lo vas a guardar{" "}
-          <span className="text-gray-400 font-normal">(opcional)</span>
+          <span className="text-fz-text-tertiary font-normal">(opcional)</span>
         </label>
         <select
           value={accountId}
           onChange={(e) => setAccountId(e.target.value)}
-          className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm bg-white"
+          className="w-full border border-fz-border rounded-xl px-3 py-2.5 text-sm bg-fz-surface"
         >
           <option value="">Sin cuenta específica</option>
           {leafAccounts.map((a) => (
@@ -131,14 +131,14 @@ export default function GoalForm({ accounts }: Props) {
             </option>
           ))}
         </select>
-        <p className="text-xs text-gray-400 mt-1">
+        <p className="text-xs text-fz-text-tertiary mt-1">
           Si asignás una cuenta, cada aporte reservará el monto ahí.
         </p>
       </div>
 
       {/* Preview */}
       {monthly > 0 && (
-        <div className="bg-indigo-50 rounded-xl p-3 text-sm text-indigo-900">
+        <div className="bg-fz-accent-soft rounded-xl p-3 text-sm text-fz-text">
           Necesitás aportar{" "}
           <span className="font-bold">{formatCurrency(monthly, currency)}/mes</span>{" "}
           durante {parsedMonths} mes{parsedMonths !== 1 ? "es" : ""} para llegar a{" "}
@@ -146,12 +146,12 @@ export default function GoalForm({ accounts }: Props) {
         </div>
       )}
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-fz-negative">{error}</p>}
 
       <button
         type="submit"
         disabled={saving}
-        className="w-full bg-gray-900 text-white text-sm font-medium py-3 rounded-xl disabled:opacity-50"
+        className="w-full bg-fz-accent text-fz-accent-text text-sm font-medium py-3 rounded-xl disabled:opacity-50"
       >
         {saving ? "Guardando…" : "Crear objetivo"}
       </button>

@@ -12,7 +12,7 @@ interface Props {
 }
 
 const INPUT =
-  "w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white";
+  "w-full min-h-[52px] border border-fz-border rounded-2xl px-4 text-[16px] text-fz-text bg-fz-bg focus:outline-none focus:ring-2 focus:ring-fz-accent";
 
 export default function TransferenciaForm({ accounts }: Props) {
   const router = useRouter();
@@ -68,9 +68,9 @@ export default function TransferenciaForm({ accounts }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 pb-8">
-      <section className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
-        <div className="space-y-1">
-          <label className="text-xs font-medium text-gray-500">Cuenta origen</label>
+      <section className="bg-fz-surface border border-fz-border rounded-2xl p-4 space-y-4">
+        <div className="space-y-1.5">
+          <label className="text-sm font-medium text-fz-text">Cuenta origen</label>
           <select
             value={fromId}
             onChange={(e) => setFromId(e.target.value)}
@@ -78,14 +78,15 @@ export default function TransferenciaForm({ accounts }: Props) {
           >
             {accounts.map((a) => (
               <option key={a.id} value={a.id}>
-                {accountDisplayName(a, accounts)} ({a.currency}) — {formatCurrency(Number(a.balance), a.currency)}
+                {accountDisplayName(a, accounts)} ({a.currency}) —{" "}
+                {formatCurrency(Number(a.balance), a.currency)}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="space-y-1">
-          <label className="text-xs font-medium text-gray-500">Cuenta destino</label>
+        <div className="space-y-1.5">
+          <label className="text-sm font-medium text-fz-text">Cuenta destino</label>
           <select
             value={toId}
             onChange={(e) => setToId(e.target.value)}
@@ -93,35 +94,37 @@ export default function TransferenciaForm({ accounts }: Props) {
           >
             {accounts.map((a) => (
               <option key={a.id} value={a.id}>
-                {accountDisplayName(a, accounts)} ({a.currency}) — {formatCurrency(Number(a.balance), a.currency)}
+                {accountDisplayName(a, accounts)} ({a.currency}) —{" "}
+                {formatCurrency(Number(a.balance), a.currency)}
               </option>
             ))}
           </select>
-          {fromAccount && toAccount && fromAccount.currency !== toAccount.currency && (
-            <p className="text-[11px] text-amber-600 mt-1">
-              Las cuentas tienen monedas distintas. El monto se debitará/acreditará tal cual, sin conversión.
-            </p>
-          )}
+          {fromAccount &&
+            toAccount &&
+            fromAccount.currency !== toAccount.currency && (
+              <p className="text-[12px] text-amber-700 mt-1">
+                Monedas distintas: el monto se mueve tal cual, sin conversión.
+              </p>
+            )}
         </div>
 
-        <div className="space-y-1">
-          <label className="text-xs font-medium text-gray-500">
+        <div className="space-y-1.5">
+          <label className="text-sm font-medium text-fz-text">
             Monto ({fromAccount?.currency ?? "ARS"})
           </label>
           <input
-            type="number"
-            min="0.01"
-            step="0.01"
+            type="text"
+            inputMode="decimal"
             required
             placeholder="0"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className={INPUT}
+            className={`${INPUT} font-mono`}
           />
         </div>
 
-        <div className="space-y-1">
-          <label className="text-xs font-medium text-gray-500">Fecha</label>
+        <div className="space-y-1.5">
+          <label className="text-sm font-medium text-fz-text">Fecha</label>
           <input
             type="date"
             required
@@ -131,8 +134,10 @@ export default function TransferenciaForm({ accounts }: Props) {
           />
         </div>
 
-        <div className="space-y-1">
-          <label className="text-xs font-medium text-gray-500">Nota (opcional)</label>
+        <div className="space-y-1.5">
+          <label className="text-sm font-medium text-fz-text">
+            Nota <span className="text-fz-text-tertiary font-normal">(opcional)</span>
+          </label>
           <input
             type="text"
             placeholder="ej: Paso de banco a inversiones"
@@ -143,12 +148,16 @@ export default function TransferenciaForm({ accounts }: Props) {
         </div>
       </section>
 
-      {error && <p className="text-sm text-red-600 text-center">{error}</p>}
+      {error && (
+        <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-2xl px-3 py-2 text-center">
+          {error}
+        </p>
+      )}
 
       <button
         type="submit"
         disabled={saving || !amount || fromId === toId}
-        className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-semibold disabled:opacity-40 transition-opacity"
+        className="w-full min-h-[56px] bg-fz-accent text-fz-accent-text rounded-2xl text-[17px] font-semibold disabled:opacity-40 active:opacity-90"
       >
         {saving ? "Transfiriendo…" : "Confirmar transferencia"}
       </button>

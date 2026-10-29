@@ -36,45 +36,43 @@ export default function ResetPasswordForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="new-password" className="fz-label">
           Contraseña nueva
         </label>
         <input
+          id="new-password"
           type="password"
           required
           autoFocus
           minLength={6}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+          className="fz-input"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="confirm-password" className="fz-label">
           Repetir contraseña
         </label>
         <input
+          id="confirm-password"
           type="password"
           required
           minLength={6}
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+          className="fz-input"
         />
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">
+        <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-2xl px-3 py-2">
           {error}
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-gray-900 text-white rounded-lg py-2 text-sm font-medium hover:bg-gray-700 disabled:opacity-50 transition-colors"
-      >
+      <button type="submit" disabled={loading} className="fz-btn-primary w-full">
         {loading ? "Guardando..." : "Guardar contraseña"}
       </button>
     </form>

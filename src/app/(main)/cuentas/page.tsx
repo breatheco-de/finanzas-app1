@@ -1,6 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeftRight } from "lucide-react";
+import { MenuButton } from "@/components/SideMenu";
+import PageHeader from "@/components/PageHeader";
 import AccountsOnboarding from "./_components/AccountsOnboarding";
 import CuentasTree from "./_components/CuentasTree";
 import { autoSyncFciHoldings } from "@/lib/fciAutoSync";
@@ -48,8 +51,8 @@ export default async function CuentasPage() {
 
   if (accounts.length === 0) {
     return (
-      <div className="p-4 max-w-lg mx-auto">
-        <h1 className="text-2xl font-semibold text-gray-900 pt-2 mb-6">Cuentas</h1>
+      <div className="fz-page space-y-6">
+        <PageHeader title="Cuentas" />
         <AccountsOnboarding />
       </div>
     );
@@ -222,19 +225,25 @@ export default async function CuentasPage() {
   }));
 
   return (
-    <div className="p-4 max-w-lg mx-auto space-y-6">
-      <div className="flex items-center justify-between pt-2">
-        <h1 className="text-2xl font-semibold text-gray-900">Cuentas</h1>
-        <div className="flex items-center gap-2">
+    <div className="fz-page space-y-5">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <MenuButton />
+          <h1 className="font-display font-bold text-[22px] tracking-tight text-fz-text">
+            Cuentas
+          </h1>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
           <Link
             href="/cuentas/transferencia"
-            className="text-xs font-medium text-gray-500 border border-gray-200 rounded-full px-3 py-1.5 hover:border-gray-400 transition-colors"
+            aria-label="Transferencia"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-[14px] border border-fz-border bg-fz-surface text-fz-text-secondary shadow-[var(--fz-shadow)] active:bg-fz-surface-high"
           >
-            Transferencia
+            <ArrowLeftRight size={18} />
           </Link>
           <Link
             href="/cuentas/nueva"
-            className="text-sm font-medium text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-full px-4 py-2 transition-colors"
+            className="text-[14px] font-semibold text-fz-accent-text bg-fz-accent rounded-full px-4 min-h-[44px] inline-flex items-center shadow-[var(--fz-shadow)]"
           >
             + Agregar
           </Link>
@@ -242,8 +251,6 @@ export default async function CuentasPage() {
       </div>
 
       <CuentasTree accounts={accountNodes} fciHoldings={fciHoldings} />
-
-      <div className="pb-24" />
     </div>
   );
 }

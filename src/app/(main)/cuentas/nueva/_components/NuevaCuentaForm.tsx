@@ -34,7 +34,7 @@ function YieldToggle({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label className="block text-sm font-medium text-fz-text mb-1">
         ¿Esta cuenta genera rendimiento?
       </label>
       <div className="flex gap-2">
@@ -45,15 +45,15 @@ function YieldToggle({
             onClick={() => onChange(v)}
             className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
               value === v
-                ? "bg-gray-900 text-white border-gray-900"
-                : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
             }`}
           >
             {v ? "Sí" : "No"}
           </button>
         ))}
       </div>
-      <p className="text-[11px] text-gray-400 mt-0.5">
+      <p className="text-[11px] text-fz-text-tertiary mt-0.5">
         {value
           ? "Esta cuenta puede recibir transferencias de cobertura en gastos de crédito."
           : "No aparecerá como destino de cobertura al registrar gastos en cuotas."}
@@ -113,10 +113,10 @@ function BolsilloForm({
   return (
     <div className="p-4 max-w-lg mx-auto">
       <div className="flex items-center gap-3 pt-2 mb-6">
-        <Link href="/cuentas" className="text-gray-400 hover:text-gray-900 transition-colors">
+        <Link href="/cuentas" className="text-fz-text-tertiary hover:text-fz-text transition-colors">
           ←
         </Link>
-        <h1 className="text-xl font-semibold text-gray-900">
+        <h1 className="text-xl font-semibold text-fz-text">
           Nuevo bolsillo en {parent.name}
         </h1>
       </div>
@@ -132,7 +132,7 @@ function BolsilloForm({
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-fz-text mb-1">
             Nombre del bolsillo
           </label>
           <input
@@ -142,7 +142,7 @@ function BolsilloForm({
             value={label}
             onChange={(e) => setLabel(e.target.value)}
             placeholder="Ej: Pesos, USD guardados, Rendimientos"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+            className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
           />
           <div className="flex flex-wrap gap-1.5 mt-2">
             {BOLSILLO_SUGERENCIAS.map((s) => (
@@ -150,7 +150,7 @@ function BolsilloForm({
                 key={s}
                 type="button"
                 onClick={() => setLabel(s)}
-                className="text-xs px-2.5 py-1 rounded-full border border-gray-200 text-gray-600 hover:border-gray-400 transition-colors"
+                className="text-xs px-2.5 py-1 rounded-full border border-fz-border text-fz-text-secondary hover:border-gray-400 transition-colors"
               >
                 {s}
               </button>
@@ -161,7 +161,7 @@ function BolsilloForm({
         {parentHasChildren ? (
           <>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Moneda</label>
+              <label className="block text-sm font-medium text-fz-text mb-1">Moneda</label>
               <div className="flex gap-2">
                 {(["ARS", "USD"] as Currency[]).map((c) => (
                   <button
@@ -170,8 +170,8 @@ function BolsilloForm({
                     onClick={() => setCurrency(c)}
                     className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
                       currency === c
-                        ? "bg-gray-900 text-white border-gray-900"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                        ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                        : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
                     }`}
                   >
                     {c}
@@ -180,9 +180,9 @@ function BolsilloForm({
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-fz-text mb-1">
                 Saldo actual{" "}
-                <span className="text-gray-400 font-normal">(opcional)</span>
+                <span className="text-fz-text-tertiary font-normal">(opcional)</span>
               </label>
               <input
                 type="number"
@@ -192,7 +192,7 @@ function BolsilloForm({
                 value={balance}
                 onChange={(e) => setBalance(e.target.value)}
                 placeholder="0"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+                className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
               />
             </div>
             {!isCredit && (
@@ -200,19 +200,19 @@ function BolsilloForm({
             )}
           </>
         ) : (
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-fz-text-tertiary">
             Moneda: {parent.currency} (heredada de la cuenta padre)
           </p>
         )}
 
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+          <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
         )}
 
         <button
           type="submit"
           disabled={loading || !label.trim()}
-          className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-medium hover:bg-gray-700 disabled:opacity-40 transition-colors"
+          className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-medium hover:opacity-90 disabled:opacity-40 transition-colors"
         >
           {loading ? "Guardando..." : "Guardar bolsillo"}
         </button>
@@ -418,20 +418,20 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
         <div className="flex items-center gap-3 pt-2 mb-6">
           <button
             onClick={() => setStep("pick")}
-            className="text-gray-400 hover:text-gray-900 transition-colors"
+            className="text-fz-text-tertiary hover:text-fz-text transition-colors"
           >
             ← Volver
           </button>
-          <h1 className="text-xl font-semibold text-gray-900">{selected?.name}</h1>
+          <h1 className="text-xl font-semibold text-fz-text">{selected?.name}</h1>
         </div>
 
-        <p className="text-sm text-gray-500 mb-5">
+        <p className="text-sm text-fz-text-secondary mb-5">
           ¿Qué tenés en {selected?.name}? Podés configurarlo ahora o agregar todo después.
         </p>
 
         <div className="space-y-4">
           <div>
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+            <p className="text-xs font-medium text-fz-text-secondary uppercase tracking-wide mb-2">
               Sub-cuentas
             </p>
             <div className="flex gap-2">
@@ -445,8 +445,8 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
                   onClick={() => set((v) => !v)}
                   className={`flex-1 py-2.5 rounded-xl text-sm font-medium border transition-colors ${
                     value
-                      ? "bg-gray-900 text-white border-gray-900"
-                      : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                      ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                      : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
                   }`}
                 >
                   {label}
@@ -456,7 +456,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
           </div>
 
           <div>
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+            <p className="text-xs font-medium text-fz-text-secondary uppercase tracking-wide mb-2">
               Tarjetas de crédito
             </p>
             <div className="flex gap-2 flex-wrap">
@@ -474,8 +474,8 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
                   }
                   className={`px-4 py-2.5 rounded-xl text-sm font-medium border transition-colors ${
                     bankCards.has(card.id)
-                      ? "bg-gray-900 text-white border-gray-900"
-                      : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                      ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                      : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
                   }`}
                 >
                   {card.name}
@@ -486,7 +486,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
         </div>
 
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2 mt-4">{error}</p>
+          <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2 mt-4">{error}</p>
         )}
 
         <div className="space-y-3 mt-6">
@@ -494,7 +494,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
             type="button"
             onClick={handleSubmitFromBankConfig}
             disabled={loading}
-            className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-medium hover:bg-gray-700 disabled:opacity-40 transition-colors"
+            className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-medium hover:opacity-90 disabled:opacity-40 transition-colors"
           >
             {loading
               ? "Guardando..."
@@ -505,7 +505,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
           <button
             type="button"
             onClick={() => setStep("mode")}
-            className="w-full text-center text-sm text-gray-500 hover:text-gray-900 transition-colors py-2"
+            className="w-full text-center text-sm text-fz-text-secondary hover:text-fz-text transition-colors py-2"
           >
             Configurar con bolsillos personalizados →
           </button>
@@ -521,31 +521,31 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
         <div className="flex items-center gap-3 pt-2 mb-6">
           <button
             onClick={() => setStep(selected?.group === "banco" ? "bank_config" : "pick")}
-            className="text-gray-400 hover:text-gray-900 transition-colors"
+            className="text-fz-text-tertiary hover:text-fz-text transition-colors"
           >
             ← Volver
           </button>
-          <h1 className="text-xl font-semibold text-gray-900">
+          <h1 className="text-xl font-semibold text-fz-text">
             {isCustom ? "Cuenta personalizada" : selected?.name}
           </h1>
         </div>
 
-        <p className="text-sm text-gray-500 mb-4">¿Cómo querés llevar esta cuenta?</p>
+        <p className="text-sm text-fz-text-secondary mb-4">¿Cómo querés llevar esta cuenta?</p>
 
         <div className="space-y-3">
           <button
             onClick={() => setStep("form")}
-            className="w-full text-left px-4 py-4 rounded-xl border border-gray-200 bg-white hover:border-gray-900 transition-colors"
+            className="w-full text-left px-4 py-4 rounded-xl border border-fz-border bg-fz-surface hover:border-gray-900 transition-colors"
           >
-            <p className="text-sm font-medium text-gray-900">Cuenta simple</p>
-            <p className="text-xs text-gray-400 mt-0.5">Un solo saldo en una moneda</p>
+            <p className="text-sm font-medium text-fz-text">Cuenta simple</p>
+            <p className="text-xs text-fz-text-tertiary mt-0.5">Un solo saldo en una moneda</p>
           </button>
           <button
             onClick={() => setStep("bolsillos")}
-            className="w-full text-left px-4 py-4 rounded-xl border border-gray-200 bg-white hover:border-gray-900 transition-colors"
+            className="w-full text-left px-4 py-4 rounded-xl border border-fz-border bg-fz-surface hover:border-gray-900 transition-colors"
           >
-            <p className="text-sm font-medium text-gray-900">Con bolsillos</p>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="text-sm font-medium text-fz-text">Con bolsillos</p>
+            <p className="text-xs text-fz-text-tertiary mt-0.5">
               Pesos, dólares, fondos, etc. por separado
             </p>
           </button>
@@ -561,16 +561,16 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
         <div className="flex items-center gap-3 pt-2 mb-6">
           <button
             onClick={() => setStep("mode")}
-            className="text-gray-400 hover:text-gray-900 transition-colors"
+            className="text-fz-text-tertiary hover:text-fz-text transition-colors"
           >
             ← Volver
           </button>
-          <h1 className="text-xl font-semibold text-gray-900">Bolsillos</h1>
+          <h1 className="text-xl font-semibold text-fz-text">Bolsillos</h1>
         </div>
 
         <div className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-fz-text mb-1">
               Nombre de la cuenta
             </label>
             <input
@@ -579,26 +579,26 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
               value={containerName}
               onChange={(e) => setContainerName(e.target.value)}
               placeholder="Ej: Cocos Capital"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+              className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
             />
           </div>
 
           <div className="space-y-3">
             {bolsillos.map((b, i) => (
-              <div key={i} className="border border-gray-200 rounded-xl p-3 space-y-2">
+              <div key={i} className="border border-fz-border rounded-xl p-3 space-y-2">
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
                     value={b.label}
                     onChange={(e) => updateBolsillo(i, { label: e.target.value })}
                     placeholder="Ej: Pesos"
-                    className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+                    className="flex-1 border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
                   />
                   {bolsillos.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeBolsillo(i)}
-                      className="text-gray-400 hover:text-red-600 text-sm px-2"
+                      className="text-fz-text-tertiary hover:text-fz-negative text-sm px-2"
                     >
                       ✕
                     </button>
@@ -610,7 +610,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
                       key={s}
                       type="button"
                       onClick={() => updateBolsillo(i, { label: s })}
-                      className="text-xs px-2.5 py-1 rounded-full border border-gray-200 text-gray-600 hover:border-gray-400 transition-colors"
+                      className="text-xs px-2.5 py-1 rounded-full border border-fz-border text-fz-text-secondary hover:border-gray-400 transition-colors"
                     >
                       {s}
                     </button>
@@ -625,8 +625,8 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
                         onClick={() => updateBolsillo(i, { currency: c })}
                         className={`px-3 py-2 rounded-lg text-sm font-medium border transition-colors ${
                           b.currency === c
-                            ? "bg-gray-900 text-white border-gray-900"
-                            : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                            ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                            : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
                         }`}
                       >
                         {c}
@@ -641,12 +641,12 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
                     value={b.balance}
                     onChange={(e) => updateBolsillo(i, { balance: e.target.value })}
                     placeholder="Saldo (opcional)"
-                    className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+                    className="flex-1 border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
                   />
                 </div>
                 {type !== "credito" && (
                   <div className="pt-1">
-                    <label className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer select-none">
+                    <label className="flex items-center gap-2 text-xs text-fz-text-secondary cursor-pointer select-none">
                       <input
                         type="checkbox"
                         checked={b.earns_yield}
@@ -664,20 +664,20 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
           <button
             type="button"
             onClick={addBolsillo}
-            className="w-full text-center px-4 py-2.5 rounded-xl border border-dashed border-gray-300 text-sm text-gray-500 hover:border-gray-600 hover:text-gray-700 transition-colors"
+            className="w-full text-center px-4 py-2.5 rounded-xl border border-dashed border-fz-border text-sm text-fz-text-secondary hover:border-gray-600 hover:text-fz-text transition-colors"
           >
             + Agregar otro bolsillo
           </button>
 
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+            <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
           )}
 
           <button
             type="button"
             onClick={handleSubmitBolsillos}
             disabled={loading || !containerName.trim()}
-            className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-medium hover:bg-gray-700 disabled:opacity-40 transition-colors"
+            className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-medium hover:opacity-90 disabled:opacity-40 transition-colors"
           >
             {loading ? "Guardando..." : "Guardar cuenta"}
           </button>
@@ -693,18 +693,18 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
         <div className="flex items-center gap-3 pt-2 mb-6">
           <button
             onClick={() => setStep("mode")}
-            className="text-gray-400 hover:text-gray-900 transition-colors"
+            className="text-fz-text-tertiary hover:text-fz-text transition-colors"
           >
             ← Volver
           </button>
-          <h1 className="text-xl font-semibold text-gray-900">
+          <h1 className="text-xl font-semibold text-fz-text">
             {isCustom ? "Cuenta personalizada" : selected?.name}
           </h1>
         </div>
 
         <form onSubmit={handleSubmitSimple} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-fz-text mb-1">
               Nombre de la cuenta
             </label>
             <input
@@ -713,17 +713,17 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ej: Banco Galicia"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+              className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
             />
           </div>
 
           {isCustom && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+              <label className="block text-sm font-medium text-fz-text mb-1">Tipo</label>
               <select
                 value={type}
                 onChange={(e) => setType(e.target.value as AccountType)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+                className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
               >
                 <option value="banco">Banco / Billetera</option>
                 <option value="efectivo">Efectivo</option>
@@ -735,7 +735,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Moneda</label>
+            <label className="block text-sm font-medium text-fz-text mb-1">Moneda</label>
             <div className="flex gap-2">
               {(["ARS", "USD"] as Currency[]).map((c) => (
                 <button
@@ -744,8 +744,8 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
                   onClick={() => setCurrency(c)}
                   className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
                     currency === c
-                      ? "bg-gray-900 text-white border-gray-900"
-                      : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                      ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                      : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
                     }`}
                 >
                   {c}
@@ -755,9 +755,9 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-fz-text mb-1">
               Saldo actual{" "}
-              <span className="text-gray-400 font-normal">(opcional)</span>
+              <span className="text-fz-text-tertiary font-normal">(opcional)</span>
             </label>
             <input
               type="number"
@@ -767,7 +767,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
               value={balance}
               onChange={(e) => setBalance(e.target.value)}
               placeholder="0"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+              className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
             />
           </div>
 
@@ -780,7 +780,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
               <p className="text-xs font-semibold text-blue-700">Datos del resumen de tarjeta</p>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                  <label className="block text-xs font-medium text-fz-text-secondary mb-1">
                     Día de cierre
                   </label>
                   <input
@@ -791,11 +791,11 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
                     value={closingDay}
                     onChange={(e) => setClosingDay(e.target.value)}
                     placeholder="Ej: 20"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 text-center"
+                    className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent text-center"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                  <label className="block text-xs font-medium text-fz-text-secondary mb-1">
                     Día de vencimiento
                   </label>
                   <input
@@ -806,7 +806,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
                     value={dueDay}
                     onChange={(e) => setDueDay(e.target.value)}
                     placeholder="Ej: 10"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 text-center"
+                    className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent text-center"
                   />
                 </div>
               </div>
@@ -815,14 +815,14 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
               </p>
               {bankAccounts.length > 0 && (
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                  <label className="block text-xs font-medium text-fz-text-secondary mb-1">
                     Banco asociado{" "}
-                    <span className="text-gray-400 font-normal">(opcional)</span>
+                    <span className="text-fz-text-tertiary font-normal">(opcional)</span>
                   </label>
                   <select
                     value={parentBankId}
                     onChange={(e) => setParentBankId(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
+                    className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface"
                   >
                     <option value="">Sin banco asociado</option>
                     {bankAccounts.map((b) => (
@@ -831,7 +831,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
                       </option>
                     ))}
                   </select>
-                  <p className="text-[11px] text-gray-400 mt-1">
+                  <p className="text-[11px] text-fz-text-tertiary mt-1">
                     Agrupa la tarjeta visualmente bajo el banco. La deuda no afecta el saldo del banco.
                   </p>
                 </div>
@@ -840,13 +840,13 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
           )}
 
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+            <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
           )}
 
           <button
             type="submit"
             disabled={loading || !name.trim()}
-            className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-medium hover:bg-gray-700 disabled:opacity-40 transition-colors"
+            className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-medium hover:opacity-90 disabled:opacity-40 transition-colors"
           >
             {loading ? "Guardando..." : "Guardar cuenta"}
           </button>
@@ -859,17 +859,17 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
   return (
     <div className="p-4 max-w-lg mx-auto space-y-6">
       <div className="flex items-center gap-3 pt-2">
-        <Link href="/cuentas" className="text-gray-400 hover:text-gray-900 transition-colors">
+        <Link href="/cuentas" className="text-fz-text-tertiary hover:text-fz-text transition-colors">
           ←
         </Link>
-        <h1 className="text-xl font-semibold text-gray-900">Nueva cuenta</h1>
+        <h1 className="text-xl font-semibold text-fz-text">Nueva cuenta</h1>
       </div>
 
       {INSTITUTION_GROUPS.map((group) => {
         const items = INSTITUTIONS.filter((i) => i.group === group.key);
         return (
           <section key={group.key}>
-            <h2 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">
+            <h2 className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide mb-3">
               {group.label}
             </h2>
             <div className="grid grid-cols-2 gap-2">
@@ -877,7 +877,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
                 <button
                   key={inst.id}
                   onClick={() => pickInstitution(inst)}
-                  className="text-left px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:border-gray-900 hover:bg-gray-50 transition-colors"
+                  className="text-left px-4 py-3 rounded-xl border border-fz-border bg-fz-surface text-sm font-medium text-fz-text hover:border-gray-900 hover:bg-fz-bg transition-colors"
                 >
                   {inst.name}
                 </button>
@@ -890,7 +890,7 @@ function InstitutionFlow({ bankAccounts }: { bankAccounts: { id: string; name: s
       <section>
         <button
           onClick={pickCustom}
-          className="w-full text-left px-4 py-3 rounded-xl border border-dashed border-gray-300 text-sm text-gray-500 hover:border-gray-600 hover:text-gray-700 transition-colors"
+          className="w-full text-left px-4 py-3 rounded-xl border border-dashed border-fz-border text-sm text-fz-text-secondary hover:border-gray-600 hover:text-fz-text transition-colors"
         >
           + Cuenta personalizada
         </button>

@@ -150,7 +150,7 @@ export default function BatchPayButton({
     <>
       <button
         onClick={() => setShowModal(true)}
-        className="text-xs font-medium text-gray-600 border border-gray-200 rounded-full px-3 py-1.5 hover:bg-gray-50 transition-colors shrink-0"
+        className="text-xs font-medium text-fz-text-secondary border border-fz-border rounded-full px-3 py-1.5 hover:bg-fz-bg transition-colors shrink-0"
       >
         Pagar todas ({installments.length})
       </button>
@@ -162,23 +162,23 @@ export default function BatchPayButton({
         // (root cause del bug reportado en TAREA 6, Sesión J.1.14). Mismo fix ya
         // aplicado en ConfirmFundingButton.tsx.
         <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40">
-          <div className="bg-white rounded-t-2xl w-full max-w-lg p-5 space-y-4 max-h-[85vh] overflow-y-auto">
+          <div className="bg-fz-surface rounded-t-2xl w-full max-w-lg p-5 space-y-4 max-h-[85vh] overflow-y-auto">
             <div>
-              <h2 className="text-base font-semibold text-gray-900">
+              <h2 className="text-base font-semibold text-fz-text">
                 Pagar {installments.length} cuotas de {cardName}
               </h2>
-              <p className="text-sm text-gray-400 mt-0.5">{monthLabel}</p>
+              <p className="text-sm text-fz-text-tertiary mt-0.5">{monthLabel}</p>
             </div>
 
             {/* Totales */}
-            <div className="bg-gray-50 rounded-xl px-4 py-3 space-y-1">
-              <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">
+            <div className="bg-fz-bg rounded-xl px-4 py-3 space-y-1">
+              <p className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide mb-1">
                 Total a pagar
               </p>
               {Object.entries(totals).map(([cur, total]) => (
                 <div key={cur} className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">{cur}</span>
-                  <span className="text-base font-semibold text-gray-900 tabular-nums">
+                  <span className="text-sm text-fz-text-secondary">{cur}</span>
+                  <span className="text-base font-semibold text-fz-text tabular-nums">
                     {formatCurrency(total, cur as Currency)}
                   </span>
                 </div>
@@ -193,8 +193,8 @@ export default function BatchPayButton({
                   onClick={() => setMode("single")}
                   className={`flex-1 text-xs font-medium rounded-lg px-2 py-2 border transition-colors ${
                     mode === "single"
-                      ? "bg-gray-900 text-white border-gray-900"
-                      : "bg-white text-gray-600 border-gray-200"
+                      ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                      : "bg-fz-surface text-fz-text-secondary border-fz-border"
                   }`}
                 >
                   Pagar todo con una cuenta
@@ -204,8 +204,8 @@ export default function BatchPayButton({
                   onClick={() => setMode("separate")}
                   className={`flex-1 text-xs font-medium rounded-lg px-2 py-2 border transition-colors ${
                     mode === "separate"
-                      ? "bg-gray-900 text-white border-gray-900"
-                      : "bg-white text-gray-600 border-gray-200"
+                      ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                      : "bg-fz-surface text-fz-text-secondary border-fz-border"
                   }`}
                 >
                   Cada moneda por separado
@@ -216,13 +216,13 @@ export default function BatchPayButton({
             {/* Selector de cuenta solo cuando alguna cuota no tiene cobertura */}
             {!allCovered && (!multiCurrency || mode === "single") && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-fz-text mb-1">
                   ¿Con qué cuenta pagás?
                 </label>
                 <select
                   value={selectedAccountId}
                   onChange={(e) => setSelectedAccountId(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gray-900"
+                  className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm bg-fz-surface focus:outline-none focus:ring-2 focus:ring-fz-accent"
                 >
                   {leafAccounts.map((acc) => (
                     <option key={acc.id} value={acc.id}>
@@ -244,13 +244,13 @@ export default function BatchPayButton({
                         placeholder="ej. 1200"
                         value={mepRate}
                         onChange={(e) => setMepRate(e.target.value)}
-                        className="w-24 border border-amber-200 rounded px-2 py-0.5 text-xs text-gray-900 bg-white focus:outline-none focus:ring-1 focus:ring-amber-400 text-right"
+                        className="w-24 border border-amber-200 rounded px-2 py-0.5 text-xs text-fz-text bg-fz-surface focus:outline-none focus:ring-1 focus:ring-amber-400 text-right"
                       />
                     </div>
                     {conversionPreview.map((c) => (
-                      <p key={c.from} className="text-[11px] text-gray-400">
+                      <p key={c.from} className="text-[11px] text-fz-text-tertiary">
                         {formatCurrency(c.fromAmount, c.from)} → se descuenta{" "}
-                        <span className="font-medium text-gray-600">
+                        <span className="font-medium text-fz-text-secondary">
                           {formatCurrency(c.toAmount, selectedAccount!.currency)}
                         </span>{" "}
                         de {accountDisplayName(selectedAccount!, allAccounts)}
@@ -266,7 +266,7 @@ export default function BatchPayButton({
               <div className="space-y-3">
                 {Object.entries(uncoveredByCurrency).map(([cur, items]) => (
                   <div key={cur}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-fz-text mb-1">
                       Cuenta para {cur} (
                       {formatCurrency(
                         items.reduce((s, i) => s + Number(i.amount), 0),
@@ -279,7 +279,7 @@ export default function BatchPayButton({
                       onChange={(e) =>
                         setAccountByCurrency((prev) => ({ ...prev, [cur]: e.target.value }))
                       }
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gray-900"
+                      className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm bg-fz-surface focus:outline-none focus:ring-2 focus:ring-fz-accent"
                     >
                       {leafAccounts
                         .filter((a) => a.currency === cur)
@@ -295,20 +295,20 @@ export default function BatchPayButton({
             )}
 
             {error && (
-              <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+              <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
             )}
 
             <div className="flex gap-3">
               <button
                 onClick={() => { setShowModal(false); setError(null); }}
-                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-600"
+                className="flex-1 py-2.5 rounded-xl border border-fz-border text-sm text-fz-text-secondary"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleConfirm}
                 disabled={!canConfirm}
-                className="flex-1 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-medium disabled:opacity-40"
+                className="flex-1 py-2.5 rounded-xl bg-fz-accent text-fz-accent-text text-sm font-medium disabled:opacity-40"
               >
                 {loading ? "Pagando..." : "Confirmar pago"}
               </button>

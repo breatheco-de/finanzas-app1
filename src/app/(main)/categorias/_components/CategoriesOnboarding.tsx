@@ -49,7 +49,7 @@ export default function CategoriesOnboarding() {
 
   return (
     <div className="space-y-5">
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-fz-text-secondary">
         Elegí las categorías que querés usar. Podés agregar más en cualquier momento.
       </p>
 
@@ -60,8 +60,8 @@ export default function CategoriesOnboarding() {
             onClick={() => toggle(cat.name)}
             className={`flex items-center gap-2 text-left px-3 py-3 rounded-xl border text-sm font-medium transition-colors ${
               selected.has(cat.name)
-                ? "bg-gray-900 text-white border-gray-900"
-                : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
             }`}
           >
             <span className="text-lg">{cat.icon}</span>
@@ -71,14 +71,14 @@ export default function CategoriesOnboarding() {
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+        <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
       )}
 
       <div className="space-y-3 pt-2">
         <button
           onClick={handleCreate}
           disabled={selected.size === 0 || loading}
-          className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-medium hover:bg-gray-700 disabled:opacity-40 transition-colors"
+          className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-medium hover:opacity-90 disabled:opacity-40 transition-colors"
         >
           {loading
             ? "Creando..."
@@ -86,7 +86,7 @@ export default function CategoriesOnboarding() {
         </button>
         <Link
           href="/categorias/nueva"
-          className="block w-full text-center text-sm text-gray-500 hover:text-gray-900 transition-colors py-2"
+          className="block w-full text-center text-sm text-fz-text-secondary hover:text-fz-text transition-colors py-2"
         >
           O agregar categoría personalizada →
         </Link>

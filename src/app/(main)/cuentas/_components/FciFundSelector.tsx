@@ -30,7 +30,7 @@ export default function FciFundSelector({ accountId, funds, onLinked }: Props) {
   if (!selected) {
     return (
       <div className="pt-1 space-y-1">
-        <p className="text-[10px] text-gray-500 font-medium">
+        <p className="text-[10px] text-fz-text-secondary font-medium">
           Elegí tu fondo en esta institución
         </p>
         <div className="space-y-1">
@@ -39,20 +39,20 @@ export default function FciFundSelector({ accountId, funds, onLinked }: Props) {
               key={f.representativeName}
               type="button"
               onClick={() => setSelected(f)}
-              className="w-full flex items-center justify-between gap-2 bg-white border border-gray-200 rounded-lg px-2.5 py-2.5 min-h-[44px] text-left hover:border-gray-400 active:border-gray-500 transition-colors"
+              className="w-full flex items-center justify-between gap-2 bg-fz-surface border border-fz-border rounded-lg px-2.5 py-2.5 min-h-[44px] text-left hover:border-gray-400 active:border-gray-500 transition-colors"
             >
               <span className="min-w-0 flex-1">
-                <span className="block text-xs font-medium text-gray-900 truncate">
+                <span className="block text-xs font-medium text-fz-text truncate">
                   {f.fundFamily}
                 </span>
-                <span className="block text-[10px] text-gray-400">
+                <span className="block text-[10px] text-fz-text-tertiary">
                   {f.currency} · Riesgo {f.risk}
                 </span>
               </span>
               {f.return30d != null && (
                 <span
                   className={`text-[10px] font-medium tabular-nums shrink-0 ${
-                    f.return30d >= 0 ? "text-green-600" : "text-red-600"
+                    f.return30d >= 0 ? "text-fz-accent" : "text-fz-negative"
                   }`}
                 >
                   {f.return30d >= 0 ? "+" : ""}
@@ -69,7 +69,7 @@ export default function FciFundSelector({ accountId, funds, onLinked }: Props) {
   return (
     <div className="pt-1 space-y-1.5">
       <div className="flex items-center justify-between">
-        <p className="text-[10px] text-gray-500 font-medium">
+        <p className="text-[10px] text-fz-text-secondary font-medium">
           {selected.fundFamily}
         </p>
         <button
@@ -79,7 +79,7 @@ export default function FciFundSelector({ accountId, funds, onLinked }: Props) {
             setAmount("");
             setError(null);
           }}
-          className="text-[10px] text-gray-400 hover:text-gray-700"
+          className="text-[10px] text-fz-text-tertiary hover:text-fz-text"
         >
           Cambiar fondo
         </button>
@@ -93,12 +93,12 @@ export default function FciFundSelector({ accountId, funds, onLinked }: Props) {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           placeholder="Monto invertido"
-          className="flex-1 border border-gray-300 rounded-lg px-2 py-1.5 text-xs text-right focus:outline-none focus:ring-1 focus:ring-gray-900"
+          className="flex-1 border border-fz-border rounded-lg px-2 py-1.5 text-xs text-right focus:outline-none focus:ring-1 focus:ring-fz-accent"
         />
-        <span className="text-[10px] text-gray-400">{selected.currency}</span>
+        <span className="text-[10px] text-fz-text-tertiary">{selected.currency}</span>
       </div>
       {amount && !isNaN(parseFloat(amount)) && parseFloat(amount) > 0 && (
-        <p className="text-[10px] text-gray-400">
+        <p className="text-[10px] text-fz-text-tertiary">
           ≈ {(parseFloat(amount) / selected.vcp).toFixed(4)} cuotapartes a{" "}
           {formatCurrency(selected.vcp, selected.currency)} c/u ({selected.fecha})
         </p>
@@ -132,12 +132,12 @@ export default function FciFundSelector({ accountId, funds, onLinked }: Props) {
             }
             onLinked();
           }}
-          className="text-[11px] font-medium text-gray-900 disabled:opacity-40"
+          className="text-[11px] font-medium text-fz-text disabled:opacity-40"
         >
           {saving ? "Vinculando…" : "Vincular"}
         </button>
       </div>
-      {error && <p className="text-[10px] text-red-600">{error}</p>}
+      {error && <p className="text-[10px] text-fz-negative">{error}</p>}
     </div>
   );
 }

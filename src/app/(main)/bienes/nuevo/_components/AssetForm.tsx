@@ -42,15 +42,15 @@ function Field({
 }) {
   return (
     <div className="space-y-1">
-      <label className="text-xs font-medium text-gray-500">{label}</label>
-      {hint && <p className="text-[11px] text-gray-400 leading-tight">{hint}</p>}
+      <label className="text-xs font-medium text-fz-text-secondary">{label}</label>
+      {hint && <p className="text-[11px] text-fz-text-tertiary leading-tight">{hint}</p>}
       {children}
     </div>
   );
 }
 
 const INPUT =
-  "w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white";
+  "w-full border border-fz-border rounded-xl px-3 py-2.5 text-sm text-fz-text focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface";
 
 export default function AssetForm() {
   const router = useRouter();
@@ -209,8 +209,8 @@ export default function AssetForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5 pb-8">
       {/* Identificación */}
-      <section className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
-        <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+      <section className="bg-fz-surface rounded-2xl p-4 shadow-[var(--fz-shadow)] space-y-4">
+        <h2 className="text-xs font-semibold text-fz-text-tertiary uppercase tracking-wide">
           Identificación
         </h2>
 
@@ -239,7 +239,7 @@ export default function AssetForm() {
             ))}
           </select>
           {defaultSource && (
-            <p className="text-[11px] text-indigo-600 mt-1">
+            <p className="text-[11px] text-fz-accent mt-1">
               Defaults cargados · Fuente: {defaultSource}
             </p>
           )}
@@ -267,7 +267,7 @@ export default function AssetForm() {
               </p>
             </Field>
 
-            <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+            <label className="flex items-center gap-2 text-sm text-fz-text cursor-pointer">
               <input
                 type="checkbox"
                 checked={boughtUsed}
@@ -281,8 +281,8 @@ export default function AssetForm() {
       </section>
 
       {/* Datos de compra */}
-      <section className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
-        <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+      <section className="bg-fz-surface rounded-2xl p-4 shadow-[var(--fz-shadow)] space-y-4">
+        <h2 className="text-xs font-semibold text-fz-text-tertiary uppercase tracking-wide">
           Datos de compra
         </h2>
 
@@ -354,20 +354,20 @@ export default function AssetForm() {
       </section>
 
       {/* Parámetros del fondo */}
-      <section className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
+      <section className="bg-fz-surface rounded-2xl p-4 shadow-[var(--fz-shadow)] space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+          <h2 className="text-xs font-semibold text-fz-text-tertiary uppercase tracking-wide">
             Parámetros del fondo
           </h2>
           {defaultSource && (
-            <span className="text-[10px] bg-indigo-50 text-indigo-600 font-medium px-2 py-0.5 rounded-full">
+            <span className="text-[10px] bg-fz-accent-soft text-fz-accent font-medium px-2 py-0.5 rounded-full">
               {defaultSource}
             </span>
           )}
         </div>
 
         {isVivienda ? (
-          <p className="text-xs text-gray-400 italic">
+          <p className="text-xs text-fz-text-tertiary italic">
             Vivienda: solo Maintenance Reserve (no se reemplaza). Vida útil y residual no aplican.
           </p>
         ) : (
@@ -431,8 +431,8 @@ export default function AssetForm() {
 
       {/* Objetivo de ahorro */}
       {!isVivienda && (
-        <section className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
-          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+        <section className="bg-fz-surface rounded-2xl p-4 shadow-[var(--fz-shadow)] space-y-4">
+          <h2 className="text-xs font-semibold text-fz-text-tertiary uppercase tracking-wide">
             Objetivo de ahorro
           </h2>
           <div className="flex gap-2">
@@ -443,8 +443,8 @@ export default function AssetForm() {
                 onClick={() => setSavingsGoalMode(m)}
                 className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
                   savingsGoalMode === m
-                    ? "bg-gray-900 text-white border-gray-900"
-                    : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                    ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                    : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
                 }`}
               >
                 {m === "calculated" ? "Calculado" : "Manual"}
@@ -485,8 +485,8 @@ export default function AssetForm() {
 
       {/* Preview en tiempo real */}
       {preview && (
-        <section className="bg-gray-900 text-white rounded-2xl p-4 space-y-3">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+        <section className="bg-fz-accent text-fz-accent-text rounded-2xl p-4 space-y-3">
+          <p className="text-xs font-semibold text-fz-text-tertiary uppercase tracking-wide">
             Aporte mensual estimado
             {preview.isManual && (
               <span className="ml-2 text-amber-400 normal-case font-normal">· modo manual</span>
@@ -495,14 +495,14 @@ export default function AssetForm() {
           <div className="space-y-2">
             {preview.sinkingFund > 0 && (
               <div className="flex justify-between">
-                <span className="text-sm text-gray-300">Sinking Fund (reposición)</span>
+                <span className="text-sm text-fz-text-tertiary">Sinking Fund (reposición)</span>
                 <span className="text-sm font-semibold tabular-nums">
                   {formatCurrency(preview.sinkingFund, currency)}
                 </span>
               </div>
             )}
             <div className="flex justify-between">
-              <span className="text-sm text-gray-300">Mantenimiento</span>
+              <span className="text-sm text-fz-text-tertiary">Mantenimiento</span>
               <span className="text-sm font-semibold tabular-nums">
                 {formatCurrency(preview.maintenance, currency)}
               </span>
@@ -511,12 +511,12 @@ export default function AssetForm() {
               <span className="text-sm font-medium">Total a apartar</span>
               <span className="text-base font-bold tabular-nums">
                 {formatCurrency(preview.total, currency)}
-                <span className="text-xs font-normal text-gray-400">/mes</span>
+                <span className="text-xs font-normal text-fz-text-tertiary">/mes</span>
               </span>
             </div>
           </div>
           {preview.goalAmount > 0 && (
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-fz-text-tertiary">
               Meta: {formatCurrency(preview.goalAmount, currency)} en {preview.monthsRemaining} meses
               {!preview.isManual && preview.residualValue != null && (
                 <span className="ml-1">(valor de reventa estimado: {formatCurrency(preview.residualValue, currency)})</span>
@@ -527,13 +527,13 @@ export default function AssetForm() {
       )}
 
       {serverError && (
-        <p className="text-sm text-red-600 text-center">{serverError}</p>
+        <p className="text-sm text-fz-negative text-center">{serverError}</p>
       )}
 
       <button
         type="submit"
         disabled={saving || !name}
-        className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-semibold disabled:opacity-40 transition-opacity"
+        className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-semibold disabled:opacity-40 transition-opacity"
       >
         {saving ? "Guardando…" : "Guardar bien"}
       </button>

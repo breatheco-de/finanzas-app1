@@ -1,50 +1,48 @@
 @import "tailwindcss";
 
-/* Sistema de diseño (Sesión J.1.16) — traducido del prototipo de Claude Design
-   ("Diseño/Dashboard finanzas Argentina.zip"), función colors(dark) del
-   archivo .dc.html. Reemplaza el acento indigo de la Sesión J.1.15 por el
-   verde-azulado (oklch hue 175) del nuevo diseño. Documentado también en
-   CLAUDE.md, sección "Sistema de diseño".
-
-   Los tokens fz-* viven en :root (claro) y se sobreescriben en .dark (oscuro,
-   clase que aplica next-themes en <html>). @theme los expone como colores
-   Tailwind de primera clase (bg-fz-surface, text-fz-text, etc.) — NO como
-   arbitrary values `bg-[var(--x)]`, que en Tailwind v4 no resolvían de forma
-   confiable para variables declaradas fuera de @theme (ver lección §36). Acá
-   el valor SÍ está declarado como token de @theme (apunta a la var en tiempo
-   de ejecución), que es el patrón soportado. */
+/* Sistema de diseño premium — fintech quiet luxury.
+   Tokens fz-* en :root / .dark; @theme los expone a Tailwind.
+   NO usar bg-[var(--x)] arbitrary (lección §36). */
 :root {
   --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
-  --fz-bg: oklch(0.985 0.004 175);
-  --fz-surface: oklch(0.998 0.002 175);
-  --fz-surface-high: oklch(0.955 0.007 175);
-  --fz-border: oklch(0.90 0.007 175);
-  --fz-text: oklch(0.22 0.02 175);
-  --fz-text-secondary: oklch(0.46 0.02 175);
-  --fz-text-tertiary: oklch(0.58 0.015 175);
-  --fz-accent: oklch(0.50 0.11 175);
-  --fz-accent-soft: oklch(0.93 0.045 175);
+  /* Fondo ligeramente más neutro; surface más limpio; acento un punto más vivo */
+  --fz-bg: oklch(0.975 0.006 175);
+  --fz-surface: oklch(0.995 0.002 175);
+  --fz-surface-high: oklch(0.945 0.01 175);
+  --fz-border: oklch(0.905 0.008 175);
+  --fz-text: oklch(0.2 0.02 175);
+  --fz-text-secondary: oklch(0.44 0.018 175);
+  --fz-text-tertiary: oklch(0.56 0.014 175);
+  --fz-accent: oklch(0.48 0.125 175);
+  --fz-accent-soft: oklch(0.94 0.04 175);
   --fz-accent-text: #ffffff;
-  --fz-negative: oklch(0.55 0.16 25);
-  --fz-negative-soft: oklch(0.94 0.05 25);
-  --fz-nav-bg: #ffffff;
+  --fz-negative: oklch(0.54 0.17 25);
+  --fz-negative-soft: oklch(0.95 0.04 25);
+  --fz-nav-bg: oklch(0.995 0.002 175);
+  --fz-shadow: 0 1px 2px oklch(0.2 0.02 175 / 0.04),
+    0 4px 16px oklch(0.2 0.02 175 / 0.06);
+  --fz-shadow-lg: 0 8px 32px oklch(0.2 0.02 175 / 0.12);
+  --fz-radius: 20px;
+  --fz-radius-lg: 24px;
 }
 
 .dark {
-  --fz-bg: oklch(0.17 0.012 250);
-  --fz-surface: oklch(0.223 0.014 250);
-  --fz-surface-high: oklch(0.275 0.017 250);
-  --fz-border: oklch(0.33 0.017 250);
-  --fz-text: oklch(0.96 0.005 250);
-  --fz-text-secondary: oklch(0.72 0.014 250);
-  --fz-text-tertiary: oklch(0.55 0.014 250);
-  --fz-accent: oklch(0.78 0.13 175);
-  --fz-accent-soft: oklch(0.30 0.06 175);
+  --fz-bg: oklch(0.155 0.014 250);
+  --fz-surface: oklch(0.21 0.015 250);
+  --fz-surface-high: oklch(0.265 0.018 250);
+  --fz-border: oklch(0.32 0.016 250);
+  --fz-text: oklch(0.97 0.005 250);
+  --fz-text-secondary: oklch(0.74 0.012 250);
+  --fz-text-tertiary: oklch(0.55 0.012 250);
+  --fz-accent: oklch(0.78 0.14 175);
+  --fz-accent-soft: oklch(0.28 0.055 175);
   --fz-accent-text: oklch(0.14 0.02 175);
   --fz-negative: oklch(0.72 0.15 25);
-  --fz-negative-soft: oklch(0.30 0.07 25);
-  --fz-nav-bg: oklch(0.20 0.013 250);
+  --fz-negative-soft: oklch(0.28 0.06 25);
+  --fz-nav-bg: oklch(0.19 0.014 250);
+  --fz-shadow: 0 1px 2px oklch(0 0 0 / 0.25), 0 4px 20px oklch(0 0 0 / 0.35);
+  --fz-shadow-lg: 0 12px 40px oklch(0 0 0 / 0.5);
 }
 
 @theme inline {
@@ -62,31 +60,201 @@
   --color-fz-negative-soft: var(--fz-negative-soft);
   --color-fz-nav-bg: var(--fz-nav-bg);
 
-  /* Tipografía (Sesión J.1.17, TAREA 2): reemplaza las 3 fuentes de
-     next/font/google de J.1.16 (Big Shoulders, IBM Plex Sans, IBM Plex Mono)
-     por la fuente nativa del sistema — en iPhone renderiza con SF Pro, sin
-     cargar ningún archivo. font-display, font-sans y font-mono apuntan las
-     3 al mismo stack: la jerarquía (títulos, números hero) se logra con
-     font-weight 700-800 + tamaño, no con una familia separada. Para montos
-     (que antes usaban IBM Plex Mono para alinear dígitos), font-mono +
-     font-variant-numeric: tabular-nums (abajo) logra el mismo alineamiento
-     prolijo con la fuente del sistema. */
   --font-display: var(--font-system);
   --font-sans: var(--font-system);
   --font-mono: var(--font-system);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   background: var(--fz-bg);
   color: var(--fz-text);
   font-family: var(--font-system);
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  letter-spacing: -0.01em;
 }
 
-/* Todo uso de la utilidad font-mono (valores monetarios en toda la app)
-   alinea los dígitos con tabular-nums — reemplaza la necesidad de una
-   fuente monoespaciada dedicada (IBM Plex Mono, Sesión J.1.16). */
 .font-mono {
   font-variant-numeric: tabular-nums;
+}
+
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ——— Utilidades de producto ——— */
+
+.fz-page {
+  width: 100%;
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.85rem 1rem calc(5rem + env(safe-area-inset-bottom));
+  min-height: 100dvh;
+  background: var(--fz-bg);
+}
+
+.mobile-page {
+  /* alias legacy */
+  width: 100%;
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem 1rem calc(5.5rem + env(safe-area-inset-bottom));
+  min-height: 100dvh;
+  background: var(--fz-bg);
+}
+
+.fz-card {
+  background: var(--fz-surface);
+  border: 1px solid var(--fz-border);
+  border-radius: var(--fz-radius);
+  box-shadow: var(--fz-shadow);
+  transition: box-shadow 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.fz-card-hero {
+  background: var(--fz-surface-high);
+  border: 1px solid var(--fz-border);
+  border-radius: var(--fz-radius-lg);
+  box-shadow: var(--fz-shadow);
+  padding: 1.25rem 1.35rem;
+}
+
+.fz-card-flat {
+  background: var(--fz-surface);
+  border: 1px solid var(--fz-border);
+  border-radius: var(--fz-radius);
+}
+
+.fz-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 1.25rem;
+  border-radius: 16px;
+  background: var(--fz-accent);
+  color: var(--fz-accent-text);
+  font-size: 16px;
+  font-weight: 600;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+.fz-btn-primary:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+.fz-btn-primary:disabled {
+  opacity: 0.45;
+}
+
+.fz-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 1.25rem;
+  border-radius: 16px;
+  background: var(--fz-surface);
+  color: var(--fz-text);
+  border: 1px solid var(--fz-border);
+  font-size: 16px;
+  font-weight: 600;
+  transition: background 150ms ease, transform 150ms ease;
+}
+.fz-btn-secondary:active {
+  background: var(--fz-surface-high);
+  transform: scale(0.98);
+}
+
+.fz-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  border-radius: 14px;
+  color: var(--fz-text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 150ms ease;
+}
+.fz-btn-ghost:active {
+  background: var(--fz-surface-high);
+}
+
+.fz-input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--fz-border);
+  background: var(--fz-bg);
+  color: var(--fz-text);
+  font-size: 16px;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.fz-input:focus {
+  outline: none;
+  border-color: var(--fz-accent);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--fz-accent) 25%, transparent);
+}
+
+.fz-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 550;
+  color: var(--fz-text);
+  margin-bottom: 0.4rem;
+}
+
+.fz-section-label {
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fz-text-tertiary);
+}
+
+.fz-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--fz-surface-high);
+  color: var(--fz-text-secondary);
+  border: 1px solid var(--fz-border);
+  transition: background 150ms ease, color 150ms ease;
+}
+.fz-chip-active {
+  background: var(--fz-accent);
+  color: var(--fz-accent-text);
+  border-color: transparent;
+}
+
+input,
+select,
+textarea {
+  font-size: 16px;
+  min-height: 48px;
+  border-radius: 16px;
+}
+
+button,
+a {
+  touch-action: manipulation;
 }
 
 ::-webkit-scrollbar {
