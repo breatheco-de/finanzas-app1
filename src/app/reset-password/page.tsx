@@ -8,20 +8,16 @@ export default async function ResetPasswordPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Sin sesión de recuperación activa (link vencido, ya usado, o acceso directo
-  // a la ruta sin pasar por el email) — no hay forma de cambiar la contraseña
-  // acá. Mandar a pedir un link nuevo en vez de mostrar un formulario que va a
-  // fallar. Sesión J.1.12, TAREA 3.
   if (!user) redirect("/forgot-password");
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow p-8 space-y-6">
+    <div className="min-h-[100dvh] flex items-center justify-center bg-fz-bg px-5">
+      <div className="fz-card w-full max-w-sm p-8 space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">
+          <h1 className="font-display font-bold text-2xl tracking-tight text-fz-text">
             Nueva contraseña
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-[15px] text-fz-text-secondary mt-2">
             Elegí una contraseña nueva para tu cuenta.
           </p>
         </div>

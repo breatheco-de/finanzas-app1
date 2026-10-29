@@ -156,7 +156,7 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Nombre */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Nombre del activo
         </label>
         <input
@@ -165,17 +165,17 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Ej: Grupo Galicia, CEDEAR Apple, Letes USD"
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
         />
       </div>
 
       {/* Tipo — va antes que Ticker porque determina si Ticker ofrece el datalist de CEDEARs */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+        <label className="block text-sm font-medium text-fz-text mb-1">Tipo</label>
         <select
           value={assetType}
           onChange={(e) => setAssetType(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface"
         >
           {ASSET_TYPES.map((t) => (
             <option key={t.value} value={t.value}>
@@ -187,14 +187,14 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
 
       {/* Ticker */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Ticker{" "}
-          <span className="text-gray-400 font-normal">
+          <span className="text-fz-text-tertiary font-normal">
             {assetType === "cedear" ? "(elegí de la lista)" : "(opcional)"}
           </span>
         </label>
         {assetType === "fci" && (
-          <p className="text-[11px] text-gray-400 mb-1">
+          <p className="text-[11px] text-fz-text-tertiary mb-1">
             Para fondos comunes, la actualización automática de precio busca por el
             Nombre exacto del fondo (no por Ticker) — dejalo vacío si no estás
             seguro.
@@ -206,7 +206,7 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
           value={ticker}
           onChange={(e) => setTicker(e.target.value.toUpperCase())}
           placeholder="Ej: GGAL, PAMP, AAPL, AL30"
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 uppercase"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent uppercase"
         />
         {assetType === "cedear" && (
           <datalist id="cedear-symbols">
@@ -216,14 +216,14 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
           </datalist>
         )}
         {assetType === "cedear" && cedearQuote && (
-          <p className="text-[11px] text-gray-500 mt-1">
+          <p className="text-[11px] text-fz-text-secondary mt-1">
             Precio actual detectado:{" "}
-            <span className="font-medium text-gray-700">
+            <span className="font-medium text-fz-text">
               {formatCurrency(cedearQuote.price, cedearQuote.currency)}
             </span>{" "}
             <span
               className={
-                cedearQuote.pctChange >= 0 ? "text-green-600" : "text-red-600"
+                cedearQuote.pctChange >= 0 ? "text-fz-accent" : "text-fz-negative"
               }
             >
               ({cedearQuote.pctChange >= 0 ? "+" : ""}
@@ -237,7 +237,7 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
           ticker.trim() &&
           !cedearQuote &&
           cedearQuotes.length > 0 && (
-            <p className="text-[11px] text-gray-400 mt-1">
+            <p className="text-[11px] text-fz-text-tertiary mt-1">
               No encontramos &quot;{ticker}&quot; en el feed — podés seguir
               cargando el precio a mano.
             </p>
@@ -246,7 +246,7 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
 
       {/* Cantidad — sin moneda al lado: es un número de unidades, no un monto */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Cantidad
         </label>
         <input
@@ -257,13 +257,13 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
           placeholder="Unidades o cuotapartes"
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
         />
       </div>
 
       {/* Modo de precio de compra */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Precio de compra
         </label>
         <div className="flex gap-1 mb-3">
@@ -272,8 +272,8 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
             onClick={() => setPriceMode("exact")}
             className={`flex-1 py-2 rounded-lg text-xs font-medium border transition-colors ${
               priceMode === "exact"
-                ? "bg-gray-900 text-white border-gray-900"
-                : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
             }`}
           >
             Precio exacto
@@ -283,8 +283,8 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
             onClick={() => setPriceMode("pct")}
             className={`flex-1 py-2 rounded-lg text-xs font-medium border transition-colors ${
               priceMode === "pct"
-                ? "bg-gray-900 text-white border-gray-900"
-                : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
             }`}
           >
             Sé cuánto gané (%)
@@ -294,7 +294,7 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
         {priceMode === "exact" ? (
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-gray-500 mb-1">
+              <label className="block text-xs text-fz-text-secondary mb-1">
                 Precio promedio de compra
               </label>
               <input
@@ -305,11 +305,11 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
                 value={avgBuyPrice}
                 onChange={(e) => setAvgBuyPrice(e.target.value)}
                 placeholder="0"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900 text-right text-lg font-semibold"
+                className="w-full border border-fz-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fz-accent text-right text-lg font-semibold"
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Moneda</label>
+              <label className="block text-xs text-fz-text-secondary mb-1">Moneda</label>
               <div className="flex gap-1">
                 {(["ARS", "USD"] as Currency[]).map((c) => (
                   <button
@@ -318,8 +318,8 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
                     onClick={() => setCurrency(c)}
                     className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
                       currency === c
-                        ? "bg-gray-900 text-white border-gray-900"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                        ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                        : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
                     }`}
                   >
                     {c}
@@ -332,7 +332,7 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs text-gray-500 mb-1">
+                <label className="block text-xs text-fz-text-secondary mb-1">
                   Precio actual
                 </label>
                 <input
@@ -343,11 +343,11 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
                   value={currentPrice}
                   onChange={(e) => setCurrentPrice(e.target.value)}
                   placeholder="0"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900 text-right text-lg font-semibold"
+                  className="w-full border border-fz-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fz-accent text-right text-lg font-semibold"
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500 mb-1">Moneda</label>
+                <label className="block text-xs text-fz-text-secondary mb-1">Moneda</label>
                 <div className="flex gap-1">
                   {(["ARS", "USD"] as Currency[]).map((c) => (
                     <button
@@ -356,8 +356,8 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
                       onClick={() => setCurrency(c)}
                       className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
                         currency === c
-                          ? "bg-gray-900 text-white border-gray-900"
-                          : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                          ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                          : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
                       }`}
                     >
                       {c}
@@ -367,7 +367,7 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
               </div>
             </div>
             <div>
-              <label className="block text-xs text-gray-500 mb-1">
+              <label className="block text-xs text-fz-text-secondary mb-1">
                 % de ganancia/pérdida
               </label>
               <input
@@ -378,17 +378,17 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
                 value={pctGain}
                 onChange={(e) => setPctGain(e.target.value)}
                 placeholder="Ej: 15 (ganaste 15%) o -8 (perdiste 8%)"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 text-right"
+                className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent text-right"
               />
             </div>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-fz-text-tertiary">
               Es una aproximación, no el dato exacto — derivamos el precio de compra a
               partir del precio actual y este %.
               {derivedAvgPrice != null && (
                 <>
                   {" "}
                   Precio de compra estimado:{" "}
-                  <span className="font-medium text-gray-600">
+                  <span className="font-medium text-fz-text-secondary">
                     {derivedAvgPrice.toFixed(2)} {currency}
                   </span>
                 </>
@@ -401,9 +401,9 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
       {/* Precio actual (solo en modo exacto — en modo % ya se pidió arriba) */}
       {priceMode === "exact" && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-fz-text mb-1">
             Precio actual{" "}
-            <span className="text-gray-400 font-normal">
+            <span className="text-fz-text-tertiary font-normal">
               (opcional, en {currency})
             </span>
           </label>
@@ -414,20 +414,20 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
             value={currentPrice}
             onChange={(e) => setCurrentPrice(e.target.value)}
             placeholder="Para ver ganancia/pérdida ya"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 text-right"
+            className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent text-right"
           />
         </div>
       )}
 
       {/* Cuenta / Broker */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Cuenta / Broker
         </label>
         <select
           value={accountId}
           onChange={(e) => setAccountId(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface"
         >
           <option value="">Sin cuenta</option>
           {leafAccounts.map((acc) => (
@@ -440,19 +440,19 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
 
       {/* Fecha de compra */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Fecha de compra
         </label>
         <input
           type="date"
           value={purchaseDate}
           onChange={(e) => setPurchaseDate(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
         />
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">
+        <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">
           {error}
         </p>
       )}
@@ -460,7 +460,7 @@ export default function HoldingForm({ accounts, cedearQuotes }: Props) {
       <button
         type="submit"
         disabled={!canSubmit}
-        className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-medium hover:bg-gray-700 disabled:opacity-40 transition-colors"
+        className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-medium hover:opacity-90 disabled:opacity-40 transition-colors"
       >
         {loading ? "Guardando..." : "Guardar posición"}
       </button>

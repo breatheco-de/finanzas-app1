@@ -34,7 +34,7 @@ export default function LogoutButton({ variant = "link" }: Props) {
   return (
     <button
       onClick={handleLogout}
-      className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+      className="text-sm text-fz-text-secondary hover:text-fz-text transition-colors"
     >
       Cerrar sesión
     </button>

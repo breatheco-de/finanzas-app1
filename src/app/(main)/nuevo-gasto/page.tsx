@@ -20,7 +20,7 @@ export default async function NuevoGastoDirectoPage() {
 
   return (
     <div className="p-4 max-w-lg mx-auto">
-      <h1 className="text-xl font-semibold text-gray-900 pt-2 mb-6">Nuevo gasto</h1>
+      <h1 className="text-xl font-semibold text-fz-text pt-2 mb-6">Nuevo gasto</h1>
       <ExpenseForm
         accounts={(accounts ?? []) as Account[]}
         categories={(categories ?? []) as Category[]}

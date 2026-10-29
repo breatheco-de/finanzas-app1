@@ -1,8 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
 import GruposClient from "./_components/GruposClient";
+import PageHeader from "@/components/PageHeader";
 import type { ShareGroup, ShareGroupMember, ShareGroupWithMembers } from "@/types";
 
 export default async function GruposPage() {
@@ -43,18 +42,11 @@ export default async function GruposPage() {
 
   return (
     <div className="p-4 max-w-lg mx-auto space-y-6 pb-28 bg-fz-bg min-h-screen">
-      <div className="flex items-center gap-3 pt-2">
-        <Link href="/compartidos" className="text-fz-text" aria-label="Volver">
-          <ChevronLeft size={24} />
-        </Link>
-        <div>
-          <h1 className="font-display font-extrabold text-2xl text-fz-text uppercase tracking-wide">
-            Grupos
-          </h1>
-          <p className="text-sm text-fz-text-tertiary mt-0.5">
-            Familiares, amigos y otros para gastos compartidos
-          </p>
-        </div>
+      <div className="pt-2">
+        <PageHeader
+          title="Grupos"
+          subtitle="Familiares, amigos y otros para gastos compartidos"
+        />
       </div>
 
       {migrationMissing ? (

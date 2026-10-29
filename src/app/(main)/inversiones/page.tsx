@@ -5,6 +5,7 @@ import Link from "next/link";
 import { TrendingUp } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
 import { Money } from "@/components/Money";
+import PageHeader from "@/components/PageHeader";
 import HoldingPriceEdit from "./_components/HoldingPriceEdit";
 import HoldingPositionEdit from "./_components/HoldingPositionEdit";
 import DeleteHoldingButton from "./_components/DeleteHoldingButton";
@@ -89,19 +90,18 @@ export default async function InversionesPage({
 
   if (holdings.length === 0) {
     return (
-      <div className="p-4 max-w-lg mx-auto bg-fz-bg min-h-screen -mt-[1px]">
-        <div className="flex items-center justify-between pt-2 mb-6">
-          <h1 className="font-display font-extrabold text-2xl text-fz-text uppercase tracking-wide">
-            Inversiones
-          </h1>
-          <Link
-            href="/inversiones/nueva"
-            className="text-sm font-medium bg-fz-text text-fz-bg px-3 py-1.5 rounded-lg"
-          >
-            + Agregar
-          </Link>
+      <div className="fz-page">
+        <div className="mb-6">
+          <PageHeader title="Inversiones">
+            <Link
+              href="/inversiones/nueva"
+              className="text-[14px] font-semibold text-fz-accent-text bg-fz-accent rounded-full px-4 min-h-[44px] inline-flex items-center shadow-[var(--fz-shadow)]"
+            >
+              + Agregar
+            </Link>
+          </PageHeader>
         </div>
-        <div className="bg-fz-surface border border-fz-border rounded-2xl p-8 text-center space-y-3">
+        <div className="fz-card p-8 text-center space-y-3">
           <div className="w-14 h-14 rounded-full bg-fz-accent-soft flex items-center justify-center mx-auto">
             <TrendingUp size={26} className="text-fz-accent" />
           </div>
@@ -121,18 +121,15 @@ export default async function InversionesPage({
   }
 
   return (
-    <div className="p-4 max-w-lg mx-auto space-y-6 pb-24 bg-fz-bg min-h-screen -mt-[1px]">
-      <div className="flex items-center justify-between pt-2">
-        <h1 className="font-display font-extrabold text-2xl text-fz-text uppercase tracking-wide">
-          Inversiones
-        </h1>
+    <div className="fz-page space-y-6">
+      <PageHeader title="Inversiones">
         <Link
           href="/inversiones/nueva"
-          className="text-sm font-medium bg-fz-text text-fz-bg px-3 py-1.5 rounded-lg"
+          className="text-[14px] font-semibold text-fz-accent-text bg-fz-accent rounded-full px-4 min-h-[44px] inline-flex items-center shadow-[var(--fz-shadow)]"
         >
           + Agregar
         </Link>
-      </div>
+      </PageHeader>
 
       {/* Resumen portafolio — no bloquea, solo usa precios ya guardados en DB */}
       <Suspense fallback={null}>

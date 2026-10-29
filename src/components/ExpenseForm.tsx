@@ -253,10 +253,10 @@ export default function ExpenseForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 pb-28">
       {/* Monto + moneda */}
       <div>
-        <label className="block text-[15px] font-medium text-gray-700 mb-2">Monto</label>
+        <label className="block text-[15px] font-medium text-fz-text mb-2">Monto</label>
         <div className="flex gap-2">
           <div className="flex gap-1 shrink-0">
             {(["ARS", "USD"] as Currency[]).map((c) => (
@@ -266,8 +266,8 @@ export default function ExpenseForm({
                 onClick={() => setCurrency(c)}
                 className={`min-w-[52px] min-h-[52px] px-3 rounded-xl text-[15px] font-semibold border transition-colors ${
                   currency === c
-                    ? "bg-gray-900 text-white border-gray-900"
-                    : "bg-white text-gray-700 border-gray-200"
+                    ? "bg-fz-accent text-fz-accent-text border-fz-accent"
+                    : "bg-fz-surface text-fz-text border-fz-border"
                 }`}
               >
                 {c === "ARS" ? "$" : "US$"}
@@ -281,7 +281,7 @@ export default function ExpenseForm({
                 value={amount}
                 onChange={setAmount}
                 placeholder="0"
-                className="w-full min-h-[52px] border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-900 text-right text-[22px] font-semibold bg-white text-gray-900"
+                className="w-full min-h-[52px] border border-fz-border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fz-accent text-right text-[22px] font-semibold bg-fz-surface text-fz-text"
               />
             ) : (
               <input
@@ -293,11 +293,11 @@ export default function ExpenseForm({
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0"
-                className="w-full min-h-[52px] border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-900 text-right text-[22px] font-semibold bg-white text-gray-900"
+                className="w-full min-h-[52px] border border-fz-border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-fz-accent text-right text-[22px] font-semibold bg-fz-surface text-fz-text"
               />
             )}
             {amount && currency === "ARS" && (
-              <p className="text-xs text-gray-400 text-right mt-1">
+              <p className="text-xs text-fz-text-tertiary text-right mt-1">
                 {formatInputAmount(amount, "ARS")}
               </p>
             )}
@@ -307,13 +307,13 @@ export default function ExpenseForm({
 
       {/* Cuenta pagadora — interacción primaria */}
       <div>
-        <label className="block text-[15px] font-medium text-gray-700 mb-2">
+        <label className="block text-[15px] font-medium text-fz-text mb-2">
           ¿Con qué cuenta pagás?
         </label>
         <select
           value={accountId}
           onChange={(e) => handleAccountChange(e.target.value)}
-          className="w-full min-h-[52px] border border-gray-300 rounded-xl px-4 py-3 text-[16px] focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white text-gray-900"
+          className="w-full min-h-[52px] border border-fz-border rounded-xl px-4 py-3 text-[16px] focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface text-fz-text"
         >
           <option value="">Sin cuenta</option>
           {groups.map((group) => {
@@ -341,7 +341,7 @@ export default function ExpenseForm({
           })}
         </select>
         {selectedAccount && (
-          <p className="text-[11px] text-gray-400 mt-0.5">
+          <p className="text-[11px] text-fz-text-tertiary mt-0.5">
             {paymentMethod === "credito"
               ? "Tarjeta de crédito — podés elegir cuotas y cuenta de cobertura."
               : paymentMethod === "efectivo"
@@ -353,10 +353,10 @@ export default function ExpenseForm({
 
       {/* Sección crédito */}
       {isCredito && (
-        <div className="space-y-3 bg-gray-50 rounded-xl p-3">
+        <div className="space-y-3 bg-fz-surface-high rounded-xl p-3">
           {/* Cuotas */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-fz-text mb-1">
               ¿En cuántas cuotas?
             </label>
             <input
@@ -367,10 +367,10 @@ export default function ExpenseForm({
               step="1"
               value={installmentsTotal}
               onChange={(e) => setInstallmentsTotal(parseInt(e.target.value) || 1)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 text-center font-semibold"
+              className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent text-center font-semibold"
             />
             {amount && installmentsTotal > 1 && (
-              <p className="text-xs text-gray-400 mt-1 text-center">
+              <p className="text-xs text-fz-text-tertiary mt-1 text-center">
                 {installmentsTotal} cuotas de{" "}
                 {(parseFloat(amount.replace(",", ".")) / installmentsTotal).toLocaleString("es-AR", {
                   style: "currency",
@@ -384,12 +384,12 @@ export default function ExpenseForm({
 
           {/* Cuenta de cobertura — solo earns_yield=true */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-fz-text mb-1">
               ¿Qué cuenta cubre este pago?{" "}
-              <span className="text-gray-400 font-normal">(opcional)</span>
+              <span className="text-fz-text-tertiary font-normal">(opcional)</span>
             </label>
             {coveringLeafs.length === 0 ? (
-              <p className="text-xs text-gray-500 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2">
+              <p className="text-xs text-fz-text-secondary bg-amber-50 border border-amber-100 rounded-lg px-3 py-2">
                 Ninguna cuenta está marcada como generadora de rendimiento.{" "}
                 <Link href="/cuentas" className="underline">
                   Configuralo en /cuentas
@@ -404,7 +404,7 @@ export default function ExpenseForm({
                   setFundingAccountId("");
                   setFundingTiming("later");
                 }}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
+                className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface"
               >
                 <option value="">No destinar a ningún fondo</option>
                 {coveringLeafs.map((acc) => (
@@ -419,7 +419,7 @@ export default function ExpenseForm({
           {/* Timing de la transferencia — solo cuando hay cobertura */}
           {coveringAccountId && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-fz-text mb-1">
                 ¿Transferís la plata ahora o después?
               </label>
               <div className="flex gap-2">
@@ -431,17 +431,17 @@ export default function ExpenseForm({
                       setFundingTiming(t);
                       if (t === "later") setFundingAccountId("");
                     }}
-                    className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${
+                    className={`flex-1 min-h-[48px] rounded-xl text-[15px] font-semibold border transition-colors ${
                       fundingTiming === t
-                        ? "bg-gray-900 text-white border-gray-900"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                        ? "bg-fz-accent text-fz-accent-text border-fz-accent"
+                        : "bg-fz-surface text-fz-text border-fz-border "
                     }`}
                   >
                     {t === "now" ? "Ahora" : "Después"}
                   </button>
                 ))}
               </div>
-              <p className="text-[11px] text-gray-400 mt-0.5">
+              <p className="text-[11px] text-fz-text-tertiary mt-0.5">
                 {fundingTiming === "now"
                   ? "La plata se mueve hoy a la cuenta de cobertura."
                   : "Podés confirmarlo más tarde desde Cuotas."}
@@ -450,18 +450,18 @@ export default function ExpenseForm({
               {/* Selector de cuenta origen — solo cuando "Ahora" */}
               {fundingTiming === "now" && (
                 <div className="mt-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-fz-text mb-1">
                     ¿De qué cuenta sale la plata?
                   </label>
                   {fundingLeafs.length === 0 ? (
-                    <p className="text-[11px] text-gray-400">
+                    <p className="text-[11px] text-fz-text-tertiary">
                       Sin cuentas disponibles en {currency}.
                     </p>
                   ) : (
                     <select
                       value={fundingAccountId}
                       onChange={(e) => setFundingAccountId(e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
+                      className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface"
                     >
                       <option value="">Seleccioná una cuenta</option>
                       {fundingLeafs.map((acc) => (
@@ -478,7 +478,7 @@ export default function ExpenseForm({
 
           {/* Info cierre/vencimiento */}
           {selectedAccount?.closing_day && selectedAccount?.due_day && (
-            <p className="text-[11px] text-indigo-600">
+            <p className="text-[11px] text-fz-accent">
               Cierre día {selectedAccount.closing_day} · Vencimiento día {selectedAccount.due_day} — fechas de cuotas calculadas automáticamente
             </p>
           )}
@@ -487,9 +487,9 @@ export default function ExpenseForm({
 
       {/* Comercio */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Comercio{" "}
-          <span className="text-gray-400 font-normal">(opcional)</span>
+          <span className="text-fz-text-tertiary font-normal">(opcional)</span>
         </label>
         <input
           type="text"
@@ -497,7 +497,7 @@ export default function ExpenseForm({
           value={merchant}
           onChange={(e) => setMerchant(e.target.value)}
           placeholder="Ej: Carrefour, YPF, Rappi, Farmacity"
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white text-gray-900"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface text-fz-text"
         />
         {merchants.length > 0 && (
           <datalist id="merchant-list">
@@ -510,7 +510,7 @@ export default function ExpenseForm({
 
       {/* Categoría */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+        <label className="block text-sm font-medium text-fz-text mb-1">Categoría</label>
         <select
           value={categoryId}
           onChange={(e) => {
@@ -520,7 +520,7 @@ export default function ExpenseForm({
             }
             setCategoryId(e.target.value);
           }}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white text-gray-900"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface text-fz-text"
         >
           <option value="">Sin categoría</option>
           {categoriesList.map((cat) => (
@@ -532,14 +532,14 @@ export default function ExpenseForm({
         </select>
 
         {showNewCategory && (
-          <div className="mt-2 border border-gray-200 rounded-xl p-3 space-y-2 bg-gray-50">
+          <div className="mt-2 border border-fz-border rounded-xl p-3 space-y-2 bg-fz-surface-high">
             <input
               type="text"
               autoFocus
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.target.value)}
               placeholder="Nombre de la categoría"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white text-gray-900"
+              className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface text-fz-text"
             />
             <div className="grid grid-cols-8 gap-1">
               {NEW_CATEGORY_ICONS.map((emoji) => (
@@ -548,7 +548,7 @@ export default function ExpenseForm({
                   type="button"
                   onClick={() => setNewCategoryIcon(emoji)}
                   className={`text-lg aspect-square flex items-center justify-center rounded-lg transition-colors ${
-                    newCategoryIcon === emoji ? "bg-gray-900" : "hover:bg-gray-200"
+                    newCategoryIcon === emoji ? "bg-fz-accent" : "hover:bg-fz-border"
                   }`}
                 >
                   {emoji}
@@ -556,13 +556,13 @@ export default function ExpenseForm({
               ))}
             </div>
             {newCategoryError && (
-              <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{newCategoryError}</p>
+              <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{newCategoryError}</p>
             )}
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={() => { setShowNewCategory(false); setNewCategoryError(null); }}
-                className="flex-1 py-2 rounded-lg border border-gray-200 text-xs text-gray-600"
+                className="flex-1 py-2 rounded-lg border border-fz-border text-xs text-fz-text-secondary"
               >
                 Cancelar
               </button>
@@ -570,7 +570,7 @@ export default function ExpenseForm({
                 type="button"
                 onClick={handleCreateCategory}
                 disabled={creatingCategory || !newCategoryName.trim()}
-                className="flex-1 py-2 rounded-lg bg-gray-900 text-white text-xs font-medium disabled:opacity-40"
+                className="flex-1 py-2 rounded-lg bg-fz-accent text-fz-accent-text text-xs font-medium disabled:opacity-40"
               >
                 {creatingCategory ? "Creando..." : "Crear y usar"}
               </button>
@@ -581,34 +581,34 @@ export default function ExpenseForm({
 
       {/* Fecha */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+        <label className="block text-sm font-medium text-fz-text mb-1">Fecha</label>
         <input
           type="date"
           required
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white text-gray-900"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface text-fz-text"
         />
       </div>
 
       {/* Nota */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-fz-text mb-1">
           Nota{" "}
-          <span className="text-gray-400 font-normal">(opcional)</span>
+          <span className="text-fz-text-tertiary font-normal">(opcional)</span>
         </label>
         <input
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Ej: Compra semanal"
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white text-gray-900"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface text-fz-text"
         />
       </div>
 
       {/* TAREA 8: gastos compartidos (+ grupos Sesión grupos familiares) */}
-      <div className="border-t border-gray-100 pt-4">
-        <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+      <div className="border-t border-fz-border pt-4">
+        <label className="flex items-center gap-3 min-h-[52px] px-1 text-[16px] font-semibold text-fz-text">
           <input
             type="checkbox"
             checked={isShared}
@@ -620,22 +620,22 @@ export default function ExpenseForm({
                 setParticipants([{ name: "", amount: equalShare(2) }]);
               }
             }}
-            className="w-4 h-4"
+            className="h-6 w-6 rounded accent-[var(--fz-accent)]"
           />
           ¿Es compartido?
         </label>
 
         {isShared && (
-          <div className="mt-2 space-y-3 bg-gray-50 rounded-xl p-3">
+          <div className="mt-2 space-y-3 bg-fz-surface-high rounded-xl p-3">
             {shareGroups.length > 0 ? (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-fz-text mb-1">
                   Usar un grupo
                 </label>
                 <select
                   value={selectedGroupId}
                   onChange={(e) => applyGroup(e.target.value)}
-                  className="w-full min-h-[44px] border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900"
+                  className="w-full min-h-[44px] border border-fz-border rounded-lg px-3 py-2 text-sm bg-fz-surface text-fz-text focus:outline-none focus:ring-2 focus:ring-fz-accent"
                 >
                   <option value="">Elegir grupo o cargar a mano…</option>
                   {shareGroups.map((g) => (
@@ -645,18 +645,18 @@ export default function ExpenseForm({
                     </option>
                   ))}
                 </select>
-                <p className="text-[11px] text-gray-400 mt-1">
+                <p className="text-[11px] text-fz-text-tertiary mt-1">
                   Gestioná grupos en{" "}
-                  <Link href="/mas" className="underline text-gray-600">
+                  <Link href="/mas" className="underline text-fz-text-secondary">
                     Más → Grupos
                   </Link>
                   .
                 </p>
               </div>
             ) : (
-              <p className="text-[11px] text-gray-400">
+              <p className="text-[11px] text-fz-text-tertiary">
                 Tip: creá &quot;Familiares&quot; o &quot;Amigos&quot; en{" "}
-                <Link href="/mas" className="underline text-gray-600">
+                <Link href="/mas" className="underline text-fz-text-secondary">
                   Más → Grupos
                 </Link>{" "}
                 para no tipear nombres cada vez.
@@ -664,7 +664,7 @@ export default function ExpenseForm({
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-fz-text mb-1">
                 ¿Entre cuántas personas? (incluyéndote)
               </label>
               <input
@@ -674,7 +674,7 @@ export default function ExpenseForm({
                 step="1"
                 value={splitCount}
                 onChange={(e) => handleSplitCountChange(e.target.value)}
-                className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm text-center font-semibold focus:outline-none focus:ring-2 focus:ring-gray-900"
+                className="w-24 border border-fz-border rounded-lg px-3 py-2 text-sm text-center font-semibold focus:outline-none focus:ring-2 focus:ring-fz-accent"
               />
             </div>
             <div className="space-y-2">
@@ -685,7 +685,7 @@ export default function ExpenseForm({
                     value={p.name}
                     onChange={(e) => updateParticipant(i, "name", e.target.value)}
                     placeholder={`Persona ${i + 1}`}
-                    className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+                    className="flex-1 border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
                   />
                   <input
                     type="number"
@@ -695,12 +695,12 @@ export default function ExpenseForm({
                     value={p.amount}
                     onChange={(e) => updateParticipant(i, "amount", e.target.value)}
                     placeholder="Monto"
-                    className="w-28 border border-gray-300 rounded-lg px-3 py-2 text-sm text-right focus:outline-none focus:ring-2 focus:ring-gray-900"
+                    className="w-28 border border-fz-border rounded-lg px-3 py-2 text-sm text-right focus:outline-none focus:ring-2 focus:ring-fz-accent"
                   />
                 </div>
               ))}
             </div>
-            <p className="text-[11px] text-gray-400">
+            <p className="text-[11px] text-fz-text-tertiary">
               Vos pagás el total ahora (también si es en cuotas); acá registrás cuánto te
               debe cada persona. Podés cambiar los montos si no fue un reparto igual.
             </p>
@@ -709,16 +709,20 @@ export default function ExpenseForm({
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+        <p className="text-[15px] text-fz-negative bg-fz-negative-soft rounded-xl px-3 py-2.5">{error}</p>
       )}
 
-      <button
-        type="submit"
-        disabled={loading || !amount}
-        className="w-full min-h-[56px] bg-gray-900 text-white rounded-2xl text-[17px] font-semibold disabled:opacity-40 active:opacity-90"
-      >
-        {loading ? "Guardando..." : "Guardar gasto"}
-      </button>
+      <div className="fixed inset-x-0 z-40 px-4 bottom-[calc(4.75rem+env(safe-area-inset-bottom))]">
+        <div className="mx-auto max-w-lg">
+          <button
+            type="submit"
+            disabled={loading || !amount}
+            className="w-full min-h-[56px] bg-fz-accent text-fz-accent-text rounded-2xl text-[17px] font-semibold shadow-lg disabled:opacity-40 active:opacity-90"
+          >
+            {loading ? "Guardando…" : "Guardar gasto"}
+          </button>
+        </div>
+      </div>
     </form>
   );
 }

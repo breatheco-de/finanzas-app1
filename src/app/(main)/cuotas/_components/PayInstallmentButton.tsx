@@ -76,7 +76,7 @@ export default function PayInstallmentButton({
       <button
         onClick={() => handlePay(null)}
         disabled={loading}
-        className="text-xs font-medium text-white bg-gray-900 hover:bg-gray-700 disabled:opacity-40 rounded-full px-3 py-1.5 transition-colors"
+        className="text-xs font-medium text-fz-accent-text bg-fz-accent hover:opacity-90 disabled:opacity-40 rounded-full px-3 py-1.5 transition-colors"
       >
         {loading ? "..." : "Pagada"}
       </button>
@@ -89,7 +89,7 @@ export default function PayInstallmentButton({
       <button
         onClick={() => setShowModal(true)}
         disabled={loading}
-        className="text-xs font-medium text-white bg-gray-900 hover:bg-gray-700 disabled:opacity-40 rounded-full px-3 py-1.5 transition-colors"
+        className="text-xs font-medium text-fz-accent-text bg-fz-accent hover:opacity-90 disabled:opacity-40 rounded-full px-3 py-1.5 transition-colors"
       >
         {loading ? "..." : "Pagada"}
       </button>
@@ -98,13 +98,13 @@ export default function PayInstallmentButton({
         // z-[60], no z-50: ver comentario en BatchPayButton.tsx — BottomNav
         // empata en z-50 y tapa el botón de confirmar por orden de DOM.
         <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40">
-          <div className="bg-white rounded-t-2xl w-full max-w-lg p-5 space-y-4">
-            <h2 className="text-base font-semibold text-gray-900">¿Con qué cuenta pagás?</h2>
+          <div className="bg-fz-surface rounded-t-2xl w-full max-w-lg p-5 space-y-4">
+            <h2 className="text-base font-semibold text-fz-text">¿Con qué cuenta pagás?</h2>
 
             <select
               value={selectedAccountId}
               onChange={(e) => setSelectedAccountId(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gray-900"
+              className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm bg-fz-surface focus:outline-none focus:ring-2 focus:ring-fz-accent"
             >
               {leafAccounts.map((acc) => (
                 <option key={acc.id} value={acc.id}>
@@ -126,13 +126,13 @@ export default function PayInstallmentButton({
                     placeholder="ej. 1200"
                     value={mepRate}
                     onChange={(e) => setMepRate(e.target.value)}
-                    className="w-24 border border-amber-200 rounded px-2 py-0.5 text-xs text-gray-900 bg-white focus:outline-none focus:ring-1 focus:ring-amber-400 text-right"
+                    className="w-24 border border-amber-200 rounded px-2 py-0.5 text-xs text-fz-text bg-fz-surface focus:outline-none focus:ring-1 focus:ring-amber-400 text-right"
                   />
                 </div>
                 {convertedAmount !== null && (
-                  <p className="text-[11px] text-gray-400">
+                  <p className="text-[11px] text-fz-text-tertiary">
                     {formatCurrency(amount, currency)} → se descuenta{" "}
-                    <span className="font-medium text-gray-600">
+                    <span className="font-medium text-fz-text-secondary">
                       {formatCurrency(convertedAmount, selectedAccount!.currency)}
                     </span>
                   </p>
@@ -141,20 +141,20 @@ export default function PayInstallmentButton({
             )}
 
             {error && (
-              <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+              <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
             )}
 
             <div className="flex gap-3">
               <button
                 onClick={() => setShowModal(false)}
-                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-600"
+                className="flex-1 py-2.5 rounded-xl border border-fz-border text-sm text-fz-text-secondary"
               >
                 Cancelar
               </button>
               <button
                 onClick={() => handlePay(selectedAccountId || null)}
                 disabled={loading || !selectedAccountId || (needsMep && !(mepRateNum > 0))}
-                className="flex-1 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-medium disabled:opacity-40"
+                className="flex-1 py-2.5 rounded-xl bg-fz-accent text-fz-accent-text text-sm font-medium disabled:opacity-40"
               >
                 {loading ? "..." : "Confirmar"}
               </button>

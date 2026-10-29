@@ -42,7 +42,7 @@ export default function ConfirmParticipantPaymentButton({
     <>
       <button
         onClick={() => setShowModal(true)}
-        className="text-xs font-medium text-white bg-gray-900 hover:bg-gray-700 rounded-full px-3 py-1.5 transition-colors shrink-0"
+        className="text-xs font-medium text-fz-accent-text bg-fz-accent hover:opacity-90 rounded-full px-3 py-1.5 transition-colors shrink-0"
       >
         Ya me pagaron
       </button>
@@ -51,20 +51,20 @@ export default function ConfirmParticipantPaymentButton({
         // z-[60], no z-50 — ver comentario en cuotas/_components/BatchPayButton.tsx
         // (BottomNav empata en z-50 y tapa el botón de confirmar).
         <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40">
-          <div className="bg-white rounded-t-2xl w-full max-w-lg p-5 space-y-4">
-            <h2 className="text-base font-semibold text-gray-900">
+          <div className="bg-fz-surface rounded-t-2xl w-full max-w-lg p-5 space-y-4">
+            <h2 className="text-base font-semibold text-fz-text">
               ¿A qué cuenta entró la plata de {participantName}?
             </h2>
 
             {compatibleAccounts.length === 0 ? (
-              <p className="text-sm text-gray-500 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2">
+              <p className="text-sm text-fz-text-secondary bg-amber-50 border border-amber-100 rounded-lg px-3 py-2">
                 No tenés cuentas en esa moneda todavía.
               </p>
             ) : (
               <select
                 value={selectedAccountId}
                 onChange={(e) => setSelectedAccountId(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gray-900"
+                className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm bg-fz-surface focus:outline-none focus:ring-2 focus:ring-fz-accent"
               >
                 {compatibleAccounts.map((acc) => (
                   <option key={acc.id} value={acc.id}>
@@ -75,20 +75,20 @@ export default function ConfirmParticipantPaymentButton({
             )}
 
             {error && (
-              <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+              <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
             )}
 
             <div className="flex gap-3">
               <button
                 onClick={() => { setShowModal(false); setError(null); }}
-                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-600"
+                className="flex-1 py-2.5 rounded-xl border border-fz-border text-sm text-fz-text-secondary"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleConfirm}
                 disabled={loading || !selectedAccountId}
-                className="flex-1 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-medium disabled:opacity-40"
+                className="flex-1 py-2.5 rounded-xl bg-fz-accent text-fz-accent-text text-sm font-medium disabled:opacity-40"
               >
                 {loading ? "Confirmando..." : "Confirmar"}
               </button>

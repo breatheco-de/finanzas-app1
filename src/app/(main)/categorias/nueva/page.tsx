@@ -45,29 +45,29 @@ export default function NuevaCategoriaPage() {
   return (
     <div className="p-4 max-w-lg mx-auto">
       <div className="flex items-center gap-3 pt-2 mb-6">
-        <Link href="/categorias" className="text-gray-400 hover:text-gray-900 transition-colors">
+        <Link href="/categorias" className="text-fz-text-tertiary hover:text-fz-text transition-colors">
           ←
         </Link>
-        <h1 className="text-xl font-semibold text-gray-900">Nueva categoría</h1>
+        <h1 className="text-xl font-semibold text-fz-text">Nueva categoría</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+          <label className="block text-sm font-medium text-fz-text mb-1">Nombre</label>
           <input
             type="text"
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Ej: Supermercado"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+            className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-3">
+          <label className="block text-sm font-medium text-fz-text mb-3">
             Ícono{" "}
-            <span className="text-gray-400 font-normal">— seleccionado: {icon}</span>
+            <span className="text-fz-text-tertiary font-normal">— seleccionado: {icon}</span>
           </label>
           <div className="grid grid-cols-8 gap-1">
             {EMOJI_OPTIONS.map((emoji) => (
@@ -76,7 +76,7 @@ export default function NuevaCategoriaPage() {
                 type="button"
                 onClick={() => setIcon(emoji)}
                 className={`text-2xl aspect-square flex items-center justify-center rounded-lg transition-colors ${
-                  icon === emoji ? "bg-gray-900" : "hover:bg-gray-100"
+                  icon === emoji ? "bg-fz-accent" : "hover:bg-fz-surface-high"
                 }`}
               >
                 {emoji}
@@ -86,13 +86,13 @@ export default function NuevaCategoriaPage() {
         </div>
 
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+          <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
         )}
 
         <button
           type="submit"
           disabled={loading || !name.trim()}
-          className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-medium hover:bg-gray-700 disabled:opacity-40 transition-colors"
+          className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-medium hover:opacity-90 disabled:opacity-40 transition-colors"
         >
           {loading ? "Guardando..." : "Guardar categoría"}
         </button>

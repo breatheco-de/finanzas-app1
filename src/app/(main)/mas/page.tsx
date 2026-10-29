@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   TrendingUp,
@@ -8,8 +10,11 @@ import {
   Users,
   Settings,
   ChevronRight,
+  PanelLeft,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import PageHeader from "@/components/PageHeader";
+import { useSideMenu } from "@/components/SideMenu";
 
 const LINKS: { href: string; label: string; desc: string; icon: LucideIcon }[] = [
   {
@@ -57,14 +62,30 @@ const LINKS: { href: string; label: string; desc: string; icon: LucideIcon }[] =
 ];
 
 export default function MasPage() {
+  const { openMenu } = useSideMenu();
+
   return (
     <div className="px-4 pt-3 max-w-lg mx-auto bg-fz-bg min-h-[100dvh]">
-      <h1 className="font-display font-extrabold text-[26px] text-fz-text uppercase tracking-wide mb-1">
-        Más
-      </h1>
-      <p className="text-[15px] text-fz-text-tertiary mb-5">
-        Tocá lo que necesitás.
-      </p>
+      <PageHeader title="Más" subtitle="Tocá el ☰ arriba a la izquierda en cualquier pantalla." />
+
+      <button
+        type="button"
+        onClick={openMenu}
+        className="mt-5 mb-5 flex w-full min-h-[64px] items-center gap-3 rounded-2xl border border-fz-accent bg-fz-accent-soft px-4 text-left active:opacity-90"
+      >
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-fz-accent text-fz-accent-text">
+          <PanelLeft size={22} />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-[16px] font-semibold text-fz-text">
+            Abrir menú lateral
+          </span>
+          <span className="block text-[13px] text-fz-text-secondary">
+            Todas las secciones + cerrar sesión
+          </span>
+        </span>
+        <ChevronRight size={20} className="text-fz-accent shrink-0" />
+      </button>
 
       <div className="bg-fz-surface border border-fz-border rounded-2xl overflow-hidden divide-y divide-fz-border">
         {LINKS.map((item) => (

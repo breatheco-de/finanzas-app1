@@ -78,13 +78,13 @@ export default function EditExpenseForm({ expense, accounts, categories }: Props
     <form onSubmit={handleSave} className="space-y-4">
       {/* Monto */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Monto</label>
+        <label className="block text-sm font-medium text-fz-text mb-1">Monto</label>
         {isCredito ? (
-          <div className="bg-gray-50 rounded-lg px-3 py-2">
-            <p className="text-sm font-semibold text-gray-900">
+          <div className="bg-fz-bg rounded-lg px-3 py-2">
+            <p className="text-sm font-semibold text-fz-text">
               {formatInputAmount(expense.amount.toString(), "ARS")}
             </p>
-            <p className="text-[11px] text-gray-400 mt-0.5">
+            <p className="text-[11px] text-fz-text-tertiary mt-0.5">
               El monto de gastos en cuotas no se puede editar
               ({expense.installments_total} cuota{expense.installments_total !== 1 ? "s" : ""})
             </p>
@@ -97,7 +97,7 @@ export default function EditExpenseForm({ expense, accounts, categories }: Props
                 value={amount}
                 onChange={setAmount}
                 placeholder="0"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900 text-right text-lg font-semibold"
+                className="w-full border border-fz-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fz-accent text-right text-lg font-semibold"
               />
             ) : (
               <input
@@ -108,11 +108,11 @@ export default function EditExpenseForm({ expense, accounts, categories }: Props
                 step="any"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900 text-right text-lg font-semibold"
+                className="w-full border border-fz-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-fz-accent text-right text-lg font-semibold"
               />
             )}
             {amount && expense.currency === "ARS" && (
-              <p className="text-[11px] text-gray-400 text-right mt-0.5">
+              <p className="text-[11px] text-fz-text-tertiary text-right mt-0.5">
                 {formatInputAmount(amount, "ARS")}
               </p>
             )}
@@ -121,34 +121,34 @@ export default function EditExpenseForm({ expense, accounts, categories }: Props
       </div>
 
       {/* Info de pago — read only */}
-      <div className="text-sm text-gray-500 bg-gray-50 rounded-lg px-3 py-2 space-y-0.5">
-        <p>Método: <span className="font-medium text-gray-700 capitalize">{expense.payment_method ?? "—"}</span></p>
+      <div className="text-sm text-fz-text-secondary bg-fz-bg rounded-lg px-3 py-2 space-y-0.5">
+        <p>Método: <span className="font-medium text-fz-text capitalize">{expense.payment_method ?? "—"}</span></p>
         {accountName && (
-          <p>Cuenta: <span className="font-medium text-gray-700">{accountDisplayName(accountName, accounts)}</span></p>
+          <p>Cuenta: <span className="font-medium text-fz-text">{accountDisplayName(accountName, accounts)}</span></p>
         )}
       </div>
 
       {/* Comercio */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Comercio <span className="text-gray-400 font-normal">(opcional)</span>
+        <label className="block text-sm font-medium text-fz-text mb-1">
+          Comercio <span className="text-fz-text-tertiary font-normal">(opcional)</span>
         </label>
         <input
           type="text"
           value={merchant}
           onChange={(e) => setMerchant(e.target.value)}
           placeholder="Ej: Carrefour, YPF"
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white text-gray-900"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface text-fz-text"
         />
       </div>
 
       {/* Categoría */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+        <label className="block text-sm font-medium text-fz-text mb-1">Categoría</label>
         <select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white text-gray-900"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface text-fz-text"
         >
           <option value="">Sin categoría</option>
           {categories.map((cat) => (
@@ -161,37 +161,37 @@ export default function EditExpenseForm({ expense, accounts, categories }: Props
 
       {/* Nota */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Nota <span className="text-gray-400 font-normal">(opcional)</span>
+        <label className="block text-sm font-medium text-fz-text mb-1">
+          Nota <span className="text-fz-text-tertiary font-normal">(opcional)</span>
         </label>
         <input
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white text-gray-900"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface text-fz-text"
         />
       </div>
 
       {/* Fecha */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+        <label className="block text-sm font-medium text-fz-text mb-1">Fecha</label>
         <input
           type="date"
           required
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white text-gray-900"
+          className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fz-accent bg-fz-surface text-fz-text"
         />
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+        <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
       )}
 
       <button
         type="submit"
         disabled={saving}
-        className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-medium hover:bg-gray-700 disabled:opacity-40 transition-colors"
+        className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-medium hover:opacity-90 disabled:opacity-40 transition-colors"
       >
         {saving ? "Guardando..." : "Guardar cambios"}
       </button>
@@ -202,20 +202,20 @@ export default function EditExpenseForm({ expense, accounts, categories }: Props
           <button
             type="button"
             onClick={() => setConfirmDelete(true)}
-            className="w-full py-2.5 rounded-xl border border-red-200 text-red-600 text-sm hover:bg-red-50 transition-colors"
+            className="w-full py-2.5 rounded-xl border border-red-200 text-fz-negative text-sm hover:bg-fz-negative-soft transition-colors"
           >
             Eliminar gasto
           </button>
         ) : (
           <div className="space-y-2">
-            <p className="text-sm text-center text-gray-600">
+            <p className="text-sm text-center text-fz-text-secondary">
               ¿Confirmar? El balance de la cuenta se va a revertir.
             </p>
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={() => setConfirmDelete(false)}
-                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-600"
+                className="flex-1 py-2.5 rounded-xl border border-fz-border text-sm text-fz-text-secondary"
               >
                 Cancelar
               </button>
@@ -223,7 +223,7 @@ export default function EditExpenseForm({ expense, accounts, categories }: Props
                 type="button"
                 onClick={handleDelete}
                 disabled={deleting}
-                className="flex-1 py-2.5 rounded-xl bg-red-600 text-white text-sm font-medium disabled:opacity-40"
+                className="flex-1 py-2.5 rounded-xl bg-red-600 text-fz-accent-text text-sm font-medium disabled:opacity-40"
               >
                 {deleting ? "..." : "Sí, eliminar"}
               </button>

@@ -134,7 +134,7 @@ export default function AccountsOnboarding() {
 
   return (
     <div className="space-y-6">
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-fz-text-secondary">
         Seleccioná las cuentas y billeteras que usás. Podés agregar más en cualquier momento.
       </p>
 
@@ -142,7 +142,7 @@ export default function AccountsOnboarding() {
         const items = INSTITUTIONS.filter((i) => i.group === group.key);
         return (
           <section key={group.key}>
-            <h2 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">
+            <h2 className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide mb-3">
               {group.label}
             </h2>
             <div className="grid grid-cols-2 gap-2">
@@ -152,8 +152,8 @@ export default function AccountsOnboarding() {
                   onClick={() => toggle(inst.id, inst.group)}
                   className={`text-left px-4 py-3 rounded-xl border text-sm font-medium transition-colors ${
                     selected.has(inst.id)
-                      ? "bg-gray-900 text-white border-gray-900"
-                      : "bg-white text-gray-700 border-gray-200 hover:border-gray-400"
+                      ? "bg-fz-accent text-fz-accent-text border-gray-900"
+                      : "bg-fz-surface text-fz-text border-fz-border hover:border-gray-400"
                   }`}
                 >
                   {inst.name}
@@ -167,7 +167,7 @@ export default function AccountsOnboarding() {
       {/* Sub-panel por banco seleccionado: sub-cuentas y tarjetas opcionales */}
       {selectedBanks.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+          <h2 className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide">
             Configurar bancos <span className="normal-case font-normal">(opcional)</span>
           </h2>
           {selectedBanks.map((bank) => {
@@ -188,8 +188,8 @@ export default function AccountsOnboarding() {
                           onClick={() => toggleBankSub(bank.id, field)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                             sub[field]
-                              ? "bg-blue-600 text-white border-blue-600"
-                              : "bg-white text-gray-700 border-gray-200 hover:border-blue-400"
+                              ? "bg-blue-600 text-fz-accent-text border-blue-600"
+                              : "bg-fz-surface text-fz-text border-fz-border hover:border-blue-400"
                           }`}
                         >
                           {field === "pesos" ? "Pesos" : "Dólares"}
@@ -207,8 +207,8 @@ export default function AccountsOnboarding() {
                           onClick={() => toggleBankSub(bank.id, "card", card.id)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                             sub.cards.has(card.id)
-                              ? "bg-blue-600 text-white border-blue-600"
-                              : "bg-white text-gray-700 border-gray-200 hover:border-blue-400"
+                              ? "bg-blue-600 text-fz-accent-text border-blue-600"
+                              : "bg-fz-surface text-fz-text border-fz-border hover:border-blue-400"
                           }`}
                         >
                           {card.name}
@@ -224,14 +224,14 @@ export default function AccountsOnboarding() {
       )}
 
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+        <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
       )}
 
       <div className="space-y-3 pt-2">
         <button
           onClick={handleCreate}
           disabled={totalCount === 0 || loading}
-          className="w-full bg-gray-900 text-white rounded-xl py-3 text-sm font-medium hover:bg-gray-700 disabled:opacity-40 transition-colors"
+          className="w-full bg-fz-accent text-fz-accent-text rounded-xl py-3 text-sm font-medium hover:opacity-90 disabled:opacity-40 transition-colors"
         >
           {loading
             ? "Creando..."
@@ -241,7 +241,7 @@ export default function AccountsOnboarding() {
         </button>
         <Link
           href="/cuentas/nueva"
-          className="block w-full text-center text-sm text-gray-500 hover:text-gray-900 transition-colors py-2"
+          className="block w-full text-center text-sm text-fz-text-secondary hover:text-fz-text transition-colors py-2"
         >
           O agregar cuenta personalizada →
         </Link>

@@ -21,11 +21,11 @@ export default async function NuevaInversionPage() {
       <div className="flex items-center gap-3 pt-2 mb-6">
         <Link
           href="/inversiones"
-          className="text-gray-400 hover:text-gray-900 transition-colors"
+          className="text-fz-text-tertiary hover:text-fz-text transition-colors"
         >
           ←
         </Link>
-        <h1 className="text-xl font-semibold text-gray-900">Nueva posición</h1>
+        <h1 className="text-xl font-semibold text-fz-text">Nueva posición</h1>
       </div>
       <HoldingForm accounts={accounts ?? []} cedearQuotes={cedearQuotes} />
     </div>

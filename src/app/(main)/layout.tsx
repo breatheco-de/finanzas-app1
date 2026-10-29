@@ -1,4 +1,5 @@
-import BottomNav from "@/components/BottomNav";
+import { SideMenuProvider } from "@/components/SideMenu";
+import QuickAddFab from "@/components/QuickAddFab";
 
 export default function MainLayout({
   children,
@@ -6,12 +7,9 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      {/* Padding extra: barra 64px + botón + que sobresale + safe area */}
-      <main className="pb-[calc(5.5rem+env(safe-area-inset-bottom))]">
-        {children}
-      </main>
-      <BottomNav />
-    </>
+    <SideMenuProvider>
+      <main className="pb-[calc(5rem+env(safe-area-inset-bottom))]">{children}</main>
+      <QuickAddFab />
+    </SideMenuProvider>
   );
 }

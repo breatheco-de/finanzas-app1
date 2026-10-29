@@ -21,10 +21,10 @@ export default async function NuevoIngresoPage() {
   return (
     <div className="p-4 max-w-lg mx-auto">
       <div className="flex items-center gap-3 pt-2 mb-6">
-        <Link href="/" className="text-sm text-gray-400 hover:text-gray-900">
+        <Link href="/" className="text-sm text-fz-text-tertiary hover:text-fz-text">
           ← Inicio
         </Link>
-        <h1 className="text-xl font-semibold text-gray-900">Registrar ingreso</h1>
+        <h1 className="text-xl font-semibold text-fz-text">Registrar ingreso</h1>
       </div>
       <IncomeForm accounts={accounts} />
     </div>

@@ -69,7 +69,7 @@ export default function SettingsToggles() {
             }`}
           >
             <span
-              className={`w-[21px] h-[21px] rounded-full bg-white absolute top-[3px] transition-all ${
+              className={`w-[21px] h-[21px] rounded-full bg-fz-surface absolute top-[3px] transition-all ${
                 hide ? "left-[22px]" : "left-[3px]"
               }`}
             />

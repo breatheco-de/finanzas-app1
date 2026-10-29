@@ -118,7 +118,7 @@ export default function CuentaActions({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Nombre de la cuenta"
-            className="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-gray-900"
+            className="w-full border border-fz-border rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-fz-accent"
           />
           <div className="flex items-center gap-1.5">
             <input
@@ -126,11 +126,11 @@ export default function CuentaActions({
               step="0.01"
               value={balance}
               onChange={(e) => setBalance(e.target.value)}
-              className="w-28 border border-gray-300 rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-gray-900"
+              className="w-28 border border-fz-border rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-fz-accent"
             />
-            <span className="text-[10px] text-gray-400">{currency}</span>
+            <span className="text-[10px] text-fz-text-tertiary">{currency}</span>
             {holdingIdEdit && (
-              <span className="text-[10px] text-indigo-500">
+              <span className="text-[10px] text-fz-accent">
                 (ajusta la cantidad del holding vinculado, no solo el número)
               </span>
             )}
@@ -139,7 +139,7 @@ export default function CuentaActions({
             <select
               value={type}
               onChange={(e) => setType(e.target.value as AccountType)}
-              className="w-full border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-gray-900"
+              className="w-full border border-fz-border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-fz-accent"
             >
               {TYPE_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>
@@ -148,7 +148,7 @@ export default function CuentaActions({
               ))}
             </select>
           ) : (
-            <p className="text-[10px] text-gray-400 bg-gray-50 rounded px-2 py-1">
+            <p className="text-[10px] text-fz-text-tertiary bg-fz-bg rounded px-2 py-1">
               {isChild
                 ? "Tipo no editable — los bolsillos heredan el tipo del padre."
                 : "Tipo no editable — la cuenta tiene gastos o reservas asociadas."}
@@ -158,7 +158,7 @@ export default function CuentaActions({
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <div className="flex-1">
-                  <label className="block text-[10px] text-gray-500 mb-0.5">
+                  <label className="block text-[10px] text-fz-text-secondary mb-0.5">
                     Día de cierre
                   </label>
                   <input
@@ -168,11 +168,11 @@ export default function CuentaActions({
                     value={closingDayEdit}
                     onChange={(e) => setClosingDayEdit(e.target.value)}
                     placeholder="ej: 15"
-                    className="w-full border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    className="w-full border border-fz-border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-fz-accent"
                   />
                 </div>
                 <div className="flex-1">
-                  <label className="block text-[10px] text-gray-500 mb-0.5">
+                  <label className="block text-[10px] text-fz-text-secondary mb-0.5">
                     Día de vencimiento
                   </label>
                   <input
@@ -182,11 +182,11 @@ export default function CuentaActions({
                     value={dueDayEdit}
                     onChange={(e) => setDueDayEdit(e.target.value)}
                     placeholder="ej: 10"
-                    className="w-full border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    className="w-full border border-fz-border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-fz-accent"
                   />
                 </div>
               </div>
-              <p className="text-[10px] text-gray-400 leading-snug">
+              <p className="text-[10px] text-fz-text-tertiary leading-snug">
                 Días del 1 al 28. Sin esto no vas a ver el aviso de cuánto vas a pagar cada mes.
                 Se aplica automáticamente todos los meses — no hace falta volver a
                 cargarlo.
@@ -194,7 +194,7 @@ export default function CuentaActions({
             </div>
           )}
           {!isCredit && (
-            <label className="flex items-center gap-2 text-[10px] text-gray-600 cursor-pointer select-none">
+            <label className="flex items-center gap-2 text-[10px] text-fz-text-secondary cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={earnsYieldEdit}
@@ -208,7 +208,7 @@ export default function CuentaActions({
             </label>
           )}
           {!isCredit && earnsYieldEdit && !holdingIdEdit && fciCatalog.length === 0 && (
-            <p className="text-[10px] text-gray-400 leading-snug">
+            <p className="text-[10px] text-fz-text-tertiary leading-snug">
               Esto solo marca la cuenta. Para que el saldo se actualice solo
               con el mercado, cargá tu inversión real en{" "}
               <Link href="/inversiones" className="underline">
@@ -218,7 +218,7 @@ export default function CuentaActions({
             </p>
           )}
           {!isCredit && earnsYieldEdit && !holdingIdEdit && fciCatalog.length > 0 && (
-            <p className="text-[10px] text-gray-400 leading-snug">
+            <p className="text-[10px] text-fz-text-tertiary leading-snug">
               Esto solo marca la cuenta. Elegí tu fondo abajo y listo — se crea
               y se vincula en un solo paso.
             </p>
@@ -227,11 +227,11 @@ export default function CuentaActions({
           {/* Sección de vinculación a holding FCI */}
           {!isCredit && earnsYieldEdit && holdingIdEdit && (
             <div className="pt-1 space-y-1">
-              <p className="text-[10px] text-gray-500 font-medium">
+              <p className="text-[10px] text-fz-text-secondary font-medium">
                 Posición FCI vinculada
               </p>
-              <div className="flex items-center gap-2 bg-indigo-50 rounded-lg px-2 py-1.5">
-                <span className="text-[10px] text-indigo-700 flex-1">
+              <div className="flex items-center gap-2 bg-fz-accent-soft rounded-lg px-2 py-1.5">
+                <span className="text-[10px] text-fz-accent flex-1">
                   📈 {currentHoldingName ?? holdingIdEdit}
                 </span>
                 {/* Rendimiento 30d — solo para el holding YA vinculado (no al
@@ -241,7 +241,7 @@ export default function CuentaActions({
                 {holdingIdEdit === holdingId && linkedHoldingReturn30d != null && (
                   <span
                     className={`text-[10px] font-medium tabular-nums shrink-0 ${
-                      linkedHoldingReturn30d >= 0 ? "text-green-600" : "text-red-600"
+                      linkedHoldingReturn30d >= 0 ? "text-fz-accent" : "text-fz-negative"
                     }`}
                   >
                     {linkedHoldingReturn30d >= 0 ? "+" : ""}
@@ -251,16 +251,16 @@ export default function CuentaActions({
                 <button
                   type="button"
                   onClick={() => setHoldingIdEdit(null)}
-                  className="text-[10px] text-gray-400 hover:text-red-500 shrink-0"
+                  className="text-[10px] text-fz-text-tertiary hover:text-fz-negative shrink-0"
                 >
                   Desvincular
                 </button>
               </div>
-              <p className="text-[10px] text-gray-400 leading-snug">
+              <p className="text-[10px] text-fz-text-tertiary leading-snug">
                 El saldo se actualizará automáticamente cuando se sincronice el VCP del fondo.
               </p>
               {holdingIdEdit === holdingId && linkedHoldingReturn30d != null && (
-                <p className="text-[10px] text-gray-400 leading-snug">
+                <p className="text-[10px] text-fz-text-tertiary leading-snug">
                   Rendimiento realizado — la app no tiene acceso a la TNA oficial del fondo.
                 </p>
               )}
@@ -289,13 +289,13 @@ export default function CuentaActions({
             (showManualLink ? (
               <div className="pt-1 space-y-1">
                 <div className="flex items-center justify-between">
-                  <p className="text-[10px] text-gray-500 font-medium">
+                  <p className="text-[10px] text-fz-text-secondary font-medium">
                     Vincular un holding ya cargado a mano
                   </p>
                   <button
                     type="button"
                     onClick={() => setShowManualLink(false)}
-                    className="text-[10px] text-gray-400 hover:text-gray-700"
+                    className="text-[10px] text-fz-text-tertiary hover:text-fz-text"
                   >
                     Cancelar
                   </button>
@@ -305,7 +305,7 @@ export default function CuentaActions({
                   onChange={(e) => {
                     if (e.target.value) setHoldingIdEdit(e.target.value);
                   }}
-                  className="w-full border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-gray-900"
+                  className="w-full border border-fz-border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-fz-accent"
                 >
                   <option value="">— Vincular a un fondo FCI —</option>
                   {fciHoldings.map((h) => (
@@ -319,7 +319,7 @@ export default function CuentaActions({
               <button
                 type="button"
                 onClick={() => setShowManualLink(true)}
-                className="text-[10px] text-gray-400 hover:text-gray-700 underline"
+                className="text-[10px] text-fz-text-tertiary hover:text-fz-text underline"
               >
                 ¿Ya tenés un holding cargado a mano? Vincularlo directo
               </button>
@@ -330,7 +330,7 @@ export default function CuentaActions({
             <div className="pt-1 space-y-1">
               {fciHoldings.length > 0 ? (
                 <>
-                  <p className="text-[10px] text-gray-500 font-medium">
+                  <p className="text-[10px] text-fz-text-secondary font-medium">
                     Posición FCI vinculada
                   </p>
                   <select
@@ -338,7 +338,7 @@ export default function CuentaActions({
                     onChange={(e) => {
                       if (e.target.value) setHoldingIdEdit(e.target.value);
                     }}
-                    className="w-full border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-gray-900"
+                    className="w-full border border-fz-border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-fz-accent"
                   >
                     <option value="">— Vincular a un fondo FCI —</option>
                     {fciHoldings.map((h) => (
@@ -349,7 +349,7 @@ export default function CuentaActions({
                   </select>
                 </>
               ) : (
-                <p className="text-[10px] text-gray-400">
+                <p className="text-[10px] text-fz-text-tertiary">
                   No tenés posiciones FCI. Agregá una en{" "}
                   <Link href="/inversiones/nueva" className="underline">
                     /inversiones
@@ -426,19 +426,19 @@ export default function CuentaActions({
               setMode("idle");
               router.refresh();
             }}
-            className="text-[11px] font-medium text-gray-900 disabled:opacity-40"
+            className="text-[11px] font-medium text-fz-text disabled:opacity-40"
           >
             {saving ? "…" : "Guardar"}
           </button>
           <button
             type="button"
             onClick={resetEdit}
-            className="text-[11px] text-gray-400"
+            className="text-[11px] text-fz-text-tertiary"
           >
             Cancelar
           </button>
         </div>
-        {error && <p className="text-[10px] text-red-600">{error}</p>}
+        {error && <p className="text-[10px] text-fz-negative">{error}</p>}
       </div>
     );
   }
@@ -467,7 +467,7 @@ export default function CuentaActions({
                 router.refresh();
               }
             }}
-            className="text-[11px] font-medium text-red-600 disabled:opacity-40"
+            className="text-[11px] font-medium text-fz-negative disabled:opacity-40"
           >
             {saving ? "Eliminando…" : `Confirmar eliminar "${accountName}"`}
           </button>
@@ -480,19 +480,19 @@ export default function CuentaActions({
               setForceConfirm(false);
               setMode("idle");
             }}
-            className="text-[11px] text-gray-400"
+            className="text-[11px] text-fz-text-tertiary"
           >
             Cancelar
           </button>
         </div>
-        {error && <p className="text-[10px] text-red-600">{error}</p>}
+        {error && <p className="text-[10px] text-fz-negative">{error}</p>}
         {deleteDeps.length > 0 && (
           <div className="mt-1 space-y-1">
             <ul className="space-y-1">
               {deleteDeps.map((dep) => (
-                <li key={dep.id} className="text-[10px] text-gray-500">
+                <li key={dep.id} className="text-[10px] text-fz-text-secondary">
                   {dep.path ? (
-                    <Link href={dep.path} className="underline hover:text-gray-900">
+                    <Link href={dep.path} className="underline hover:text-fz-text">
                       {dep.label}
                     </Link>
                   ) : (
@@ -501,27 +501,27 @@ export default function CuentaActions({
                 </li>
               ))}
               {overflowCount > 0 && (
-                <li className="text-[10px] text-gray-400">
+                <li className="text-[10px] text-fz-text-tertiary">
                   y {overflowCount} más — andá a{" "}
-                  <Link href="/gastos" className="underline hover:text-gray-900">
+                  <Link href="/gastos" className="underline hover:text-fz-text">
                     /gastos
                   </Link>
                 </li>
               )}
             </ul>
 
-            <div className="mt-2 pt-2 border-t border-gray-100">
+            <div className="mt-2 pt-2 border-t border-fz-border">
               {!forceConfirm ? (
                 <button
                   type="button"
                   onClick={() => setForceConfirm(true)}
-                  className="text-[10px] text-gray-400 hover:text-red-500 underline"
+                  className="text-[10px] text-fz-text-tertiary hover:text-fz-negative underline"
                 >
                   Eliminar de todas formas (desvincular dependencias)
                 </button>
               ) : (
                 <div className="space-y-1.5">
-                  <p className="text-[10px] text-red-600 leading-relaxed">
+                  <p className="text-[10px] text-fz-negative leading-relaxed">
                     ⚠ Los saldos de las cuentas NO se revertirán. Los gastos e ingresos asociados quedarán sin cuenta. Las transferencias vinculadas se eliminarán. Las reservas activas se liberarán.
                   </p>
                   <div className="flex items-center gap-2">
@@ -541,14 +541,14 @@ export default function CuentaActions({
                           router.refresh();
                         }
                       }}
-                      className="text-[11px] font-medium text-red-600 disabled:opacity-40"
+                      className="text-[11px] font-medium text-fz-negative disabled:opacity-40"
                     >
                       {forcing ? "Eliminando…" : "Confirmar eliminación forzada"}
                     </button>
                     <button
                       type="button"
                       onClick={() => setForceConfirm(false)}
-                      className="text-[11px] text-gray-400"
+                      className="text-[11px] text-fz-text-tertiary"
                     >
                       Cancelar
                     </button>
@@ -567,19 +567,19 @@ export default function CuentaActions({
       <button
         type="button"
         onClick={() => setMode("edit")}
-        className="text-[11px] text-indigo-600 font-medium"
+        className="text-[11px] text-fz-accent font-medium"
       >
         Editar
       </button>
       <button
         type="button"
         onClick={() => setMode("delete")}
-        className="text-[11px] text-gray-400 hover:text-red-500"
+        className="text-[11px] text-fz-text-tertiary hover:text-fz-negative"
       >
         Eliminar
       </button>
       {holdingId && (
-        <span className="text-[10px] text-indigo-500">📈 FCI</span>
+        <span className="text-[10px] text-fz-accent">📈 FCI</span>
       )}
     </div>
   );

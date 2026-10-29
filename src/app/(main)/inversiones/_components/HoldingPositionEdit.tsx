@@ -41,26 +41,26 @@ export default function HoldingPositionEdit({
       <div className="mt-1.5 space-y-1.5">
         <div className="flex items-center gap-2 flex-wrap">
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-gray-400">Cant.</span>
+            <span className="text-[10px] text-fz-text-tertiary">Cant.</span>
             <input
               type="number"
               step="any"
               value={qty}
               onChange={(e) => setQty(e.target.value)}
-              className="w-20 border border-gray-200 rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-gray-900"
+              className="w-20 border border-fz-border rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-fz-accent"
               autoFocus
             />
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-gray-400">PA</span>
+            <span className="text-[10px] text-fz-text-tertiary">PA</span>
             <input
               type="number"
               step="0.01"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="w-24 border border-gray-200 rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-gray-900"
+              className="w-24 border border-fz-border rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-fz-accent"
             />
-            <span className="text-[10px] text-gray-400">{currency}</span>
+            <span className="text-[10px] text-fz-text-tertiary">{currency}</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -89,15 +89,15 @@ export default function HoldingPositionEdit({
                 router.refresh();
               }
             }}
-            className="text-[11px] font-medium text-gray-900 disabled:opacity-40"
+            className="text-[11px] font-medium text-fz-text disabled:opacity-40"
           >
             {saving ? "…" : "Guardar"}
           </button>
-          <button type="button" onClick={reset} className="text-[11px] text-gray-400">
+          <button type="button" onClick={reset} className="text-[11px] text-fz-text-tertiary">
             Cancelar
           </button>
         </div>
-        {error && <p className="text-[10px] text-red-600">{error}</p>}
+        {error && <p className="text-[10px] text-fz-negative">{error}</p>}
       </div>
     );
   }
@@ -106,7 +106,7 @@ export default function HoldingPositionEdit({
     <button
       type="button"
       onClick={() => setMode("edit")}
-      className="text-[11px] text-indigo-600 font-medium mt-1 block"
+      className="text-[11px] text-fz-accent font-medium mt-1 block"
     >
       Editar cantidad / precio de compra
     </button>

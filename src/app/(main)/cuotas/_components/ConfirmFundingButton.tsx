@@ -52,7 +52,7 @@ export default function ConfirmFundingButton({
 
   if (leafAccounts.length === 0) {
     return (
-      <span className="text-[10px] text-gray-400">Sin cuentas disponibles</span>
+      <span className="text-[10px] text-fz-text-tertiary">Sin cuentas disponibles</span>
     );
   }
 
@@ -60,32 +60,32 @@ export default function ConfirmFundingButton({
     <>
       <button
         onClick={() => { setShowModal(true); setError(null); }}
-        className="text-xs font-medium text-indigo-600 border border-indigo-200 rounded-full px-3 py-1.5 hover:bg-indigo-50 transition-colors"
+        className="text-xs font-medium text-fz-accent border border-fz-border rounded-full px-3 py-1.5 hover:bg-fz-accent-soft transition-colors"
       >
         Confirmar
       </button>
 
       {showModal && (
         <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40">
-          <div className="bg-white rounded-t-2xl w-full max-w-lg p-5 pb-24 space-y-4">
+          <div className="bg-fz-surface rounded-t-2xl w-full max-w-lg p-5 pb-24 space-y-4">
             <div>
-              <h2 className="text-base font-semibold text-gray-900">
+              <h2 className="text-base font-semibold text-fz-text">
                 Confirmar transferencia
               </h2>
-              <p className="text-sm text-gray-500 mt-0.5">
+              <p className="text-sm text-fz-text-secondary mt-0.5">
                 {expenseName} · {formatCurrency(earmarkAmount, earmarkCurrency)} →{" "}
                 <span className="font-medium">{coveringAccountName}</span>
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-fz-text mb-1">
                 ¿De qué cuenta sale la plata?
               </label>
               <select
                 value={selectedAccountId}
                 onChange={(e) => { setSelectedAccountId(e.target.value); setError(null); }}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gray-900"
+                className="w-full border border-fz-border rounded-lg px-3 py-2 text-sm bg-fz-surface focus:outline-none focus:ring-2 focus:ring-fz-accent"
               >
                 {leafAccounts.map((acc) => (
                   <option key={acc.id} value={acc.id}>
@@ -104,20 +104,20 @@ export default function ConfirmFundingButton({
             </div>
 
             {error && (
-              <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+              <p className="text-sm text-fz-negative bg-fz-negative-soft rounded-lg px-3 py-2">{error}</p>
             )}
 
             <div className="flex gap-3">
               <button
                 onClick={() => setShowModal(false)}
-                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-600"
+                className="flex-1 py-2.5 rounded-xl border border-fz-border text-sm text-fz-text-secondary"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleConfirm}
                 disabled={loading || !selectedAccountId}
-                className="flex-1 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-medium disabled:opacity-40"
+                className="flex-1 py-2.5 rounded-xl bg-fz-accent text-fz-accent-text text-sm font-medium disabled:opacity-40"
               >
                 {loading ? "Confirmando..." : "Confirmar"}
               </button>

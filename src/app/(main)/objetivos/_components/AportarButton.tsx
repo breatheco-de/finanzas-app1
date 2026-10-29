@@ -21,7 +21,7 @@ export default function AportarButton(props: Props) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="text-[11px] font-medium text-indigo-600"
+        className="text-[11px] font-medium text-fz-accent"
       >
         Aportar
       </button>

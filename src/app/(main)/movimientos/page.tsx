@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Wallet, Receipt, SlidersHorizontal } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
 import { Money } from "@/components/Money";
+import { MenuButton } from "@/components/SideMenu";
 import MovimientosCharts from "./_components/MovimientosCharts";
 import { aggregateCategoryTotals, fetchMonthlyComparativa } from "@/lib/queries/movimientosSummary";
 import type { Currency } from "@/types";
@@ -290,15 +291,17 @@ export default async function MovimientosPage({
     }`;
 
   return (
-    <div className="px-4 pt-3 max-w-lg mx-auto space-y-4 bg-fz-bg min-h-[100dvh]">
-      {/* Header */}
+    <div className="fz-page space-y-4">
       <div className="flex items-center justify-between gap-2">
-        <h1 className="font-display font-extrabold text-[26px] leading-none text-fz-text uppercase tracking-wide">
-          Movimientos
-        </h1>
+        <div className="flex items-center gap-3 min-w-0">
+          <MenuButton />
+          <h1 className="font-display font-bold text-[22px] leading-tight tracking-tight text-fz-text truncate">
+            Movimientos
+          </h1>
+        </div>
         <Link
           href="/gastos/nuevo"
-          className="inline-flex items-center min-h-[44px] text-[14px] font-semibold text-fz-accent-text bg-fz-accent rounded-full px-4 active:opacity-90"
+          className="inline-flex items-center min-h-[44px] text-[14px] font-semibold text-fz-accent-text bg-fz-accent rounded-full px-4 shadow-[var(--fz-shadow)] active:opacity-90 shrink-0"
         >
           + Gasto
         </Link>

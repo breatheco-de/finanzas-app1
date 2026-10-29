@@ -1,7 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { CheckCircle2 } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
 import { getLeafAccounts, accountDisplayName } from "@/lib/accounts";
+import PageHeader from "@/components/PageHeader";
 import PayInstallmentButton from "./_components/PayInstallmentButton";
 import BatchPayButton from "./_components/BatchPayButton";
 import ConfirmFundingButton from "./_components/ConfirmFundingButton";
@@ -83,13 +85,11 @@ export default async function CuotasPage() {
   const allAccounts = (accountsData ?? []) as Account[];
   const leafAccounts = getLeafAccounts(allAccounts);
 
-  // Earmarks de crédito sin funding confirmado (la plata no se movió todavía)
   const allEarmarks = (earmarksRaw ?? []) as unknown as PendingFundingRow[];
   const pendingFunding = allEarmarks.filter(
     (ae) => !(ae.expenses as PendingFundingRow["expenses"])?.funding_account_id
   );
 
-  // Agrupar por tarjeta (account_id del gasto) + mes de vencimiento
   const groupMap = new Map<string, GroupData>();
   for (const inst of installments) {
     const cardId = inst.expenses?.account_id ?? null;
@@ -112,7 +112,6 @@ export default async function CuotasPage() {
     groupMap.get(key)!.items.push(inst);
   }
 
-  // Ordenar grupos: primero por mes, luego por nombre de tarjeta
   const groups = Array.from(groupMap.values()).sort((a, b) => {
     const byMonth = a.yearMonth.localeCompare(b.yearMonth);
     if (byMonth !== 0) return byMonth;
@@ -120,23 +119,22 @@ export default async function CuotasPage() {
   });
 
   return (
-    <div className="p-4 max-w-lg mx-auto space-y-6">
-      <div className="pt-2">
-        <h1 className="text-2xl font-semibold text-gray-900">Cuotas pendientes</h1>
-        {installments.length > 0 && (
-          <p className="text-sm text-gray-400 mt-0.5">
-            {installments.length} cuota{installments.length !== 1 ? "s" : ""} sin pagar
-          </p>
-        )}
-      </div>
+    <div className="px-4 pt-3 max-w-lg mx-auto space-y-5 bg-fz-bg min-h-[100dvh]">
+      <PageHeader
+        title="Cuotas"
+        subtitle={
+          installments.length > 0
+            ? `${installments.length} cuota${installments.length !== 1 ? "s" : ""} sin pagar`
+            : "Nada pendiente por ahora"
+        }
+      />
 
-      {/* Sección: Transferencias pendientes de confirmar */}
       {pendingFunding.length > 0 && (
         <section className="space-y-2">
-          <h2 className="text-xs font-medium text-amber-600 uppercase tracking-wide">
+          <h2 className="text-[11px] font-semibold text-amber-700 uppercase tracking-wide px-1">
             Transferencias pendientes
           </h2>
-          <p className="text-[11px] text-gray-400 -mt-1">
+          <p className="text-[12px] text-fz-text-tertiary -mt-1 px-1">
             Reservas que todavía no tienen cuenta de origen confirmada.
           </p>
           {pendingFunding.map((ae) => {
@@ -146,7 +144,6 @@ export default async function CuotasPage() {
             const coveringName = coveringAccount
               ? accountDisplayName(coveringAccount, allAccounts)
               : "Cuenta eliminada";
-            // Solo cuentas con la misma moneda que el earmark para la confirmación
             const compatibleAccounts = leafAccounts.filter(
               (a) => a.currency === ae.currency && a.id !== ae.account_id
             );
@@ -154,11 +151,11 @@ export default async function CuotasPage() {
             return (
               <div
                 key={ae.id}
-                className="bg-amber-50 border border-amber-100 rounded-2xl px-4 py-3 flex items-center justify-between gap-3"
+                className="bg-amber-50 border border-amber-200/80 rounded-2xl px-4 py-3 flex items-center justify-between gap-3"
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">{expName}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-sm font-medium text-fz-text truncate">{expName}</p>
+                  <p className="text-xs text-fz-text-secondary">
                     {formatCurrency(ae.amount, ae.currency)} → {coveringName}
                   </p>
                 </div>
@@ -178,16 +175,17 @@ export default async function CuotasPage() {
       )}
 
       {installments.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">
-          <p className="text-4xl mb-3">✅</p>
-          <p className="text-sm font-medium">Sin cuotas pendientes</p>
+        <div className="bg-fz-surface border border-fz-border rounded-2xl p-8 text-center space-y-3">
+          <div className="w-14 h-14 rounded-full bg-fz-accent-soft flex items-center justify-center mx-auto">
+            <CheckCircle2 size={26} className="text-fz-accent" />
+          </div>
+          <p className="text-sm font-medium text-fz-text">Sin cuotas pendientes</p>
+          <p className="text-sm text-fz-text-tertiary">
+            Cuando cargues un gasto en cuotas, aparece acá.
+          </p>
         </div>
       ) : (
         groups.map((group) => {
-          // Sesión J.1.14, TAREA 3: un grupo (tarjeta+mes) puede tener cuotas en
-          // monedas distintas (gastos en ARS y en USD con la misma tarjeta el mismo
-          // mes) — sumarlas todas junto no tiene sentido económico. Total por
-          // moneda, mismo patrón ya usado en BatchPayButton.
           const totalsByCurrency: Record<string, number> = {};
           for (const inst of group.items) {
             const cur = (inst.expenses?.currency ?? "ARS") as Currency;
@@ -196,27 +194,28 @@ export default async function CuotasPage() {
           const missingDays = !group.closingDay || !group.dueDay;
 
           return (
-            <section key={`${group.cardId ?? "no_card"}::${group.yearMonth}`}>
-              {/* Encabezado del grupo */}
-              <div className="flex items-start justify-between mb-2 gap-2">
+            <section
+              key={`${group.cardId ?? "no_card"}::${group.yearMonth}`}
+              className="space-y-2"
+            >
+              <div className="flex items-start justify-between gap-2 px-1">
                 <div className="min-w-0">
-                  <h2 className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+                  <h2 className="text-[11px] font-semibold text-fz-text-tertiary uppercase tracking-wide">
                     {group.cardName
                       ? `${group.cardName} · ${formatMonth(group.yearMonth)}`
                       : formatMonth(group.yearMonth)}
                   </h2>
                   {group.dueDay && (
-                    <p className="text-[11px] text-gray-400 mt-0.5">
+                    <p className="text-[12px] text-fz-text-tertiary mt-0.5">
                       Vence el día {group.dueDay}
                     </p>
                   )}
                   {missingDays && group.cardName && (
-                    <p className="text-[11px] text-amber-600 mt-0.5">
-                      Sin cierre/vencimiento configurado — fechas aproximadas
+                    <p className="text-[12px] text-amber-700 mt-0.5">
+                      Sin cierre/vencimiento — fechas aproximadas
                     </p>
                   )}
                 </div>
-                {/* Batch pay solo cuando hay más de una cuota en el grupo */}
                 {group.items.length > 1 && (
                   <BatchPayButton
                     installments={group.items.map((inst) => ({
@@ -233,7 +232,7 @@ export default async function CuotasPage() {
                 )}
               </div>
 
-              <div className="space-y-2">
+              <div className="bg-fz-surface border border-fz-border rounded-2xl overflow-hidden divide-y divide-fz-border">
                 {group.items.map((inst) => {
                   const exp = inst.expenses;
                   const label = exp?.merchant || exp?.description || "Gasto";
@@ -243,16 +242,16 @@ export default async function CuotasPage() {
                   return (
                     <div
                       key={inst.id}
-                      className="bg-white rounded-2xl shadow-sm px-4 py-3 flex items-center justify-between gap-3"
+                      className="px-4 py-3 flex items-center justify-between gap-3"
                     >
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">{label}</p>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-sm font-medium text-fz-text truncate">{label}</p>
+                        <p className="text-xs text-fz-text-tertiary">
                           Cuota {inst.installment_number}/{total} · vence {day}/{month}
                         </p>
                       </div>
                       <div className="flex items-center gap-3 shrink-0">
-                        <p className="text-sm font-semibold tabular-nums text-gray-700">
+                        <p className="text-sm font-semibold tabular-nums font-mono text-fz-text">
                           {formatCurrency(Number(inst.amount), instCurrency)}
                         </p>
                         <PayInstallmentButton
@@ -269,13 +268,12 @@ export default async function CuotasPage() {
                 })}
               </div>
 
-              {/* Total del grupo — uno por moneda, nunca sumadas entre sí */}
               {group.items.length > 1 && (
-                <div className="flex justify-end mt-1 px-1 gap-3">
+                <div className="flex justify-end px-1 gap-3">
                   {Object.entries(totalsByCurrency).map(([cur, amt]) => (
-                    <p key={cur} className="text-xs text-gray-400">
+                    <p key={cur} className="text-xs text-fz-text-tertiary">
                       Total{" "}
-                      <span className="font-medium text-gray-600 tabular-nums">
+                      <span className="font-semibold text-fz-text tabular-nums font-mono">
                         {formatCurrency(amt, cur as Currency)}
                       </span>
                     </p>

@@ -19,12 +19,12 @@ export default async function NuevoObjetivoPage() {
   return (
     <div className="p-4 max-w-lg mx-auto">
       <div className="flex items-center gap-3 pt-2 mb-6">
-        <Link href="/objetivos" className="text-sm text-gray-400 hover:text-gray-900">
+        <Link href="/objetivos" className="text-sm text-fz-text-tertiary hover:text-fz-text">
           ← Metas
         </Link>
-        <h1 className="text-xl font-semibold text-gray-900">Nuevo objetivo</h1>
+        <h1 className="text-xl font-semibold text-fz-text">Nuevo objetivo</h1>
       </div>
-      <div className="bg-white rounded-2xl shadow-sm p-5">
+      <div className="bg-fz-surface rounded-2xl shadow-[var(--fz-shadow)] p-5">
         <GoalForm accounts={accounts} />
       </div>
     </div>

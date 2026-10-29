@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Users } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
 import { getLeafAccounts } from "@/lib/accounts";
+import PageHeader from "@/components/PageHeader";
 import ConfirmParticipantPaymentButton from "./_components/ConfirmParticipantPaymentButton";
 import type { Account, Currency } from "@/types";
 
@@ -53,12 +54,10 @@ export default async function CompartidosPage() {
   return (
     <div className="p-4 max-w-lg mx-auto space-y-6 pb-28 bg-fz-bg min-h-screen">
       <div className="pt-2">
-        <h1 className="font-display font-extrabold text-2xl text-fz-text uppercase tracking-wide">
-          Compartidos
-        </h1>
-        <p className="text-sm text-fz-text-tertiary mt-0.5">
-          Quién te debe qué de los gastos que pagaste vos.
-        </p>
+        <PageHeader
+          title="Compartidos"
+          subtitle="Quién te debe qué de los gastos que pagaste vos."
+        />
       </div>
 
       {pending.length === 0 && paidList.length === 0 ? (

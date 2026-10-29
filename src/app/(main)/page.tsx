@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import EyeToggle from "@/components/EyeToggle";
 import { Money } from "@/components/Money";
+import { MenuButton } from "@/components/SideMenu";
 import { formatCurrency, formatARS, formatUSD } from "@/lib/format";
 import { getLeafAccounts } from "@/lib/accounts";
 import { AlertTriangle, CreditCard, Wallet, Receipt, Settings, Plus } from "lucide-react";
@@ -247,77 +248,73 @@ export default async function DashboardPage() {
     hour < 12 ? "Buenos días" : hour < 19 ? "Buenas tardes" : "Buenas noches";
 
   return (
-    <div className="px-4 pt-3 max-w-lg mx-auto space-y-5 bg-fz-bg min-h-[100dvh]">
+    <div className="fz-page space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-medium text-fz-text-tertiary">{greeting}</p>
-          <h1 className="font-display font-extrabold text-[28px] leading-none text-fz-text uppercase tracking-wide mt-1">
-            Finanzas
-          </h1>
+      <div className="flex items-center justify-between gap-3 pt-1">
+        <div className="flex items-center gap-3 min-w-0">
+          <MenuButton />
+          <div className="min-w-0">
+            <p className="text-[13px] font-medium text-fz-text-tertiary">{greeting}</p>
+            <h1 className="font-display font-bold text-[24px] leading-tight tracking-tight text-fz-text mt-0.5 truncate">
+              Finanzas
+            </h1>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <EyeToggle />
           <Link
             href="/configuracion"
-            className="w-12 h-12 rounded-2xl bg-fz-surface border border-fz-border flex items-center justify-center text-fz-text-secondary"
+            className="w-11 h-11 rounded-[14px] bg-fz-surface border border-fz-border flex items-center justify-center text-fz-text-secondary shadow-[var(--fz-shadow)]"
             aria-label="Configuración"
           >
-            <Settings size={20} />
+            <Settings size={18} />
           </Link>
         </div>
       </div>
 
-      {/* Acciones al alcance del pulgar — lo más usado primero */}
-      <section className="grid grid-cols-2 gap-3">
-        <Link
-          href="/gastos/nuevo"
-          className="flex min-h-[72px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-fz-accent text-fz-accent-text active:opacity-90"
-        >
-          <Plus size={26} strokeWidth={2.5} />
-          <span className="text-[15px] font-semibold">Nuevo gasto</span>
-        </Link>
-        <Link
-          href="/ingresos/nuevo"
-          className="flex min-h-[72px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-fz-surface border border-fz-border text-fz-text active:bg-fz-surface-high"
-        >
-          <Wallet size={24} className="text-fz-accent" />
-          <span className="text-[15px] font-semibold">Nuevo ingreso</span>
-        </Link>
-      </section>
-
-      {/* Saldo total consolidado */}
-      <section className="bg-fz-surface-high rounded-[22px] p-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-fz-text-tertiary">
-          Saldo total
-        </p>
-        <p className="font-display font-extrabold text-[36px] leading-tight text-fz-text mt-1 break-all">
+      {/* Saldo total — hero primero (más vendible) */}
+      <section className="fz-card-hero">
+        <p className="fz-section-label">Saldo total</p>
+        <p className="font-display font-bold text-[40px] leading-[1.05] tracking-tight text-fz-text mt-2 break-all">
           <Money>{formatARS(arsBalance)}</Money>
         </p>
         {usdBalance > 0 && (
-          <p className="text-sm font-semibold text-fz-text-secondary font-mono mt-1">
+          <p className="text-sm font-semibold text-fz-text-secondary font-mono mt-2">
             + <Money>{formatUSD(usdBalance)}</Money> en dólares
           </p>
         )}
       </section>
 
-      {/* TAREA 4 (Sesión J.1.17): resumen con gráfico — tabs Gastos/
-          Comparativa/Inversiones, mismo concepto que la sección "Resumen"
-          del prototipo de Claude Design. */}
-      <InicioResumen
-        categoryDataByCurrency={categoryDataByCurrency}
-        monthlyComparativa={monthlyComparativa}
-        hasInvestments={investmentHoldings.length > 0}
-        inversionesSlot={
-          <>
-            <Suspense fallback={null}>
-              <FciPortfolioSummary holdings={investmentHoldings} />
-            </Suspense>
-            <InversionesChart points={portfolioLinePoints} />
-          </>
-        }
-      />
+      {/* Acciones al alcance del pulgar */}
+      <section className="grid grid-cols-2 gap-3">
+        <Link
+          href="/gastos/nuevo"
+          className="flex min-h-[68px] flex-col items-center justify-center gap-1.5 rounded-[18px] bg-fz-accent text-fz-accent-text shadow-[var(--fz-shadow)] active:opacity-90 transition-opacity"
+        >
+          <Plus size={24} strokeWidth={2.5} />
+          <span className="text-[14px] font-semibold">Nuevo gasto</span>
+        </Link>
+        <Link
+          href="/ingresos/nuevo"
+          className="flex min-h-[68px] flex-col items-center justify-center gap-1.5 rounded-[18px] fz-card-flat text-fz-text active:bg-fz-surface-high transition-colors"
+        >
+          <Wallet size={22} className="text-fz-accent" />
+          <span className="text-[14px] font-semibold">Nuevo ingreso</span>
+        </Link>
+      </section>
 
+      {(creditCardsMissingConfig.length > 0 ||
+        paymentSummaries.length > 0 ||
+        reminders.length > 0 ||
+        (undistributedSueldos && undistributedSueldos.length > 0) ||
+        pendingByCurrency.size > 0) && (
+        <details className="fz-card overflow-hidden group">
+          <summary className="flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-2 px-4 text-[15px] font-semibold tracking-tight text-fz-text [&::-webkit-details-marker]:hidden">
+            Pendientes
+            <span className="text-sm font-medium text-fz-accent group-open:hidden">Ver →</span>
+            <span className="text-sm font-medium text-fz-text-tertiary hidden group-open:inline">Ocultar</span>
+          </summary>
+          <div className="space-y-2 border-t border-fz-border p-3">
       {/* Tarjetas sin cierre/vencimiento configurado — aviso persistente, no es
           un banner de fecha próxima (Sesión J.1.12, TAREA 5b). */}
       {creditCardsMissingConfig.length > 0 && (
@@ -462,6 +459,10 @@ export default async function DashboardPage() {
         </section>
       )}
 
+          </div>
+        </details>
+      )}
+
       {/* Gastos del mes */}
       <section>
         <h2 className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide mb-2">
@@ -501,17 +502,9 @@ export default async function DashboardPage() {
           <h2 className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide">
             Saldos
           </h2>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/ingresos/nuevo"
-              className="text-xs font-medium bg-fz-accent text-fz-accent-text px-2.5 py-1 rounded-lg"
-            >
-              + Ingreso
-            </Link>
-            <Link href="/ingresos" className="text-xs text-fz-text-secondary hover:text-fz-text">
-              Ver ingresos →
-            </Link>
-          </div>
+          <Link href="/cuentas" className="text-[13px] font-semibold text-fz-accent min-h-[32px] inline-flex items-center">
+            Ver cuentas →
+          </Link>
         </div>
 
         {leafAccounts.length === 0 ? (
@@ -523,18 +516,19 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="bg-fz-surface border border-fz-border rounded-2xl overflow-hidden">
-            {leafAccounts.map((account, i) => (
-              <div
+            {leafAccounts.slice(0, 6).map((account, i) => (
+              <Link
                 key={account.id}
-                className={`flex items-center justify-between px-4 py-3 ${
+                href={`/cuentas?editar=${account.id}`}
+                className={`flex items-center justify-between px-4 min-h-[52px] active:bg-fz-surface-high ${
                   i > 0 ? "border-t border-fz-border" : ""
                 }`}
               >
-                <p className="text-sm font-medium text-fz-text">{account.name}</p>
-                <p className="text-sm text-fz-text-secondary tabular-nums font-mono">
+                <p className="text-[15px] font-medium text-fz-text">{account.name}</p>
+                <p className="text-[15px] text-fz-text-secondary tabular-nums font-mono">
                   <Money>{formatCurrency(Number(account.balance), account.currency)}</Money>
                 </p>
-              </div>
+              </Link>
             ))}
             <div className="flex items-center justify-between px-4 py-3 border-t border-fz-border bg-fz-surface-high">
               <p className="text-xs font-medium text-fz-text-secondary">Total ARS</p>
@@ -610,7 +604,7 @@ export default async function DashboardPage() {
                 <Link
                   href={`/gastos/${expense.id}/editar`}
                   key={expense.id}
-                  className={`flex items-center justify-between px-4 py-3 ${
+                  className={`flex items-center justify-between px-4 min-h-[56px] active:bg-fz-surface-high ${
                     i > 0 ? "border-t border-fz-border" : ""
                   }`}
                 >
@@ -636,6 +630,20 @@ export default async function DashboardPage() {
           </div>
         )}
       </section>
+      <InicioResumen
+        categoryDataByCurrency={categoryDataByCurrency}
+        monthlyComparativa={monthlyComparativa}
+        hasInvestments={investmentHoldings.length > 0}
+        inversionesSlot={
+          <>
+            <Suspense fallback={null}>
+              <FciPortfolioSummary holdings={investmentHoldings} />
+            </Suspense>
+            <InversionesChart points={portfolioLinePoints} />
+          </>
+        }
+      />
+
     </div>
   );
 }

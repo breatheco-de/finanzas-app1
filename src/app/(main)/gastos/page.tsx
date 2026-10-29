@@ -25,27 +25,27 @@ export default async function GastosPage() {
   return (
     <div className="p-4 max-w-lg mx-auto space-y-4">
       <div className="flex items-center justify-between pt-2">
-        <h1 className="text-2xl font-semibold text-gray-900">Gastos</h1>
+        <h1 className="text-2xl font-semibold text-fz-text">Gastos</h1>
         <Link
           href="/gastos/nuevo"
-          className="text-sm font-medium text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-full px-4 py-2 transition-colors"
+          className="text-sm font-medium text-fz-text bg-fz-surface-high hover:bg-fz-border rounded-full px-4 py-2 transition-colors"
         >
           + Nuevo
         </Link>
       </div>
 
       {!expenses || expenses.length === 0 ? (
-        <div className="bg-white rounded-2xl p-6 shadow-sm text-center space-y-3">
-          <p className="text-sm text-gray-400">Sin gastos registrados todavía</p>
+        <div className="bg-fz-surface rounded-2xl p-6 shadow-[var(--fz-shadow)] text-center space-y-3">
+          <p className="text-sm text-fz-text-tertiary">Sin gastos registrados todavía</p>
           <Link
             href="/gastos/nuevo"
-            className="inline-block text-sm font-medium text-gray-900 underline"
+            className="inline-block text-sm font-medium text-fz-text underline"
           >
             Registrar primer gasto
           </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-fz-surface rounded-2xl shadow-[var(--fz-shadow)] overflow-hidden">
           {expenses.map((expense, i) => {
             const cat = expense.categories as unknown as { name: string; icon: string | null } | null;
             const acc = (expense as unknown as { account?: { name: string } | null }).account ?? null;
@@ -58,21 +58,21 @@ export default async function GastosPage() {
               <Link
                 key={expense.id}
                 href={`/gastos/${expense.id}/editar`}
-                className={`flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors ${
-                  i > 0 ? "border-t border-gray-100" : ""
+                className={`flex items-center justify-between px-4 py-3 hover:bg-fz-bg transition-colors ${
+                  i > 0 ? "border-t border-fz-border" : ""
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="text-xl shrink-0">{cat?.icon ?? "💸"}</span>
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">{label}</p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-sm font-medium text-fz-text truncate">{label}</p>
+                    <p className="text-xs text-fz-text-tertiary">
                       {dateStr}
                       {acc && <> · {acc.name}</>}
                     </p>
                   </div>
                 </div>
-                <p className="text-sm font-semibold text-gray-900 tabular-nums ml-3 shrink-0">
+                <p className="text-sm font-semibold text-fz-text tabular-nums ml-3 shrink-0">
                   {formatCurrency(Number(expense.amount), expense.currency as Currency)}
                 </p>
               </Link>

@@ -23,7 +23,7 @@ export default function DeleteGoalButton({ goalId, goalName }: { goalId: string;
     return (
       <button
         onClick={() => setState("confirming")}
-        className="text-[11px] text-red-500"
+        className="text-[11px] text-fz-negative"
       >
         Eliminar
       </button>
@@ -33,12 +33,12 @@ export default function DeleteGoalButton({ goalId, goalName }: { goalId: string;
   if (state === "confirming") {
     return (
       <span className="flex items-center gap-2 text-[11px]">
-        <span className="text-gray-500">¿Eliminar "{goalName}"?</span>
-        <button onClick={handleDelete} className="text-red-600 font-medium">Sí</button>
-        <button onClick={() => setState("idle")} className="text-gray-400">No</button>
+        <span className="text-fz-text-secondary">¿Eliminar "{goalName}"?</span>
+        <button onClick={handleDelete} className="text-fz-negative font-medium">Sí</button>
+        <button onClick={() => setState("idle")} className="text-fz-text-tertiary">No</button>
       </span>
     );
   }
 
-  return <span className="text-[11px] text-gray-400">Eliminando…</span>;
+  return <span className="text-[11px] text-fz-text-tertiary">Eliminando…</span>;
 }

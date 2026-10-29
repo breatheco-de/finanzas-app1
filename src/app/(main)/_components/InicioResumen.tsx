@@ -49,18 +49,16 @@ export default function InicioResumen({
   ];
 
   return (
-    <section className="bg-fz-surface border border-fz-border rounded-2xl p-4">
+    <section className="fz-card p-4">
       <div className="flex items-center justify-between mb-3.5 gap-2">
-        <p className="text-xs font-medium text-fz-text-tertiary uppercase tracking-wide shrink-0">
-          Resumen
-        </p>
-        <div className="flex bg-fz-surface-high rounded-lg p-0.5 gap-0.5 shrink-0">
+        <p className="fz-section-label shrink-0">Resumen</p>
+        <div className="flex bg-fz-surface-high rounded-xl p-1 gap-1 shrink-0 max-w-full overflow-x-auto">
           {tabs.map((t) => (
             <button
               key={t.key}
               type="button"
               onClick={() => setTab(t.key)}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-colors ${
+              className={`min-h-[40px] px-3 rounded-lg text-[13px] font-semibold whitespace-nowrap transition-colors ${
                 tab === t.key ? "bg-fz-accent text-fz-accent-text" : "text-fz-text-secondary"
               }`}
             >
